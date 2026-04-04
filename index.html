@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snake Game</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #1a1a2e;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+      color: #eee;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, #e94560, #0f3460);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    #info {
+      display: flex;
+      gap: 40px;
+      font-size: 1.2rem;
+    }
+
+    #info span {
+      color: #e94560;
+      font-weight: bold;
+    }
+
+    canvas {
+      border: 3px solid #e94560;
+      border-radius: 8px;
+      background: #16213e;
+      box-shadow: 0 0 30px rgba(233, 69, 96, 0.3);
+    }
+
+    #message {
+      font-size: 1.1rem;
+      color: #aaa;
+      height: 24px;
+    }
+
+    .controls {
+      font-size: 0.9rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>Snake Game</h1>
+  <div id="info">
+    <div>Score: <span id="score">0</span></div>
+    <div>High Score: <span id="highScore">0</span></div>
+  </div>
+  <canvas id="game" width="400" height="400"></canvas>
+  <div id="message">Press any arrow key to start</div>
+  <div class="controls">Arrow Keys = Move &nbsp;|&nbsp; P = Pause &nbsp;|&nbsp; R = Restart</div>
+
+  <script>
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
+    const scoreEl = document.getElementById('score');
+    const highScoreEl = document.getElementById('highScore');
+    const messageEl = document.getElementById('message');
+
+    const GRID = 20;
+    const COLS = canvas.width / GRID;
+    const ROWS = canvas.height / GRID;
+    const SPEED = 120;
+
+    let snake, direction, nextDirection, food, score, highScore, gameLoop, running, paused;
+
+    highScore = parseInt(localStorage.getItem('snakeHighScore') || '0');
+    highScoreEl.textContent = highScore;
+
+    function init() {
+      snake = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }];
+      direction = { x: 0, y: 0 };
+      nextDirection = { x: 0, y: 0 };
+      score = 0;
+      running = false;
+      paused = false;
+      scoreEl.textContent = score;
+      spawnFood();
+      draw();
+      messageEl.textContent = 'Press any arrow key to start';
+    }
+
+    function spawnFood() {
+      do {
+        food = {
+          x: Math.floor(Math.random() * COLS),
+          y: Math.floor(Math.random() * ROWS)
+        };
+      } while (snake.some(s => s.x === food.x && s.y === food.y));
+    }
+
+    function draw() {
+      // Background
+      ctx.fillStyle = '#16213e';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Grid lines (subtle)
+      ctx.strokeStyle = '#1a2540';
+      ctx.lineWidth = 0.5;
+      for (let i = 0; i < COLS; i++) {
+        ctx.beginPath();
+        ctx.moveTo(i * GRID, 0);
+        ctx.lineTo(i * GRID, canvas.height);
+        ctx.stroke();
+      }
+      for (let i = 0; i < ROWS; i++) {
+        ctx.beginPath();
+        ctx.moveTo(0, i * GRID);
+        ctx.lineTo(canvas.width, i * GRID);
+        ctx.stroke();
+      }
+
+      // Food
+      ctx.fillStyle = '#e94560';
+      ctx.shadowColor = '#e94560';
+      ctx.shadowBlur = 10;
+      ctx.beginPath();
+      ctx.arc(food.x * GRID + GRID / 2, food.y * GRID + GRID / 2, GRID / 2 - 2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Snake
+      snake.forEach((seg, i) => {
+        const ratio = 1 - (i / snake.length) * 0.5;
+        ctx.fillStyle = `rgba(15, 52, 96, ${ratio})`;
+        ctx.strokeStyle = '#0f3460';
+        ctx.lineWidth = 1;
+
+        const padding = i === 0 ? 1 : 2;
+        ctx.fillStyle = i === 0 ? '#e94560' : `hsl(210, 70%, ${30 + ratio * 30}%)`;
+        roundRect(ctx, seg.x * GRID + padding, seg.y * GRID + padding, GRID - padding * 2, GRID - padding * 2, 4);
+        ctx.fill();
+        ctx.stroke();
+      });
+
+      // Eyes on head
+      if (snake.length > 0) {
+        const head = snake[0];
+        ctx.fillStyle = '#fff';
+        const cx = head.x * GRID + GRID / 2;
+        const cy = head.y * GRID + GRID / 2;
+        const eyeOffset = 3;
+        let e1x, e1y, e2x, e2y;
+
+        if (direction.x === 1) { e1x = cx + 3; e1y = cy - eyeOffset; e2x = cx + 3; e2y = cy + eyeOffset; }
+        else if (direction.x === -1) { e1x = cx - 3; e1y = cy - eyeOffset; e2x = cx - 3; e2y = cy + eyeOffset; }
+        else if (direction.y === -1) { e1x = cx - eyeOffset; e1y = cy - 3; e2x = cx + eyeOffset; e2y = cy - 3; }
+        else { e1x = cx - eyeOffset; e1y = cy + 3; e2x = cx + eyeOffset; e2y = cy + 3; }
+
+        ctx.beginPath(); ctx.arc(e1x, e1y, 2, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(e2x, e2y, 2, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    function update() {
+      if (paused) return;
+
+      direction = { ...nextDirection };
+      const head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
+
+      // Wall collision
+      if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS) {
+        return gameOver();
+      }
+
+      // Self collision
+      if (snake.some(s => s.x === head.x && s.y === head.y)) {
+        return gameOver();
+      }
+
+      snake.unshift(head);
+
+      // Eat food
+      if (head.x === food.x && head.y === food.y) {
+        score += 10;
+        scoreEl.textContent = score;
+        if (score > highScore) {
+          highScore = score;
+          highScoreEl.textContent = highScore;
+          localStorage.setItem('snakeHighScore', highScore);
+        }
+        spawnFood();
+      } else {
+        snake.pop();
+      }
+
+      draw();
+    }
+
+    function gameOver() {
+      clearInterval(gameLoop);
+      running = false;
+      messageEl.textContent = `Game Over! Score: ${score}. Press R to restart.`;
+
+      // Flash effect
+      ctx.fillStyle = 'rgba(233, 69, 96, 0.3)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 36px Segoe UI';
+      ctx.textAlign = 'center';
+      ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2);
+      ctx.font = '18px Segoe UI';
+      ctx.fillText(`Score: ${score}`, canvas.width / 2, canvas.height / 2 + 35);
+    }
+
+    function startGame() {
+      if (running) return;
+      running = true;
+      messageEl.textContent = '';
+      gameLoop = setInterval(update, SPEED);
+    }
+
+    document.addEventListener('keydown', (e) => {
+      switch (e.key) {
+        case 'ArrowUp':
+          e.preventDefault();
+          if (direction.y !== 1) { nextDirection = { x: 0, y: -1 }; }
+          if (!running) startGame();
+          break;
+        case 'ArrowDown':
+          e.preventDefault();
+          if (direction.y !== -1) { nextDirection = { x: 0, y: 1 }; }
+          if (!running) startGame();
+          break;
+        case 'ArrowLeft':
+          e.preventDefault();
+          if (direction.x !== 1) { nextDirection = { x: -1, y: 0 }; }
+          if (!running) startGame();
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          if (direction.x !== -1) { nextDirection = { x: 1, y: 0 }; }
+          if (!running) startGame();
+          break;
+        case 'p':
+        case 'P':
+          if (running) {
+            paused = !paused;
+            messageEl.textContent = paused ? 'Paused - Press P to resume' : '';
+          }
+          break;
+        case 'r':
+        case 'R':
+          clearInterval(gameLoop);
+          init();
+          break;
+      }
+    });
+
+    init();
+  </script>
+</body>
+</html>
