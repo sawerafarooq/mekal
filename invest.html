@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mekal Invest - Smart Investment Guide</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0a0a1a;
+      color: #e0e0e0;
+      min-height: 100vh;
+    }
+
+    /* Navbar */
+    nav {
+      background: rgba(15, 15, 35, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #1a1a3a;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #00d4aa, #0088ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links { display: flex; gap: 25px; }
+    .nav-links a {
+      color: #888;
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: #00d4aa; }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 80px 20px 60px;
+      background: linear-gradient(180deg, #0a0a1a 0%, #0f1a2e 100%);
+    }
+
+    .hero h1 {
+      font-size: 2.8rem;
+      margin-bottom: 15px;
+      background: linear-gradient(135deg, #00d4aa, #0088ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: #888;
+      max-width: 600px;
+      margin: 0 auto 30px;
+    }
+
+    /* Risk Quiz */
+    .section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .section .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+    }
+
+    .quiz-card {
+      background: #111128;
+      border: 1px solid #1a1a3a;
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 20px;
+    }
+
+    .quiz-card label {
+      font-size: 1.05rem;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 15px;
+      color: #ccc;
+    }
+
+    .options { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    .options button {
+      padding: 10px 20px;
+      border: 1px solid #2a2a4a;
+      background: #0d0d25;
+      color: #aaa;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+    }
+
+    .options button:hover { border-color: #00d4aa; color: #00d4aa; }
+    .options button.selected {
+      background: rgba(0, 212, 170, 0.15);
+      border-color: #00d4aa;
+      color: #00d4aa;
+    }
+
+    /* Result */
+    #result {
+      display: none;
+      background: linear-gradient(135deg, #0f1a2e, #111128);
+      border: 1px solid #00d4aa33;
+      border-radius: 16px;
+      padding: 35px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    #result.show { display: block; animation: fadeIn 0.5s ease; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    .risk-badge {
+      display: inline-block;
+      padding: 8px 25px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin: 15px 0;
+    }
+
+    .risk-low { background: rgba(0, 212, 170, 0.2); color: #00d4aa; border: 1px solid #00d4aa; }
+    .risk-medium { background: rgba(255, 193, 7, 0.2); color: #ffc107; border: 1px solid #ffc107; }
+    .risk-high { background: rgba(255, 82, 82, 0.2); color: #ff5252; border: 1px solid #ff5252; }
+
+    /* Recommendations */
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+
+    .card {
+      background: #111128;
+      border: 1px solid #1a1a3a;
+      border-radius: 14px;
+      padding: 25px;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+
+    .card:hover { transform: translateY(-5px); border-color: #00d4aa44; }
+
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+
+    .card h3 { font-size: 1.15rem; margin-bottom: 8px; color: #fff; }
+    .card p { font-size: 0.9rem; color: #777; line-height: 1.5; }
+
+    .card .tag {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 4px 12px;
+      border-radius: 15px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .tag-safe { background: rgba(0, 212, 170, 0.15); color: #00d4aa; }
+    .tag-moderate { background: rgba(255, 193, 7, 0.15); color: #ffc107; }
+    .tag-risky { background: rgba(255, 82, 82, 0.15); color: #ff5252; }
+
+    /* Tips Section */
+    .tip-list { list-style: none; margin-top: 20px; }
+
+    .tip-list li {
+      background: #111128;
+      border: 1px solid #1a1a3a;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 15px;
+      align-items: flex-start;
+    }
+
+    .tip-num {
+      background: linear-gradient(135deg, #00d4aa, #0088ff);
+      color: #000;
+      font-weight: 700;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .tip-content h4 { color: #fff; margin-bottom: 5px; }
+    .tip-content p { color: #777; font-size: 0.9rem; line-height: 1.5; }
+
+    /* CTA */
+    .cta-btn {
+      display: inline-block;
+      padding: 14px 35px;
+      background: linear-gradient(135deg, #00d4aa, #0088ff);
+      color: #000;
+      font-weight: 700;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.3s;
+      text-decoration: none;
+    }
+
+    .cta-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(0, 212, 170, 0.4);
+    }
+
+    .cta-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #444;
+      font-size: 0.8rem;
+      border-top: 1px solid #1a1a3a;
+      margin-top: 60px;
+    }
+
+    #version {
+      position: fixed;
+      bottom: 10px;
+      right: 15px;
+      font-size: 0.75rem;
+      color: #333;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 1.8rem; }
+      .options { flex-direction: column; }
+      nav { padding: 12px 15px; }
+      .nav-links { gap: 15px; }
+      .section { padding: 30px 15px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">Mekal Invest</div>
+    <div class="nav-links">
+      <a href="#quiz" class="active">Risk Quiz</a>
+      <a href="#recommendations">Invest</a>
+      <a href="#tips">Tips</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <h1>Smart Investing Starts Here</h1>
+    <p>Find out your risk profile and get personalized investment recommendations to grow your wealth.</p>
+    <a href="#quiz" class="cta-btn">Take the Risk Quiz</a>
+  </div>
+
+  <!-- Risk Quiz -->
+  <div class="section" id="quiz">
+    <h2>What's Your Risk Profile?</h2>
+    <p class="subtitle">Answer 4 quick questions to discover your investing style.</p>
+
+    <div class="quiz-card">
+      <label>1. How long do you plan to invest?</label>
+      <div class="options" data-q="0">
+        <button data-val="1" onclick="selectOption(this)">Less than 1 year</button>
+        <button data-val="2" onclick="selectOption(this)">1 - 3 years</button>
+        <button data-val="3" onclick="selectOption(this)">3 - 5 years</button>
+        <button data-val="4" onclick="selectOption(this)">5+ years</button>
+      </div>
+    </div>
+
+    <div class="quiz-card">
+      <label>2. If your investment dropped 20%, what would you do?</label>
+      <div class="options" data-q="1">
+        <button data-val="1" onclick="selectOption(this)">Sell everything</button>
+        <button data-val="2" onclick="selectOption(this)">Sell some</button>
+        <button data-val="3" onclick="selectOption(this)">Hold and wait</button>
+        <button data-val="4" onclick="selectOption(this)">Buy more</button>
+      </div>
+    </div>
+
+    <div class="quiz-card">
+      <label>3. What's your primary investment goal?</label>
+      <div class="options" data-q="2">
+        <button data-val="1" onclick="selectOption(this)">Preserve my money</button>
+        <button data-val="2" onclick="selectOption(this)">Steady income</button>
+        <button data-val="3" onclick="selectOption(this)">Balanced growth</button>
+        <button data-val="4" onclick="selectOption(this)">Maximum returns</button>
+      </div>
+    </div>
+
+    <div class="quiz-card">
+      <label>4. How much investing experience do you have?</label>
+      <div class="options" data-q="3">
+        <button data-val="1" onclick="selectOption(this)">None</button>
+        <button data-val="2" onclick="selectOption(this)">A little</button>
+        <button data-val="3" onclick="selectOption(this)">Moderate</button>
+        <button data-val="4" onclick="selectOption(this)">Experienced</button>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 25px;">
+      <button class="cta-btn" id="quizBtn" onclick="showResult()" disabled>See My Profile</button>
+    </div>
+
+    <div id="result">
+      <h3 id="resultTitle"></h3>
+      <div id="resultBadge"></div>
+      <p id="resultDesc" style="color: #888; margin-top: 10px; line-height: 1.6;"></p>
+      <div id="resultAlloc" style="margin-top: 20px;"></div>
+    </div>
+  </div>
+
+  <!-- Investment Recommendations -->
+  <div class="section" id="recommendations">
+    <h2>Investment Categories</h2>
+    <p class="subtitle">Explore different asset classes and find what suits your goals.</p>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">&#x1f3e6;</div>
+        <h3>Index Funds (ETFs)</h3>
+        <p>Low-cost, diversified funds that track the market. Great for beginners and long-term investors. Think S&P 500, NASDAQ.</p>
+        <span class="tag tag-safe">Low Risk</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#x1f4b0;</div>
+        <h3>Bonds & Fixed Income</h3>
+        <p>Government and corporate bonds provide stable, predictable returns. Ideal for capital preservation.</p>
+        <span class="tag tag-safe">Low Risk</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#x1f3e0;</div>
+        <h3>Real Estate (REITs)</h3>
+        <p>Invest in property without buying one. REITs offer dividend income and portfolio diversification.</p>
+        <span class="tag tag-moderate">Moderate Risk</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#x1f4c8;</div>
+        <h3>Growth Stocks</h3>
+        <p>Companies with high growth potential like tech and healthcare. Higher reward but more volatile.</p>
+        <span class="tag tag-moderate">Moderate Risk</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#x26a1;</div>
+        <h3>Cryptocurrency</h3>
+        <p>Digital assets like Bitcoin and Ethereum. High potential returns but extremely volatile. Only invest what you can afford to lose.</p>
+        <span class="tag tag-risky">High Risk</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#x1f680;</div>
+        <h3>Startups & Venture</h3>
+        <p>Early-stage investments in startups. Could multiply your money or go to zero. For experienced investors only.</p>
+        <span class="tag tag-risky">High Risk</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tips Section -->
+  <div class="section" id="tips">
+    <h2>Golden Rules of Investing</h2>
+    <p class="subtitle">Follow these principles to invest smarter.</p>
+    <ul class="tip-list">
+      <li>
+        <div class="tip-num">1</div>
+        <div class="tip-content">
+          <h4>Never invest money you can't afford to lose</h4>
+          <p>Always have an emergency fund (3-6 months expenses) before investing. Your rent money is not investment money.</p>
+        </div>
+      </li>
+      <li>
+        <div class="tip-num">2</div>
+        <div class="tip-content">
+          <h4>Diversify your portfolio</h4>
+          <p>Don't put all your eggs in one basket. Spread investments across different asset classes to reduce risk.</p>
+        </div>
+      </li>
+      <li>
+        <div class="tip-num">3</div>
+        <div class="tip-content">
+          <h4>Think long-term</h4>
+          <p>Time in the market beats timing the market. Consistent investing over years builds real wealth.</p>
+        </div>
+      </li>
+      <li>
+        <div class="tip-num">4</div>
+        <div class="tip-content">
+          <h4>Do your own research</h4>
+          <p>Understand what you're investing in. Don't follow hype or social media tips blindly.</p>
+        </div>
+      </li>
+      <li>
+        <div class="tip-num">5</div>
+        <div class="tip-content">
+          <h4>Start small, learn, then scale</h4>
+          <p>Begin with small amounts. Learn from your wins and losses before committing larger sums.</p>
+        </div>
+      </li>
+      <li>
+        <div class="tip-num">6</div>
+        <div class="tip-content">
+          <h4>Keep emotions out of investing</h4>
+          <p>Fear and greed are your worst enemies. Stick to your strategy and avoid panic selling or FOMO buying.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <footer>
+    Mekal Invest &mdash; For educational purposes only. Not financial advice. Always consult a licensed financial advisor.
+  </footer>
+
+  <div id="version">v1.5</div>
+
+  <script>
+    const answers = [null, null, null, null];
+
+    function selectOption(btn) {
+      const parent = btn.parentElement;
+      const qIndex = parseInt(parent.dataset.q);
+      parent.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      answers[qIndex] = parseInt(btn.dataset.val);
+
+      // Enable button if all answered
+      if (answers.every(a => a !== null)) {
+        document.getElementById('quizBtn').disabled = false;
+      }
+    }
+
+    function showResult() {
+      const total = answers.reduce((a, b) => a + b, 0);
+      const result = document.getElementById('result');
+      const title = document.getElementById('resultTitle');
+      const badge = document.getElementById('resultBadge');
+      const desc = document.getElementById('resultDesc');
+      const alloc = document.getElementById('resultAlloc');
+
+      let profile, badgeClass, description, allocation;
+
+      if (total <= 7) {
+        profile = 'Conservative Investor';
+        badgeClass = 'risk-low';
+        description = 'You prefer safety and stability. Focus on preserving your capital with low-risk investments that provide steady returns.';
+        allocation = `
+          <strong style="color:#00d4aa">Suggested Allocation:</strong><br>
+          <span style="color:#aaa">60% Bonds & Fixed Income | 25% Index Funds | 10% REITs | 5% Cash</span>
+        `;
+      } else if (total <= 12) {
+        profile = 'Balanced Investor';
+        badgeClass = 'risk-medium';
+        description = 'You want growth but with managed risk. A mix of stable and growth assets suits you best.';
+        allocation = `
+          <strong style="color:#ffc107">Suggested Allocation:</strong><br>
+          <span style="color:#aaa">35% Index Funds | 25% Growth Stocks | 20% Bonds | 15% REITs | 5% Crypto</span>
+        `;
+      } else {
+        profile = 'Aggressive Investor';
+        badgeClass = 'risk-high';
+        description = 'You\'re comfortable with volatility and aim for maximum returns. You can handle market swings and think long-term.';
+        allocation = `
+          <strong style="color:#ff5252">Suggested Allocation:</strong><br>
+          <span style="color:#aaa">40% Growth Stocks | 25% Index Funds | 15% Crypto | 10% Startups | 10% REITs</span>
+        `;
+      }
+
+      title.textContent = 'Your Profile:';
+      badge.innerHTML = `<span class="risk-badge ${badgeClass}">${profile}</span>`;
+      desc.textContent = description;
+      alloc.innerHTML = allocation;
+      result.classList.add('show');
+      result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+</body>
+</html>
