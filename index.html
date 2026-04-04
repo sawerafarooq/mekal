@@ -54,6 +54,14 @@
       font-size: 0.9rem;
       color: #555;
     }
+
+    #version {
+      position: fixed;
+      bottom: 10px;
+      right: 15px;
+      font-size: 0.75rem;
+      color: #444;
+    }
   </style>
 </head>
 <body>
@@ -65,6 +73,7 @@
   <canvas id="game" width="400" height="400"></canvas>
   <div id="message">Press any arrow key to start</div>
   <div class="controls">Arrow Keys = Move &nbsp;|&nbsp; P = Pause &nbsp;|&nbsp; R = Restart</div>
+  <div id="version">v1.4</div>
 
   <script>
     const canvas = document.getElementById('game');
