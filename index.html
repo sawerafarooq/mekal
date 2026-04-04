@@ -78,7 +78,7 @@
     const ROWS = canvas.height / GRID;
     const SPEED = 120;
 
-    let snake, direction, nextDirection, food, score, highScore, gameLoop, running, paused;
+    let snake, direction, nextDirection, food, score, highScore, gameLoop, running, paused, dead;
 
     highScore = parseInt(localStorage.getItem('snakeHighScore') || '0');
     highScoreEl.textContent = highScore;
@@ -90,6 +90,7 @@
       score = 1;
       running = false;
       paused = false;
+      dead = false;
       scoreEl.textContent = score;
       spawnFood();
       draw();
@@ -220,6 +221,7 @@
     function gameOver() {
       clearInterval(gameLoop);
       running = false;
+      dead = true;
       messageEl.textContent = `Game Over! Score: ${score}. Press R to restart.`;
 
       // Flash effect
@@ -245,22 +247,22 @@
         case 'ArrowUp':
           e.preventDefault();
           if (direction.y !== 1) { nextDirection = { x: 0, y: -1 }; }
-          if (!running) startGame();
+          if (!running && !dead) startGame();
           break;
         case 'ArrowDown':
           e.preventDefault();
           if (direction.y !== -1) { nextDirection = { x: 0, y: 1 }; }
-          if (!running) startGame();
+          if (!running && !dead) startGame();
           break;
         case 'ArrowLeft':
           e.preventDefault();
           if (direction.x !== 1) { nextDirection = { x: -1, y: 0 }; }
-          if (!running) startGame();
+          if (!running && !dead) startGame();
           break;
         case 'ArrowRight':
           e.preventDefault();
           if (direction.x !== -1) { nextDirection = { x: 1, y: 0 }; }
-          if (!running) startGame();
+          if (!running && !dead) startGame();
           break;
         case 'p':
         case 'P':
