@@ -79,6 +79,7 @@
     const SPEED = 180;
 
     let snake, direction, nextDirection, food, score, highScore, gameLoop, running, paused, dead;
+    let trail = [];
 
     highScore = parseInt(localStorage.getItem('snakeHighScore') || '0');
     highScoreEl.textContent = highScore;
@@ -91,6 +92,7 @@
       running = false;
       paused = false;
       dead = false;
+      trail = [];
       scoreEl.textContent = score;
       spawnFood();
       draw();
@@ -126,6 +128,13 @@
         ctx.lineTo(canvas.width, i * GRID);
         ctx.stroke();
       }
+
+      // Trail
+      trail.forEach((t) => {
+        ctx.fillStyle = `rgba(233, 69, 96, ${t.opacity})`;
+        roundRect(ctx, t.x * GRID + 3, t.y * GRID + 3, GRID - 6, GRID - 6, 3);
+        ctx.fill();
+      });
 
       // Food
       ctx.fillStyle = '#e94560';
@@ -198,6 +207,11 @@
       if (snake.some(s => s.x === head.x && s.y === head.y)) {
         return gameOver();
       }
+
+      // Add current head position to trail
+      trail.push({ x: snake[0].x, y: snake[0].y, opacity: 0.3 });
+      // Fade out and remove old trail
+      trail = trail.map(t => ({ ...t, opacity: t.opacity - 0.03 })).filter(t => t.opacity > 0);
 
       snake.unshift(head);
 
