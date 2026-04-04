@@ -84,10 +84,10 @@
     highScoreEl.textContent = highScore;
 
     function init() {
-      snake = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }];
+      snake = [{ x: 10, y: 10 }];
       direction = { x: 0, y: 0 };
       nextDirection = { x: 0, y: 0 };
-      score = 0;
+      score = 1;
       running = false;
       paused = false;
       scoreEl.textContent = score;
@@ -202,7 +202,7 @@
 
       // Eat food
       if (head.x === food.x && head.y === food.y) {
-        score += 10;
+        score += 1;
         scoreEl.textContent = score;
         if (score > highScore) {
           highScore = score;
