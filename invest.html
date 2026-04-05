@@ -522,7 +522,7 @@
       <a href="#quiz">Quiz</a>
       <a href="#learn">Learn</a>
       <a href="#stocks">Stocks</a>
-      <a href="#portfolio">Portfolio</a>
+      <a href="#savings">Savings</a>
       <a href="#glossary">Glossary</a>
       <a href="#tips">Tips</a>
     </div>
@@ -836,39 +836,73 @@
     <p class="last-updated">&#x1F4C5; Last Updated: April 5, 2026 | Data from Yahoo Finance &amp; Wall Street Analysts</p>
   </div>
 
-  <!-- Portfolio Simulator -->
-  <div class="section" id="portfolio">
-    <h2>&#x1F3AE; Portfolio Simulator</h2>
-    <p class="subtitle">Practice investing with $1,000 of play money! No real money involved.</p>
+  <!-- Savings Goal Calculator -->
+  <div class="section" id="savings">
+    <h2>&#x1F3AF; Savings Goal Calculator</h2>
+    <p class="subtitle">Pick what you want to buy and find out how long you need to save!</p>
 
-    <div class="quiz-card" style="border-color: #44d492; background: #f0fff5;">
-      <label><span class="q-emoji">&#x1F4D6;</span> How to Play:</label>
-      <div style="color:#666;font-size:0.92rem;line-height:1.7;">
-        <strong>Think of it like a game:</strong><br>
-        - You get <strong>$1,000 of fake/pretend money</strong> (not real dollars)<br>
-        - Below you see stocks like Microsoft, NVIDIA, Amazon with their prices<br>
-        - Pick one, type how many shares (like "2"), and press <strong style="color:#44d492;">Buy</strong><br>
-        - That stock is now "yours" and your cash goes down by what you paid<br>
-        - See everything you own under <strong>"Your Holdings"</strong><br>
-        - Want your cash back? Press <strong style="color:#ff6b6b;">Sell</strong><br>
-        <br>
-        <strong>Example:</strong> You have $1,000 cash. You buy 2 shares of NVIDIA at $185.30 each = $370.60 spent. Now you have $629.40 cash + 2 NVIDIA shares worth $370.60. Total is still $1,000!<br>
-        <br>
-        <strong style="color:#44d492;">The goal?</strong> Practice picking stocks and learn how investing works - without risking any real money! Prices here don't change in real-time. In the real stock market, prices go up and down every second.
+    <div class="quiz-card" style="border-color: #ffe14d; background: #fffde6;">
+      <label><span class="q-emoji">&#x1F6CD;</span> Step 1: What do you want to buy?</label>
+      <div class="options" id="goalOptions">
+        <button onclick="pickGoal(this, 'Nintendo Switch', 299)" class="goal-btn">&#x1F3AE; Nintendo Switch - $299</button>
+        <button onclick="pickGoal(this, 'iPhone', 799)" class="goal-btn">&#x1F4F1; iPhone - $799</button>
+        <button onclick="pickGoal(this, 'PS5', 499)" class="goal-btn">&#x1F579; PS5 - $499</button>
+        <button onclick="pickGoal(this, 'Bicycle', 250)" class="goal-btn">&#x1F6B2; Bicycle - $250</button>
+        <button onclick="pickGoal(this, 'iPad', 449)" class="goal-btn">&#x1F4BB; iPad - $449</button>
+        <button onclick="pickGoal(this, 'LEGO Set', 150)" class="goal-btn">&#x1F9F1; Big LEGO Set - $150</button>
+        <button onclick="pickGoal(this, 'Laptop', 999)" class="goal-btn">&#x1F4BB; Laptop - $999</button>
+        <button onclick="pickGoal(this, 'AirPods', 179)" class="goal-btn">&#x1F3A7; AirPods - $179</button>
+      </div>
+      <div style="margin-top:12px;">
+        <label style="font-size:0.9rem;color:#888;">Or type your own goal:</label>
+        <div style="display:flex;gap:8px;margin-top:5px;flex-wrap:wrap;">
+          <input type="text" id="customGoalName" placeholder="What do you want?" style="flex:1;min-width:120px;padding:10px 15px;border:3px solid #ddd;border-radius:50px;font-family:'Baloo 2',cursive;font-weight:600;font-size:0.9rem;">
+          <input type="number" id="customGoalPrice" placeholder="Price $" style="width:100px;padding:10px 15px;border:3px solid #ddd;border-radius:50px;font-family:'Baloo 2',cursive;font-weight:600;font-size:0.9rem;text-align:center;">
+          <button onclick="pickCustomGoal()" class="buy-btn buy" style="padding:10px 20px;border-radius:50px;font-size:0.9rem;">Set Goal</button>
+        </div>
       </div>
     </div>
 
-    <div class="portfolio-balance">
-      <div class="bal-label">&#x1F4B0; Total Portfolio Value</div>
-      <div class="bal-amount" id="totalValue">$1,000.00</div>
-      <div class="bal-cash">Cash: <span id="cashLeft">$1,000.00</span></div>
+    <div class="quiz-card" style="border-color: #44d492; background: #f0fff5;">
+      <label><span class="q-emoji">&#x1F4B5;</span> Step 2: How much money do you get each week?</label>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <span style="font-weight:700;color:#555;">$</span>
+        <input type="range" id="allowanceSlider" min="1" max="50" value="10" oninput="updateAllowance()" style="flex:1;min-width:150px;accent-color:#44d492;">
+        <span id="allowanceDisplay" style="font-family:'Fredoka One',cursive;font-size:1.3rem;color:#44d492;min-width:60px;">$10</span>
+      </div>
+      <p style="color:#aaa;font-size:0.8rem;margin-top:8px;">This could be allowance, chores money, birthday money per week, etc.</p>
     </div>
 
-    <div id="stockShop" style="margin-top:15px;"></div>
+    <div class="quiz-card" style="border-color: #a259ff; background: #f5f0ff;">
+      <label><span class="q-emoji">&#x1F4CA;</span> Step 3: How much can you save from that?</label>
+      <div class="options" id="saveOptions">
+        <button onclick="pickSaveRate(this, 25)" class="goal-btn">25% - A little bit</button>
+        <button onclick="pickSaveRate(this, 50)" class="goal-btn selected">50% - Half of it</button>
+        <button onclick="pickSaveRate(this, 75)" class="goal-btn">75% - Most of it</button>
+        <button onclick="pickSaveRate(this, 100)" class="goal-btn">100% - ALL of it!</button>
+      </div>
+    </div>
 
-    <div class="holdings-list" id="holdingsList"></div>
+    <div id="savingsResult" style="display:none;">
+      <div class="quiz-card" style="border-color: #ff6b9d; background: #fff0f5; text-align:center;">
+        <div style="font-size:3rem;" id="resultEmoji">&#x1F389;</div>
+        <h3 style="font-family:'Fredoka One',cursive;color:#ff6b9d;font-size:1.4rem;" id="savingsTitle"></h3>
+        <p style="color:#666;font-size:1.05rem;line-height:1.7;margin-top:10px;" id="savingsText"></p>
+        <div style="margin-top:15px;background:#f0f0f0;border-radius:15px;height:30px;overflow:hidden;border:2px solid #ddd;">
+          <div id="savingsBar" style="height:100%;background:linear-gradient(90deg,#44d492,#2ecc71);border-radius:15px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.8rem;color:#fff;transition:width 1s ease;width:0%;"></div>
+        </div>
+        <p style="color:#aaa;font-size:0.8rem;margin-top:8px;" id="savingsSubtext"></p>
 
-    <button class="reset-btn" onclick="resetPortfolio()">&#x1F504; Reset Portfolio</button>
+        <div style="margin-top:15px;text-align:left;">
+          <p style="font-family:'Fredoka One',cursive;color:#a259ff;font-size:1rem;margin-bottom:8px;">&#x1F4A1; What if you invested it instead?</p>
+          <p style="color:#666;font-size:0.9rem;line-height:1.6;" id="investText"></p>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:15px;">
+      <button class="cta-btn" onclick="calculateSavings()" id="calcBtn">&#x1F4B0; Calculate My Savings Plan!</button>
+    </div>
   </div>
 
   <!-- Glossary -->
@@ -907,7 +941,7 @@
     Mekal Invest - Real data, real ETFs, real learning! But NOT real financial advice. Always talk to a grown-up.
   </footer>
 
-  <div id="version">v2.6</div>
+  <div id="version">v2.7</div>
 
   <script>
     // ===== FUN FACTS =====
@@ -1095,81 +1129,91 @@
     function nextPage() { goToPage((currentPage + 1) % totalPages); }
     function prevPage() { goToPage((currentPage - 1 + totalPages) % totalPages); }
 
-    // ===== PORTFOLIO SIMULATOR =====
-    var simStocks = [
-      {sym:'MSFT',name:'Microsoft',price:442.50},
-      {sym:'NVDA',name:'NVIDIA',price:185.30},
-      {sym:'AMZN',name:'Amazon',price:228.70},
-      {sym:'GOOGL',name:'Alphabet',price:193.40},
-      {sym:'META',name:'Meta',price:612.80},
-      {sym:'VTI',name:'Vanguard Total Stock ETF',price:298.50},
-      {sym:'BND',name:'Vanguard Total Bond ETF',price:72.10},
-      {sym:'VXUS',name:'Vanguard Intl Stocks ETF',price:62.30}
-    ];
+    // ===== SAVINGS GOAL CALCULATOR =====
+    var goalName = '';
+    var goalPrice = 0;
+    var saveRate = 50;
 
-    function getPortfolio() {
-      var def = { cash: 1000, holdings: {} };
-      return JSON.parse(localStorage.getItem('mekalPortfolio') || JSON.stringify(def));
-    }
-    function savePortfolio(p) { localStorage.setItem('mekalPortfolio', JSON.stringify(p)); }
-
-    function renderPortfolio() {
-      var p = getPortfolio();
-      var totalVal = p.cash;
-      var holdingsHTML = '';
-      var hasHoldings = false;
-      simStocks.forEach(function(s) {
-        var qty = p.holdings[s.sym] || 0;
-        if (qty > 0) {
-          hasHoldings = true;
-          var val = qty * s.price;
-          totalVal += val;
-          holdingsHTML += '<div class="holding-item"><div><div class="hi-name">' + s.sym + '</div><div class="hi-detail">' + qty + ' shares @ $' + s.price.toFixed(2) + '</div></div><div class="hi-value">$' + val.toFixed(2) + '</div></div>';
-        }
-      });
-      document.getElementById('totalValue').textContent = '$' + totalVal.toFixed(2);
-      document.getElementById('cashLeft').textContent = '$' + p.cash.toFixed(2);
-      document.getElementById('holdingsList').innerHTML = hasHoldings ? '<h3 style="font-family:Fredoka One,cursive;color:#a259ff;margin-bottom:10px;text-align:center;">Your Holdings</h3>' + holdingsHTML : '';
-
-      var shopHTML = '';
-      simStocks.forEach(function(s) {
-        var owned = p.holdings[s.sym] || 0;
-        shopHTML += '<div class="stock-buy-card"><div class="sbc-info">' + s.sym + ' - $' + s.price.toFixed(2) + '<small>' + s.name + (owned > 0 ? ' (own ' + owned + ')' : '') + '</small></div><div class="sbc-actions"><input type="number" min="1" max="100" value="1" id="qty_' + s.sym + '"><button class="buy-btn buy" onclick="buyStock(\'' + s.sym + '\')">Buy</button>' + (owned > 0 ? '<button class="buy-btn sell" onclick="sellStock(\'' + s.sym + '\')">Sell</button>' : '') + '</div></div>';
-      });
-      document.getElementById('stockShop').innerHTML = shopHTML;
+    function pickGoal(btn, name, price) {
+      document.querySelectorAll('#goalOptions button').forEach(function(b) { b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      goalName = name;
+      goalPrice = price;
+      document.getElementById('customGoalName').value = '';
+      document.getElementById('customGoalPrice').value = '';
     }
 
-    function buyStock(sym) {
-      var p = getPortfolio();
-      var stock = simStocks.find(function(s) { return s.sym === sym; });
-      var qty = parseInt(document.getElementById('qty_' + sym).value) || 1;
-      var cost = stock.price * qty;
-      if (cost > p.cash) { alert("You don't have enough cash! You need $" + cost.toFixed(2) + " but only have $" + p.cash.toFixed(2)); return; }
-      p.cash -= cost;
-      p.holdings[sym] = (p.holdings[sym] || 0) + qty;
-      savePortfolio(p);
-      renderPortfolio();
+    function pickCustomGoal() {
+      var name = document.getElementById('customGoalName').value.trim();
+      var price = parseFloat(document.getElementById('customGoalPrice').value);
+      if (!name || !price || price <= 0) { alert('Type what you want and how much it costs!'); return; }
+      document.querySelectorAll('#goalOptions button').forEach(function(b) { b.classList.remove('selected'); });
+      goalName = name;
+      goalPrice = price;
     }
 
-    function sellStock(sym) {
-      var p = getPortfolio();
-      var stock = simStocks.find(function(s) { return s.sym === sym; });
-      var qty = parseInt(document.getElementById('qty_' + sym).value) || 1;
-      if ((p.holdings[sym] || 0) < qty) { alert("You only own " + (p.holdings[sym] || 0) + " shares!"); return; }
-      p.cash += stock.price * qty;
-      p.holdings[sym] -= qty;
-      if (p.holdings[sym] <= 0) delete p.holdings[sym];
-      savePortfolio(p);
-      renderPortfolio();
+    function pickSaveRate(btn, rate) {
+      document.querySelectorAll('#saveOptions button').forEach(function(b) { b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      saveRate = rate;
     }
 
-    function resetPortfolio() {
-      if (confirm('Reset your portfolio? You will lose all your holdings!')) {
-        localStorage.removeItem('mekalPortfolio');
-        renderPortfolio();
+    function updateAllowance() {
+      var val = document.getElementById('allowanceSlider').value;
+      document.getElementById('allowanceDisplay').textContent = '$' + val;
+    }
+
+    function calculateSavings() {
+      if (!goalName || !goalPrice) { alert('Pick something you want to buy first!'); return; }
+      var allowance = parseInt(document.getElementById('allowanceSlider').value);
+      var weeklySave = allowance * (saveRate / 100);
+      if (weeklySave <= 0) { alert('You need to save at least something each week!'); return; }
+      var totalWeeks = Math.ceil(goalPrice / weeklySave);
+      var months = (totalWeeks / 4.33).toFixed(1);
+      var years = (totalWeeks / 52).toFixed(1);
+
+      var resultDiv = document.getElementById('savingsResult');
+      var emojis = ['&#x1F389;','&#x1F60E;','&#x1F4AA;','&#x1F680;','&#x2B50;'];
+      var emoji = emojis[Math.floor(Math.random() * emojis.length)];
+
+      var timeText = '';
+      if (totalWeeks <= 4) {
+        timeText = 'Just ' + totalWeeks + ' week' + (totalWeeks > 1 ? 's' : '') + '! That is less than a month!';
+        document.getElementById('resultEmoji').innerHTML = '&#x1F929;';
+      } else if (totalWeeks <= 12) {
+        timeText = totalWeeks + ' weeks (about ' + months + ' months). Not bad at all!';
+        document.getElementById('resultEmoji').innerHTML = '&#x1F60E;';
+      } else if (totalWeeks <= 52) {
+        timeText = totalWeeks + ' weeks (about ' + months + ' months). You got this!';
+        document.getElementById('resultEmoji').innerHTML = '&#x1F4AA;';
+      } else {
+        timeText = totalWeeks + ' weeks (about ' + years + ' years). That is a big goal - but big goals are awesome!';
+        document.getElementById('resultEmoji').innerHTML = '&#x1F680;';
       }
+
+      document.getElementById('savingsTitle').textContent = goalName + ' for $' + goalPrice.toFixed(2);
+      document.getElementById('savingsText').innerHTML = 'Saving <strong>$' + weeklySave.toFixed(2) + '/week</strong>, it will take you <strong>' + timeText + '</strong>';
+
+      var progress = Math.min(100, (weeklySave / goalPrice) * 100 * 4);
+      document.getElementById('savingsBar').style.width = '0%';
+      setTimeout(function() {
+        document.getElementById('savingsBar').style.width = Math.min(progress * 2, 100) + '%';
+        document.getElementById('savingsBar').textContent = totalWeeks + ' weeks';
+      }, 100);
+
+      document.getElementById('savingsSubtext').textContent = 'You will save $' + weeklySave.toFixed(2) + ' per week x ' + totalWeeks + ' weeks = $' + (weeklySave * totalWeeks).toFixed(2);
+
+      // Investment comparison (10% annual return)
+      var investedTotal = 0;
+      for (var w = 0; w < totalWeeks; w++) {
+        investedTotal = (investedTotal + weeklySave) * (1 + 0.10/52);
+      }
+      var extraMoney = (investedTotal - (weeklySave * totalWeeks)).toFixed(2);
+      document.getElementById('investText').innerHTML = 'If you put that $' + weeklySave.toFixed(2) + '/week into an index fund like <strong>VTI</strong> (which grows about 10% per year on average), after ' + totalWeeks + ' weeks you would have <strong>$' + investedTotal.toFixed(2) + '</strong> instead of $' + (weeklySave * totalWeeks).toFixed(2) + '. That is <strong style="color:#44d492;">$' + extraMoney + ' extra</strong> just from investing! The longer you save, the more extra money you earn.';
+
+      resultDiv.style.display = 'block';
+      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-    renderPortfolio();
 
     // ===== GLOSSARY =====
     var glossary = [
