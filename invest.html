@@ -3,351 +3,354 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mekal Invest - Learn Money Like a Pro!</title>
+  <title>Mekal Invest - Money Adventure!</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
-
+    @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Fredoka+One&display=swap');
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
-      font-family: 'Nunito', sans-serif;
-      background: #fff5e6;
+      font-family: 'Baloo 2', cursive;
+      background: linear-gradient(135deg, #a259ff 0%, #ff6b9d 30%, #ffb347 60%, #44d492 100%);
+      background-attachment: fixed;
       color: #333;
       min-height: 100vh;
       overflow-x: hidden;
     }
-
-    /* Floating shapes */
-    body::before, body::after {
-      content: '';
-      position: fixed;
-      border-radius: 50%;
-      z-index: -1;
-      opacity: 0.15;
-      animation: floaty 6s ease-in-out infinite alternate;
+    .sparkle { position: fixed; z-index: 0; pointer-events: none; font-size: 2rem; animation: sparkleFloat 4s ease-in-out infinite; opacity: 0.5; }
+    .sparkle:nth-child(1) { top: 5%; left: 8%; animation-delay: 0s; }
+    .sparkle:nth-child(2) { top: 15%; right: 12%; animation-delay: 1s; font-size: 1.5rem; }
+    .sparkle:nth-child(3) { top: 40%; left: 5%; animation-delay: 2s; }
+    .sparkle:nth-child(4) { top: 60%; right: 8%; animation-delay: 0.5s; font-size: 2.5rem; }
+    .sparkle:nth-child(5) { top: 80%; left: 15%; animation-delay: 1.5s; }
+    .sparkle:nth-child(6) { top: 25%; left: 50%; animation-delay: 3s; font-size: 1.8rem; }
+    .sparkle:nth-child(7) { top: 70%; right: 20%; animation-delay: 2.5s; }
+    .sparkle:nth-child(8) { top: 90%; left: 40%; animation-delay: 0.8s; font-size: 2.2rem; }
+    @keyframes sparkleFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+      50% { transform: translateY(-25px) rotate(20deg) scale(1.3); }
     }
-    body::before {
-      width: 300px; height: 300px;
-      background: #ff6b6b;
-      top: -50px; right: -80px;
-    }
-    body::after {
-      width: 250px; height: 250px;
-      background: #4ecdc4;
-      bottom: -60px; left: -60px;
-      animation-delay: 3s;
-    }
-
-    @keyframes floaty {
-      from { transform: translateY(0) rotate(0deg); }
-      to { transform: translateY(30px) rotate(10deg); }
-    }
-
-    /* Navbar */
     nav {
-      background: #ff6b6b;
-      padding: 15px 25px;
+      background: linear-gradient(90deg, #ff3cac, #784ba0, #2b86c5);
+      padding: 14px 25px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
     }
-
     .logo {
       font-family: 'Fredoka One', cursive;
-      font-size: 1.6rem;
+      font-size: 1.8rem;
       color: #fff;
-      text-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+      text-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+      animation: wiggle 2s ease-in-out infinite;
     }
-
-    .nav-links { display: flex; gap: 20px; }
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-3deg); }
+      75% { transform: rotate(3deg); }
+    }
+    .nav-links { display: flex; gap: 12px; }
     .nav-links a {
-      color: #ffffffcc;
+      color: #fff;
       text-decoration: none;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 1rem;
+      padding: 6px 16px;
+      border-radius: 25px;
+      border: 2px solid rgba(255,255,255,0.4);
       transition: all 0.3s;
-      padding: 5px 12px;
-      border-radius: 20px;
     }
-    .nav-links a:hover { background: rgba(255,255,255,0.25); color: #fff; }
-
-    /* Hero */
+    .nav-links a:hover {
+      background: #fff;
+      color: #784ba0;
+      transform: scale(1.1) rotate(-2deg);
+    }
     .hero {
       text-align: center;
-      padding: 60px 20px 50px;
-      background: linear-gradient(180deg, #fff5e6, #ffe8cc);
+      padding: 50px 20px 40px;
+      position: relative;
+      z-index: 1;
     }
-
-    .hero-emoji { font-size: 4rem; margin-bottom: 10px; }
-
+    .hero-emoji {
+      font-size: 5rem;
+      animation: bounce 1s ease-in-out infinite;
+      display: inline-block;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
     .hero h1 {
       font-family: 'Fredoka One', cursive;
-      font-size: 2.5rem;
-      color: #ff6b6b;
-      margin-bottom: 10px;
+      font-size: 3rem;
+      color: #fff;
+      text-shadow: 4px 4px 0 rgba(0,0,0,0.15);
+      margin: 10px 0;
+      animation: rainbowText 3s linear infinite;
     }
-
+    @keyframes rainbowText {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
     .hero p {
-      font-size: 1.15rem;
-      color: #888;
+      font-size: 1.2rem;
+      color: #fff;
       max-width: 500px;
       margin: 0 auto 25px;
       line-height: 1.6;
+      text-shadow: 1px 1px 0 rgba(0,0,0,0.1);
+      font-weight: 600;
     }
-
-    /* Buttons */
     .cta-btn {
       display: inline-block;
-      padding: 14px 35px;
-      background: #ff6b6b;
-      color: #fff;
+      padding: 16px 40px;
+      background: #ffe14d;
+      color: #a259ff;
       font-family: 'Fredoka One', cursive;
-      font-size: 1.1rem;
-      border: none;
+      font-size: 1.3rem;
+      border: 4px solid #fff;
       border-radius: 50px;
       cursor: pointer;
       transition: all 0.3s;
       text-decoration: none;
-      box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+      box-shadow: 0 8px 0 #e6c200, 0 12px 30px rgba(0,0,0,0.2);
+      position: relative;
+      top: 0;
     }
-
     .cta-btn:hover {
-      transform: scale(1.08) translateY(-2px);
-      box-shadow: 0 8px 30px rgba(255, 107, 107, 0.5);
+      top: -4px;
+      box-shadow: 0 12px 0 #e6c200, 0 16px 35px rgba(0,0,0,0.25);
+      transform: rotate(-2deg);
     }
-
-    .cta-btn:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
-
-    /* Sections */
+    .cta-btn:active { top: 4px; box-shadow: 0 4px 0 #e6c200; }
+    .cta-btn:disabled { opacity: 0.4; cursor: not-allowed; top: 0; box-shadow: 0 8px 0 #ccc; background: #ddd; color: #999; border-color: #ccc; }
     .section {
       max-width: 850px;
       margin: 0 auto;
-      padding: 40px 20px;
+      padding: 30px 20px;
+      position: relative;
+      z-index: 1;
     }
-
     .section h2 {
       font-family: 'Fredoka One', cursive;
-      font-size: 1.9rem;
+      font-size: 2.2rem;
       margin-bottom: 8px;
-      color: #ff6b6b;
+      color: #fff;
+      text-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+      text-align: center;
     }
-
     .section .subtitle {
-      color: #999;
+      color: rgba(255,255,255,0.85);
       margin-bottom: 25px;
-      font-size: 1rem;
+      font-size: 1.05rem;
+      text-align: center;
+      font-weight: 600;
     }
-
-    /* Quiz */
     .quiz-card {
       background: #fff;
-      border: 3px solid #ffe0b2;
-      border-radius: 20px;
+      border: 5px dashed;
+      border-radius: 25px;
       padding: 25px;
       margin-bottom: 18px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      box-shadow: 8px 8px 0 rgba(0,0,0,0.1);
+      transition: transform 0.3s;
     }
-
+    .quiz-card:hover { transform: rotate(-1deg) scale(1.01); }
+    .quiz-card:nth-child(1) { border-color: #ff6b9d; background: #fff0f5; }
+    .quiz-card:nth-child(2) { border-color: #a259ff; background: #f5f0ff; }
+    .quiz-card:nth-child(3) { border-color: #44d492; background: #f0fff5; }
+    .quiz-card:nth-child(4) { border-color: #ffb347; background: #fff8f0; }
+    .quiz-card:nth-child(5) { border-color: #2b86c5; background: #f0f7ff; }
     .quiz-card label {
-      font-size: 1.05rem;
+      font-size: 1.15rem;
       font-weight: 800;
       display: block;
       margin-bottom: 15px;
-      color: #555;
+      color: #444;
     }
-
-    .quiz-card label .q-emoji { margin-right: 8px; }
-
+    .quiz-card label .q-emoji { margin-right: 8px; font-size: 1.4rem; }
     .options { display: flex; flex-wrap: wrap; gap: 10px; }
-
     .options button {
-      padding: 10px 18px;
-      border: 2px solid #eee;
-      background: #fafafa;
+      padding: 12px 22px;
+      border: 3px solid #ddd;
+      background: #fff;
       color: #666;
-      border-radius: 25px;
+      border-radius: 50px;
       cursor: pointer;
-      font-size: 0.9rem;
-      font-weight: 600;
-      transition: all 0.3s;
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: 'Baloo 2', cursive;
+      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     }
-
-    .options button:hover { border-color: #ff6b6b; color: #ff6b6b; background: #fff5f5; }
+    .options button:hover {
+      border-color: #a259ff;
+      color: #a259ff;
+      transform: scale(1.08);
+      background: #f5f0ff;
+    }
     .options button.selected {
-      background: #ff6b6b;
-      border-color: #ff6b6b;
+      background: linear-gradient(135deg, #a259ff, #ff6b9d);
+      border-color: transparent;
       color: #fff;
-      transform: scale(1.05);
+      transform: scale(1.1);
+      box-shadow: 0 5px 15px rgba(162, 89, 255, 0.4);
+      animation: popSelect 0.4s ease;
     }
-
-    /* Result */
+    @keyframes popSelect {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.25) rotate(5deg); }
+      100% { transform: scale(1.1) rotate(0deg); }
+    }
     #result {
       display: none;
       background: #fff;
-      border: 3px solid #ffe0b2;
-      border-radius: 20px;
+      border: 5px solid #ffe14d;
+      border-radius: 25px;
       padding: 30px;
       text-align: center;
       margin-top: 20px;
-      box-shadow: 0 6px 25px rgba(0,0,0,0.08);
+      box-shadow: 8px 8px 0 rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
     }
-
-    #result.show { display: block; animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
-
-    @keyframes popIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-
+    #result.show { display: block; animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
+    @keyframes popIn { from { opacity: 0; transform: scale(0.5) rotate(-5deg); } to { opacity: 1; transform: scale(1) rotate(0deg); } }
+    .confetti { position: absolute; width: 10px; height: 10px; border-radius: 2px; top: -10px; animation: confettiFall 2s ease-in forwards; }
+    @keyframes confettiFall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(400px) rotate(720deg); opacity: 0; }
+    }
     .risk-badge {
       display: inline-block;
-      padding: 10px 28px;
-      border-radius: 30px;
+      padding: 12px 30px;
+      border-radius: 50px;
       font-family: 'Fredoka One', cursive;
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       margin: 12px 0;
+      animation: badgePulse 1.5s ease-in-out infinite;
     }
-
-    .risk-low { background: #e8f5e9; color: #4caf50; border: 2px solid #4caf50; }
-    .risk-medium { background: #fff8e1; color: #ff9800; border: 2px solid #ff9800; }
-    .risk-high { background: #fce4ec; color: #e91e63; border: 2px solid #e91e63; }
-
-    /* Cards */
+    @keyframes badgePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    .risk-low { background: linear-gradient(135deg, #44d492, #2ecc71); color: #fff; border: 3px solid #27ae60; }
+    .risk-medium { background: linear-gradient(135deg, #ffb347, #ff9800); color: #fff; border: 3px solid #f57c00; }
+    .risk-high { background: linear-gradient(135deg, #ff6b9d, #e91e63); color: #fff; border: 3px solid #c2185b; }
     .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; margin-top: 20px; }
-
     .card {
       background: #fff;
-      border: 3px solid #ffe0b2;
-      border-radius: 20px;
+      border: 4px solid;
+      border-radius: 25px;
       padding: 25px;
       transition: all 0.3s;
       text-align: center;
+      box-shadow: 6px 6px 0 rgba(0,0,0,0.08);
     }
-
-    .card:hover { transform: translateY(-8px) rotate(1deg); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-
-    .card-icon { font-size: 3rem; margin-bottom: 10px; }
-
-    .card h3 {
-      font-family: 'Fredoka One', cursive;
-      font-size: 1.1rem;
-      margin-bottom: 8px;
-      color: #555;
+    .card:nth-child(1) { border-color: #44d492; }
+    .card:nth-child(2) { border-color: #2b86c5; }
+    .card:nth-child(3) { border-color: #ffb347; }
+    .card:nth-child(4) { border-color: #ff6b9d; }
+    .card:nth-child(5) { border-color: #a259ff; }
+    .card:nth-child(6) { border-color: #ff3cac; }
+    .card:hover { transform: translateY(-10px) rotate(2deg); box-shadow: 10px 10px 0 rgba(0,0,0,0.12); }
+    .card-icon { font-size: 4rem; margin-bottom: 8px; display: block; animation: iconBob 2s ease-in-out infinite; }
+    .card:nth-child(even) .card-icon { animation-delay: 1s; }
+    @keyframes iconBob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
     }
-
-    .card p { font-size: 0.9rem; color: #888; line-height: 1.6; }
-
+    .card h3 { font-family: 'Fredoka One', cursive; font-size: 1.15rem; margin-bottom: 8px; color: #555; }
+    .card p { font-size: 0.95rem; color: #888; line-height: 1.6; }
     .card .tag {
       display: inline-block;
       margin-top: 12px;
-      padding: 5px 15px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 700;
+      padding: 6px 18px;
+      border-radius: 25px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
-
-    .tag-safe { background: #e8f5e9; color: #4caf50; }
-    .tag-moderate { background: #fff8e1; color: #ff9800; }
-    .tag-risky { background: #fce4ec; color: #e91e63; }
-
-    /* Tips */
+    .tag-safe { background: #e8f5e9; color: #4caf50; border: 2px solid #4caf50; }
+    .tag-moderate { background: #fff8e1; color: #ff9800; border: 2px solid #ff9800; }
+    .tag-risky { background: #fce4ec; color: #e91e63; border: 2px solid #e91e63; }
     .tip-list { list-style: none; margin-top: 20px; }
-
     .tip-list li {
       background: #fff;
-      border: 3px solid #ffe0b2;
-      border-radius: 18px;
-      padding: 20px;
+      border-radius: 25px;
+      padding: 20px 25px;
       margin-bottom: 14px;
       display: flex;
       gap: 15px;
-      align-items: flex-start;
-      transition: transform 0.2s;
-    }
-
-    .tip-list li:hover { transform: translateX(5px); }
-
-    .tip-emoji {
-      font-size: 2rem;
-      flex-shrink: 0;
-    }
-
-    .tip-content h4 { color: #555; margin-bottom: 5px; font-size: 1rem; }
-    .tip-content p { color: #999; font-size: 0.9rem; line-height: 1.6; }
-
-    /* Alloc bars */
-    .alloc-bar {
-      display: flex;
       align-items: center;
-      gap: 10px;
-      margin: 8px 0;
-      text-align: left;
+      box-shadow: 6px 6px 0 rgba(0,0,0,0.08);
+      transition: all 0.3s;
+      position: relative;
+      border-left: 6px solid;
     }
-    .alloc-label {
-      width: 140px;
-      font-weight: 700;
-      font-size: 0.85rem;
-      color: #666;
-    }
-    .alloc-track {
-      flex: 1;
-      height: 22px;
-      background: #f0f0f0;
-      border-radius: 12px;
-      overflow: hidden;
-    }
+    .tip-list li:nth-child(1) { border-left-color: #ff6b9d; }
+    .tip-list li:nth-child(2) { border-left-color: #a259ff; }
+    .tip-list li:nth-child(3) { border-left-color: #44d492; }
+    .tip-list li:nth-child(4) { border-left-color: #ffb347; }
+    .tip-list li:nth-child(5) { border-left-color: #2b86c5; }
+    .tip-list li:nth-child(6) { border-left-color: #ff3cac; }
+    .tip-list li:hover { transform: translateX(10px) scale(1.02); }
+    .tip-emoji { font-size: 2.5rem; flex-shrink: 0; }
+    .tip-content h4 { color: #555; margin-bottom: 4px; font-size: 1.05rem; font-weight: 800; }
+    .tip-content p { color: #999; font-size: 0.9rem; line-height: 1.6; }
+    .alloc-bar { display: flex; align-items: center; gap: 10px; margin: 10px 0; text-align: left; }
+    .alloc-label { width: 140px; font-weight: 800; font-size: 0.9rem; color: #555; }
+    .alloc-track { flex: 1; height: 28px; background: #f0f0f0; border-radius: 14px; overflow: hidden; border: 2px solid #ddd; }
     .alloc-fill {
       height: 100%;
-      border-radius: 12px;
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       font-weight: 800;
       color: #fff;
-      transition: width 0.8s ease;
+      transition: width 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
     }
-
-    /* Footer */
     footer {
       text-align: center;
       padding: 25px;
-      color: #ccc;
-      font-size: 0.8rem;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.85rem;
       margin-top: 40px;
+      font-weight: 600;
     }
-
-    #version {
-      position: fixed;
-      bottom: 10px;
-      right: 15px;
-      font-size: 0.75rem;
-      color: #ddd;
-    }
-
-    /* Responsive */
+    #version { position: fixed; bottom: 10px; right: 15px; font-size: 0.75rem; color: rgba(255,255,255,0.4); }
     @media (max-width: 600px) {
-      .hero h1 { font-size: 1.7rem; }
-      .hero-emoji { font-size: 3rem; }
+      .hero h1 { font-size: 2rem; }
+      .hero-emoji { font-size: 3.5rem; }
       .options { flex-direction: column; }
       nav { padding: 12px 15px; }
-      .nav-links { gap: 10px; }
-      .nav-links a { font-size: 0.85rem; padding: 4px 8px; }
-      .section { padding: 25px 15px; }
+      .nav-links { gap: 6px; }
+      .nav-links a { font-size: 0.85rem; padding: 4px 10px; }
+      .section { padding: 20px 15px; }
       .alloc-label { width: 100px; font-size: 0.75rem; }
+      .section h2 { font-size: 1.6rem; }
+      .cta-btn { font-size: 1.1rem; padding: 14px 30px; }
     }
   </style>
 </head>
 <body>
 
+  <div class="sparkle">&#x2B50;</div>
+  <div class="sparkle">&#x1FA99;</div>
+  <div class="sparkle">&#x2728;</div>
+  <div class="sparkle">&#x1F4B0;</div>
+  <div class="sparkle">&#x1F31F;</div>
+  <div class="sparkle">&#x1FA99;</div>
+  <div class="sparkle">&#x2B50;</div>
+  <div class="sparkle">&#x2728;</div>
+
   <nav>
-    <div class="logo">Mekal Invest</div>
+    <div class="logo">&#x1F680; Mekal Invest</div>
     <div class="nav-links">
       <a href="#quiz">Quiz</a>
       <a href="#learn">Learn</a>
@@ -356,20 +359,29 @@
   </nav>
 
   <div class="hero">
-    <div class="hero-emoji">&#x1f4b0;&#x1f680;&#x1f31f;</div>
-    <h1>Learn Money Like a Pro!</h1>
-    <p>Ever wonder what "investing" means? Take our fun quiz to find out what kind of money saver you are!</p>
-    <a href="#quiz" class="cta-btn">Take the Fun Quiz!</a>
+    <div class="hero-emoji">&#x1F911;</div>
+    <h1>Money Adventure Time!</h1>
+    <p>Hey there! Ready to learn about money in the most FUN way ever? Take our awesome quiz and become a money superstar!</p>
+    <a href="#quiz" class="cta-btn">&#x1F3AE; Start the Quiz!</a>
   </div>
 
-  <!-- Quiz -->
   <div class="section" id="quiz">
-    <h2>What Kind of Saver Are You?</h2>
-    <p class="subtitle">Pick one answer for each question - there's no wrong answer!</p>
+    <h2>&#x1F9E9; What Kind of Saver Are You?</h2>
+    <p class="subtitle">Pick one answer for each question - there are NO wrong answers!</p>
 
     <div class="quiz-card">
-      <label><span class="q-emoji">&#x23f0;</span> 1. How long can you save without touching your money?</label>
+      <label><span class="q-emoji">&#x1F4B5;</span> 1. How much money do you have saved up?</label>
       <div class="options" data-q="0">
+        <button data-val="1" onclick="selectOption(this)">Less than $10</button>
+        <button data-val="2" onclick="selectOption(this)">$10 - $50</button>
+        <button data-val="3" onclick="selectOption(this)">$50 - $100</button>
+        <button data-val="4" onclick="selectOption(this)">More than $100!</button>
+      </div>
+    </div>
+
+    <div class="quiz-card">
+      <label><span class="q-emoji">&#x23F0;</span> 2. How long can you save without touching your money?</label>
+      <div class="options" data-q="1">
         <button data-val="1" onclick="selectOption(this)">Just a few months</button>
         <button data-val="2" onclick="selectOption(this)">About a year</button>
         <button data-val="3" onclick="selectOption(this)">A couple of years</button>
@@ -378,8 +390,8 @@
     </div>
 
     <div class="quiz-card">
-      <label><span class="q-emoji">&#x1f4c9;</span> 2. Imagine you saved $100 and it went down to $80. What would you do?</label>
-      <div class="options" data-q="1">
+      <label><span class="q-emoji">&#x1F4C9;</span> 3. Imagine you saved $100 and it went down to $80. What would you do?</label>
+      <div class="options" data-q="2">
         <button data-val="1" onclick="selectOption(this)">Take my money out right away!</button>
         <button data-val="2" onclick="selectOption(this)">Take some out, keep some</button>
         <button data-val="3" onclick="selectOption(this)">Wait and see what happens</button>
@@ -388,8 +400,8 @@
     </div>
 
     <div class="quiz-card">
-      <label><span class="q-emoji">&#x1f3af;</span> 3. What do you want to do with your money?</label>
-      <div class="options" data-q="2">
+      <label><span class="q-emoji">&#x1F3AF;</span> 4. What do you want to do with your money?</label>
+      <div class="options" data-q="3">
         <button data-val="1" onclick="selectOption(this)">Keep it super safe</button>
         <button data-val="2" onclick="selectOption(this)">Grow it slowly and safely</button>
         <button data-val="3" onclick="selectOption(this)">Grow it a good amount</button>
@@ -398,8 +410,8 @@
     </div>
 
     <div class="quiz-card">
-      <label><span class="q-emoji">&#x1f9e0;</span> 4. How much do you know about saving and investing?</label>
-      <div class="options" data-q="3">
+      <label><span class="q-emoji">&#x1F9E0;</span> 5. How much do you know about saving and investing?</label>
+      <div class="options" data-q="4">
         <button data-val="1" onclick="selectOption(this)">Nothing yet - I'm new!</button>
         <button data-val="2" onclick="selectOption(this)">I know a tiny bit</button>
         <button data-val="3" onclick="selectOption(this)">I've learned some stuff</button>
@@ -408,54 +420,53 @@
     </div>
 
     <div style="text-align: center; margin-top: 25px;">
-      <button class="cta-btn" id="quizBtn" onclick="showResult()" disabled>Show Me My Results!</button>
+      <button class="cta-btn" id="quizBtn" onclick="showResult()" disabled>&#x1F389; Show Me My Results!</button>
     </div>
 
     <div id="result">
-      <h3 id="resultTitle" style="font-family: 'Fredoka One', cursive; color: #555;"></h3>
+      <h3 id="resultTitle" style="font-family: 'Fredoka One', cursive; color: #555; font-size: 1.3rem;"></h3>
       <div id="resultBadge"></div>
-      <p id="resultDesc" style="color: #888; margin-top: 10px; line-height: 1.7; font-size: 1rem;"></p>
+      <p id="resultDesc" style="color: #777; margin-top: 10px; line-height: 1.7; font-size: 1.05rem;"></p>
       <div id="resultAlloc" style="margin-top: 20px;"></div>
     </div>
   </div>
 
-  <!-- Learn About Investing -->
   <div class="section" id="learn">
-    <h2>Ways to Grow Your Money</h2>
+    <h2>&#x1F4DA; Ways to Grow Your Money</h2>
     <p class="subtitle">Here are different ways people save and invest. Let's learn about each one!</p>
     <div class="cards">
       <div class="card">
-        <div class="card-icon">&#x1f3e6;</div>
+        <span class="card-icon">&#x1F3E6;</span>
         <h3>Savings Account</h3>
         <p>Put your money in a bank and it slowly grows a little bit over time. Super safe - the bank protects it for you!</p>
         <span class="tag tag-safe">Super Safe</span>
       </div>
       <div class="card">
-        <div class="card-icon">&#x1f4e6;</div>
+        <span class="card-icon">&#x1F4E6;</span>
         <h3>Index Funds</h3>
         <p>Instead of picking one company, you invest in a big group of companies at once. It's like buying a little piece of many stores!</p>
         <span class="tag tag-safe">Pretty Safe</span>
       </div>
       <div class="card">
-        <div class="card-icon">&#x1f3e0;</div>
+        <span class="card-icon">&#x1F3E0;</span>
         <h3>Real Estate</h3>
         <p>Owning a house or building and renting it out to people. Like being a landlord! Your property can become worth more over time.</p>
         <span class="tag tag-moderate">Medium Risk</span>
       </div>
       <div class="card">
-        <div class="card-icon">&#x1f4c8;</div>
+        <span class="card-icon">&#x1F4C8;</span>
         <h3>Company Stocks</h3>
         <p>Buying a tiny piece of a company like Apple or Nike. If the company does well, your piece becomes worth more!</p>
         <span class="tag tag-moderate">Medium Risk</span>
       </div>
       <div class="card">
-        <div class="card-icon">&#x1fa99;</div>
+        <span class="card-icon">&#x1FA99;</span>
         <h3>Crypto</h3>
         <p>Digital money on the internet like Bitcoin. It can go way up or way down really fast. Very exciting but very risky!</p>
         <span class="tag tag-risky">Very Risky</span>
       </div>
       <div class="card">
-        <div class="card-icon">&#x1f4a1;</div>
+        <span class="card-icon">&#x1F4A1;</span>
         <h3>Starting a Business</h3>
         <p>Use your money to start your own lemonade stand, app, or shop! Could make a lot or lose what you put in.</p>
         <span class="tag tag-risky">Very Risky</span>
@@ -463,48 +474,47 @@
     </div>
   </div>
 
-  <!-- Tips -->
   <div class="section" id="tips">
-    <h2>Money Rules Every Kid Should Know</h2>
+    <h2>&#x1F451; Money Rules Every Kid Should Know</h2>
     <p class="subtitle">Follow these simple rules and you'll be a money genius!</p>
     <ul class="tip-list">
       <li>
-        <div class="tip-emoji">&#x1f6d1;</div>
+        <div class="tip-emoji">&#x1F6D1;</div>
         <div class="tip-content">
           <h4>Only use money you don't need right now</h4>
           <p>If you need that money for something important, don't invest it. Only use money that you're okay not touching for a while.</p>
         </div>
       </li>
       <li>
-        <div class="tip-emoji">&#x1f95a;</div>
+        <div class="tip-emoji">&#x1F95A;</div>
         <div class="tip-content">
           <h4>Don't put all your eggs in one basket</h4>
           <p>Spread your money around! If you put everything in one place and it goes down, you lose everything. But if you spread it out, you're much safer.</p>
         </div>
       </li>
       <li>
-        <div class="tip-emoji">&#x1f422;</div>
+        <div class="tip-emoji">&#x1F422;</div>
         <div class="tip-content">
           <h4>Slow and steady wins the race</h4>
           <p>The best investors are patient. Don't try to get rich quick - let your money grow slowly over many years. That's how the pros do it!</p>
         </div>
       </li>
       <li>
-        <div class="tip-emoji">&#x1f4da;</div>
+        <div class="tip-emoji">&#x1F4DA;</div>
         <div class="tip-content">
           <h4>Learn before you spend</h4>
           <p>Always understand what you're putting your money into. If someone says "trust me, it's easy money" - be careful! Do your homework first.</p>
         </div>
       </li>
       <li>
-        <div class="tip-emoji">&#x1f331;</div>
+        <div class="tip-emoji">&#x1F331;</div>
         <div class="tip-content">
           <h4>Start small like a seed</h4>
           <p>You don't need a lot of money to start. Even $5 or $10 can be invested! Start small, learn, and grow your money garden over time.</p>
         </div>
       </li>
       <li>
-        <div class="tip-emoji">&#x1f9d8;</div>
+        <div class="tip-emoji">&#x1F9D8;</div>
         <div class="tip-content">
           <h4>Stay calm - don't panic!</h4>
           <p>Sometimes your money will go down a little. That's totally normal! Don't freak out and take it all out. Be patient and it usually comes back up.</p>
@@ -517,10 +527,10 @@
     Mekal Invest - This is for learning only! Always talk to a grown-up before using real money.
   </footer>
 
-  <div id="version">v1.6</div>
+  <div id="version">v1.7</div>
 
   <script>
-    const answers = [null, null, null, null];
+    const answers = [null, null, null, null, null];
 
     function selectOption(btn) {
       const parent = btn.parentElement;
@@ -535,36 +545,51 @@
     }
 
     function makeBar(label, pct, color) {
-      return `<div class="alloc-bar">
-        <div class="alloc-label">${label}</div>
-        <div class="alloc-track">
-          <div class="alloc-fill" style="width:${pct}%;background:${color}">${pct}%</div>
-        </div>
-      </div>`;
+      return '<div class="alloc-bar">' +
+        '<div class="alloc-label">' + label + '</div>' +
+        '<div class="alloc-track">' +
+        '<div class="alloc-fill" style="width:' + pct + '%;background:' + color + '">' + pct + '%</div>' +
+        '</div></div>';
+    }
+
+    function spawnConfetti() {
+      const result = document.getElementById('result');
+      const colors = ['#ff6b9d','#a259ff','#ffe14d','#44d492','#2b86c5','#ff3cac','#ffb347'];
+      for (let i = 0; i < 30; i++) {
+        const c = document.createElement('div');
+        c.className = 'confetti';
+        c.style.left = Math.random() * 100 + '%';
+        c.style.background = colors[Math.floor(Math.random() * colors.length)];
+        c.style.animationDelay = Math.random() * 1 + 's';
+        c.style.width = (Math.random() * 8 + 6) + 'px';
+        c.style.height = (Math.random() * 8 + 6) + 'px';
+        result.appendChild(c);
+        setTimeout(function() { c.remove(); }, 3000);
+      }
     }
 
     function showResult() {
-      const total = answers.reduce((a, b) => a + b, 0);
+      const total = answers.reduce(function(a, b) { return a + b; }, 0);
       const result = document.getElementById('result');
       const title = document.getElementById('resultTitle');
       const badge = document.getElementById('resultBadge');
       const desc = document.getElementById('resultDesc');
       const alloc = document.getElementById('resultAlloc');
 
-      let profile, badgeClass, emoji, description, bars;
+      var profile, badgeClass, emoji, description, bars;
 
-      if (total <= 7) {
+      if (total <= 9) {
         profile = 'Careful Saver';
-        emoji = '&#x1f6e1;&#xfe0f;';
+        emoji = '&#x1F6E1;&#xFE0F;';
         badgeClass = 'risk-low';
         description = "You like to play it safe - and that's awesome! You'd rather keep your money protected and let it grow slowly. Think of yourself like a turtle - slow and steady wins the race!";
         bars = makeBar('Savings Account', 50, '#4caf50')
              + makeBar('Index Funds', 30, '#66bb6a')
              + makeBar('Real Estate', 15, '#ff9800')
              + makeBar('Keep as Cash', 5, '#90a4ae');
-      } else if (total <= 12) {
+      } else if (total <= 15) {
         profile = 'Smart Explorer';
-        emoji = '&#x1f9ed;';
+        emoji = '&#x1F9ED;';
         badgeClass = 'risk-medium';
         description = "You like to try new things but you're also smart about it! You want your money to grow but you don't want to risk too much. You're like a smart explorer - adventurous but prepared!";
         bars = makeBar('Index Funds', 35, '#4caf50')
@@ -574,7 +599,7 @@
              + makeBar('Crypto', 5, '#e91e63');
       } else {
         profile = 'Bold Adventurer';
-        emoji = '&#x1f525;';
+        emoji = '&#x1F525;';
         badgeClass = 'risk-high';
         description = "You're not afraid to take big chances! You dream big and you're willing to risk some money to make a lot more. You're like a brave adventurer looking for treasure! Just remember - sometimes treasure hunts don't work out, and that's okay.";
         bars = makeBar('Company Stocks', 35, '#ff9800')
@@ -584,27 +609,26 @@
              + makeBar('Real Estate', 10, '#ff9800');
       }
 
-      title.innerHTML = `${emoji} You are a...`;
-      badge.innerHTML = `<span class="risk-badge ${badgeClass}">${profile}</span>`;
+      title.innerHTML = emoji + ' You are a...';
+      badge.innerHTML = '<span class="risk-badge ' + badgeClass + '">' + profile + '</span>';
       desc.textContent = description;
-      alloc.innerHTML = '<p style="font-family:Fredoka One,cursive;color:#ff6b6b;margin-bottom:12px;">Here\'s how you could split your money:</p>' + bars;
+      alloc.innerHTML = '<p style="font-family:Fredoka One,cursive;color:#a259ff;margin-bottom:12px;font-size:1.1rem;">Here\'s how you could split your money:</p>' + bars;
       result.classList.add('show');
+      spawnConfetti();
 
-      // Animate bars
-      setTimeout(() => {
-        result.querySelectorAll('.alloc-fill').forEach(bar => {
-          const w = bar.style.width;
+      setTimeout(function() {
+        result.querySelectorAll('.alloc-fill').forEach(function(bar) {
+          var w = bar.style.width;
           bar.style.width = '0%';
-          setTimeout(() => { bar.style.width = w; }, 100);
+          setTimeout(function() { bar.style.width = w; }, 100);
         });
       }, 50);
 
       result.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
-    // Smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-      a.addEventListener('click', (e) => {
+    document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+      a.addEventListener('click', function(e) {
         e.preventDefault();
         document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
       });
