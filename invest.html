@@ -607,6 +607,33 @@
         <button data-val="4" onclick="selectOption(this)">Bring it on! Big risk = big reward!</button>
       </div>
     </div>
+    <div class="quiz-card">
+      <label><span class="q-emoji">&#x1F4F0;</span> 8. Where do you learn about money stuff?</label>
+      <div class="options" data-q="7">
+        <button data-val="1" onclick="selectOption(this)">I don't really look into it</button>
+        <button data-val="2" onclick="selectOption(this)">My parents tell me things</button>
+        <button data-val="3" onclick="selectOption(this)">I watch videos and read about it</button>
+        <button data-val="4" onclick="selectOption(this)">I follow stock news every day!</button>
+      </div>
+    </div>
+    <div class="quiz-card">
+      <label><span class="q-emoji">&#x1F46B;</span> 9. Your friend says "let's put our money together to start a business!" What do you say?</label>
+      <div class="options" data-q="8">
+        <button data-val="1" onclick="selectOption(this)">No thanks, too risky</button>
+        <button data-val="2" onclick="selectOption(this)">Maybe if it's a small amount</button>
+        <button data-val="3" onclick="selectOption(this)">Sure, sounds fun!</button>
+        <button data-val="4" onclick="selectOption(this)">YES! Let's go big!</button>
+      </div>
+    </div>
+    <div class="quiz-card">
+      <label><span class="q-emoji">&#x1F4B0;</span> 10. If you could pick ONE superpower for money, which would it be?</label>
+      <div class="options" data-q="9">
+        <button data-val="1" onclick="selectOption(this)">Never lose a single penny</button>
+        <button data-val="2" onclick="selectOption(this)">Always save the perfect amount</button>
+        <button data-val="3" onclick="selectOption(this)">Pick winning stocks sometimes</button>
+        <button data-val="4" onclick="selectOption(this)">10x any money I invest!</button>
+      </div>
+    </div>
 
     <div style="text-align: center; margin-top: 20px;">
       <button class="cta-btn" id="quizBtn" onclick="showResult()" disabled>&#x1F389; Show Me My Results!</button>
@@ -959,7 +986,7 @@
     Mekal Invest - Real data, real ETFs, real learning! But NOT real financial advice. Always talk to a grown-up.
   </footer>
 
-  <div id="version">v2.8</div>
+  <div id="version">v2.9</div>
 
   <script>
     // ===== FUN FACTS =====
@@ -1007,7 +1034,7 @@
     document.getElementById('tickerTape').innerHTML = tickerHTML + tickerHTML;
 
     // ===== QUIZ =====
-    var answers = [null, null, null, null, null, null, null];
+    var answers = [null, null, null, null, null, null, null, null, null, null];
 
     function selectOption(btn) {
       var parent = btn.parentElement;
@@ -1050,68 +1077,50 @@
       var alloc = document.getElementById('resultAlloc');
       var profile, badgeClass, emoji, description, bars;
 
-      // 7 questions, min 7 max 28. 10 ranks spread across that range.
-      if (total <= 9) {
-        profile = 'Piggy Bank Protector';
-        emoji = '&#x1F416;';
-        badgeClass = 'risk-low';
-        description = "You guard your money like a dragon guards its gold! Super safe, zero risk. You'd rather keep every penny safe in your piggy bank.";
-        bars = makeBar('BND (US Bonds)', 80, '#4caf50') + makeBar('VTI (US Stocks)', 15, '#2b86c5') + makeBar('VXUS (World Stocks)', 5, '#ff9800');
-      } else if (total <= 11) {
-        profile = 'Careful Saver';
-        emoji = '&#x1F6E1;&#xFE0F;';
-        badgeClass = 'risk-low';
-        description = "You play it safe and that's smart! Mostly bonds to protect your money with a little bit of stocks mixed in for slow growth.";
-        bars = makeBar('BND (US Bonds)', 70, '#4caf50') + makeBar('VTI (US Stocks)', 20, '#2b86c5') + makeBar('VXUS (World Stocks)', 10, '#ff9800');
-      } else if (total <= 13) {
-        profile = 'Steady Turtle';
-        emoji = '&#x1F422;';
-        badgeClass = 'risk-low';
-        description = "Slow and steady wins the race! You want your money to grow but you're not in a rush. You'd pick the safe path every time.";
-        bars = makeBar('BND (US Bonds)', 60, '#4caf50') + makeBar('VTI (US Stocks)', 30, '#2b86c5') + makeBar('VXUS (World Stocks)', 10, '#ff9800');
-      } else if (total <= 15) {
-        profile = 'Smart Cookie';
-        emoji = '&#x1F36A;';
-        badgeClass = 'risk-medium';
-        description = "You're one smart cookie! You balance safety with growth perfectly. Not too risky, not too boring - just right!";
-        bars = makeBar('VTI (US Stocks)', 40, '#2b86c5') + makeBar('BND (US Bonds)', 40, '#4caf50') + makeBar('VXUS (World Stocks)', 20, '#ff9800');
-      } else if (total <= 17) {
-        profile = 'Balanced Explorer';
-        emoji = '&#x1F9ED;';
-        badgeClass = 'risk-medium';
-        description = "You like to explore but you always bring a map! A perfect mix of stocks and bonds. Based on real Vanguard balanced portfolios!";
-        bars = makeBar('VTI (US Stocks)', 45, '#2b86c5') + makeBar('BND (US Bonds)', 35, '#4caf50') + makeBar('VXUS (World Stocks)', 20, '#ff9800');
-      } else if (total <= 19) {
-        profile = 'Growth Hunter';
-        emoji = '&#x1F3F9;';
-        badgeClass = 'risk-medium';
-        description = "You're hunting for growth! You want your money to work hard for you. More stocks than bonds means more potential reward.";
-        bars = makeBar('VTI (US Stocks)', 50, '#2b86c5') + makeBar('VXUS (World Stocks)', 25, '#ff9800') + makeBar('BND (US Bonds)', 25, '#4caf50');
-      } else if (total <= 21) {
-        profile = 'Rising Star';
-        emoji = '&#x2B50;';
-        badgeClass = 'risk-medium';
-        description = "You're a rising star in the investing world! You lean towards growth and aren't scared of a little risk. The sky is the limit!";
-        bars = makeBar('VTI (US Stocks)', 55, '#e91e63') + makeBar('VXUS (World Stocks)', 25, '#ff9800') + makeBar('BND (US Bonds)', 20, '#4caf50');
-      } else if (total <= 23) {
-        profile = 'Bold Adventurer';
-        emoji = '&#x1F525;';
-        badgeClass = 'risk-high';
-        description = "You're not afraid of big moves! You go heavy on stocks for maximum growth. You can handle the ups and downs like a pro!";
-        bars = makeBar('VTI (US Stocks)', 60, '#e91e63') + makeBar('VXUS (World Stocks)', 25, '#ff9800') + makeBar('BND (US Bonds)', 15, '#4caf50');
-      } else if (total <= 25) {
-        profile = 'Fearless Tiger';
-        emoji = '&#x1F405;';
-        badgeClass = 'risk-high';
-        description = "You're fearless like a tiger! Almost all stocks, barely any bonds. You believe in going big or going home. High risk, high reward!";
-        bars = makeBar('VTI (US Stocks)', 65, '#e91e63') + makeBar('VXUS (World Stocks)', 28, '#ff9800') + makeBar('BND (US Bonds)', 7, '#4caf50');
+      // 10 questions, min 10 max 40. 30 ranks.
+      var ranks = [
+        {max:11, name:'Piggy Bank Protector', em:'&#x1F416;', cls:'risk-low', desc:"You guard your money like a dragon guards gold! Zero risk, maximum safety.", bnd:85, vti:10, vxus:5},
+        {max:12, name:'Careful Saver', em:'&#x1F6E1;&#xFE0F;', cls:'risk-low', desc:"Super safe and smart! You keep almost everything in bonds and savings.", bnd:80, vti:14, vxus:6},
+        {max:13, name:'Penny Guardian', em:'&#x1FA99;', cls:'risk-low', desc:"Every penny is precious to you! You protect your money like a superhero.", bnd:75, vti:17, vxus:8},
+        {max:14, name:'Steady Turtle', em:'&#x1F422;', cls:'risk-low', desc:"Slow and steady wins the race! No rush, just safe and steady growth.", bnd:70, vti:20, vxus:10},
+        {max:15, name:'Safe Keeper', em:'&#x1F512;', cls:'risk-low', desc:"Your money is locked up safe! You only take tiny risks with a small amount.", bnd:65, vti:23, vxus:12},
+        {max:16, name:'Savings Shield', em:'&#x1F6E1;', cls:'risk-low', desc:"You've got a shield around your savings! Mostly safe with a sprinkle of growth.", bnd:60, vti:27, vxus:13},
+        {max:17, name:'Smart Cookie', em:'&#x1F36A;', cls:'risk-low', desc:"One smart cookie! You're starting to balance safety with some growth.", bnd:55, vti:30, vxus:15},
+        {max:18, name:'Wise Owl', em:'&#x1F989;', cls:'risk-medium', desc:"Wise like an owl! You think carefully and make balanced money decisions.", bnd:50, vti:33, vxus:17},
+        {max:19, name:'Balanced Explorer', em:'&#x1F9ED;', cls:'risk-medium', desc:"Perfect balance! Half safe, half growth. You explore but always have a backup plan.", bnd:45, vti:35, vxus:20},
+        {max:20, name:'Money Mapper', em:'&#x1F5FA;', cls:'risk-medium', desc:"You've mapped out your money journey! A solid mix of stocks and bonds.", bnd:42, vti:38, vxus:20},
+        {max:21, name:'Growth Seeker', em:'&#x1F33B;', cls:'risk-medium', desc:"You're seeking growth like a sunflower seeks the sun! Leaning more into stocks.", bnd:38, vti:40, vxus:22},
+        {max:22, name:'Coin Collector', em:'&#x1FA99;', cls:'risk-medium', desc:"You're collecting wins! More stocks than bonds now - you like to see your money grow.", bnd:35, vti:42, vxus:23},
+        {max:23, name:'Growth Hunter', em:'&#x1F3F9;', cls:'risk-medium', desc:"Hunting for growth! Your portfolio is getting stock-heavy. Nice moves!", bnd:30, vti:45, vxus:25},
+        {max:24, name:'Profit Planner', em:'&#x1F4CB;', cls:'risk-medium', desc:"You plan for profits! You've got a strategy and you're sticking to it.", bnd:27, vti:48, vxus:25},
+        {max:25, name:'Rising Star', em:'&#x2B50;', cls:'risk-medium', desc:"A rising star in investing! You lean towards growth and aren't scared of some risk.", bnd:23, vti:50, vxus:27},
+        {max:26, name:'Market Surfer', em:'&#x1F3C4;', cls:'risk-medium', desc:"Riding the market waves like a pro surfer! You enjoy the ups and downs.", bnd:20, vti:52, vxus:28},
+        {max:27, name:'Stock Shark', em:'&#x1F988;', cls:'risk-high', desc:"You smell opportunity like a shark smells fish! Heavy on stocks, light on bonds.", bnd:18, vti:53, vxus:29},
+        {max:28, name:'Trend Rider', em:'&#x1F3A2;', cls:'risk-high', desc:"You ride the trends like a roller coaster! Mostly stocks, barely any safety net.", bnd:15, vti:55, vxus:30},
+        {max:29, name:'Bold Adventurer', em:'&#x1F525;', cls:'risk-high', desc:"Not afraid of big moves! You go heavy on stocks for maximum growth.", bnd:13, vti:57, vxus:30},
+        {max:30, name:'Risk Ranger', em:'&#x1F3AF;', cls:'risk-high', desc:"You range into risky territory on purpose! You know the bigger the risk, the bigger the reward.", bnd:11, vti:58, vxus:31},
+        {max:31, name:'Power Player', em:'&#x26A1;', cls:'risk-high', desc:"A power player in the money game! You play to win and you're not holding back.", bnd:9, vti:59, vxus:32},
+        {max:32, name:'Fearless Tiger', em:'&#x1F405;', cls:'risk-high', desc:"Fearless like a tiger! Almost all stocks. You believe in going big or going home.", bnd:7, vti:60, vxus:33},
+        {max:33, name:'Thunder Trader', em:'&#x26C8;', cls:'risk-high', desc:"You trade like thunder - fast, loud, and powerful! Maximum aggression in your portfolio.", bnd:6, vti:61, vxus:33},
+        {max:34, name:'Diamond Hands', em:'&#x1F48E;', cls:'risk-high', desc:"Diamond hands! You NEVER sell, no matter how scary it gets. You hold forever!", bnd:5, vti:62, vxus:33},
+        {max:35, name:'Wolf of Wall Street', em:'&#x1F43A;', cls:'risk-high', desc:"The Wolf of Wall Street! You're aggressive, fearless, and always hunting for the next big win.", bnd:4, vti:63, vxus:33},
+        {max:36, name:'Fire Starter', em:'&#x1F525;', cls:'risk-high', desc:"You're on FIRE! Your portfolio is blazing hot with almost pure stocks. Maximum heat!", bnd:3, vti:64, vxus:33},
+        {max:37, name:'Moon Shooter', em:'&#x1F319;', cls:'risk-high', desc:"Shooting for the moon! You want your money to fly as high as possible!", bnd:2, vti:65, vxus:33},
+        {max:38, name:'Rocket Rider', em:'&#x1F680;', cls:'risk-high', desc:"Riding a money rocket! Almost zero safety net, pure growth energy!", bnd:1, vti:66, vxus:33},
+        {max:39, name:'Money Rocket', em:'&#x1F680;&#x1F4B0;', cls:'risk-high', desc:"You ARE the money rocket! Maximum stocks, maximum risk, maximum adventure!", bnd:1, vti:66, vxus:33},
+        {max:99, name:'Legendary Investor', em:'&#x1F451;&#x1F680;', cls:'risk-high', desc:"LEGENDARY! You scored the absolute maximum! You are the ultimate investing daredevil. Wall Street is shaking! Just remember - even legends diversify a little!"}
+      ];
+      var r = ranks.find(function(rk) { return total <= rk.max; });
+      if (!r) r = ranks[ranks.length - 1];
+      profile = r.name;
+      badgeClass = r.cls;
+      if (r.bnd !== undefined) {
+        bars = makeBar('BND (US Bonds)', r.bnd, '#4caf50') + makeBar('VTI (US Stocks)', r.vti, '#2b86c5') + makeBar('VXUS (World Stocks)', r.vxus, '#ff9800');
       } else {
-        profile = 'Money Rocket';
-        emoji = '&#x1F680;';
-        badgeClass = 'risk-high';
-        description = "You're a MONEY ROCKET! Maximum stocks, maximum growth, maximum adventure! You want to shoot for the moon. Just remember - rockets can be bumpy rides!";
-        bars = makeBar('VTI (US Stocks)', 70, '#e91e63') + makeBar('VXUS (World Stocks)', 27, '#ff9800') + makeBar('BND (US Bonds)', 3, '#4caf50');
+        bars = makeBar('VTI (US Stocks)', 67, '#e91e63') + makeBar('VXUS (World Stocks)', 33, '#ff9800') + makeBar('BND (US Bonds)', 0, '#4caf50');
       }
+      emoji = r.em;
+      description = r.desc;
       lastProfile = profile;
       title.innerHTML = emoji + ' You are a...';
       badge.innerHTML = '<span class="risk-badge ' + badgeClass + '">' + profile + '</span>';
@@ -1136,9 +1145,10 @@
       var entries = getLeaderboard();
       var html = '';
       entries.slice(0, 10).forEach(function(e, i) {
-        var colors = { 'Piggy Bank Protector': '#4caf50', 'Careful Saver': '#4caf50', 'Steady Turtle': '#4caf50', 'Smart Cookie': '#ff9800', 'Balanced Explorer': '#ff9800', 'Growth Hunter': '#ff9800', 'Rising Star': '#ff9800', 'Bold Adventurer': '#e91e63', 'Fearless Tiger': '#e91e63', 'Money Rocket': '#e91e63' };
-        var bg = { 'Piggy Bank Protector': '#e8f5e9', 'Careful Saver': '#e8f5e9', 'Steady Turtle': '#e8f5e9', 'Smart Cookie': '#fff8e1', 'Balanced Explorer': '#fff8e1', 'Growth Hunter': '#fff8e1', 'Rising Star': '#fff8e1', 'Bold Adventurer': '#fce4ec', 'Fearless Tiger': '#fce4ec', 'Money Rocket': '#fce4ec' };
-        html += '<div class="lb-entry"><span class="lb-rank">#' + (i + 1) + '</span><span class="lb-name">' + e.name + '</span><span class="lb-type" style="background:' + (bg[e.type]||'#eee') + ';color:' + (colors[e.type]||'#666') + '">' + e.type + '</span></div>';
+        var lbColor = '#ff9800'; var lbBg = '#fff8e1';
+        if (['Piggy Bank Protector','Careful Saver','Penny Guardian','Steady Turtle','Safe Keeper','Savings Shield','Smart Cookie'].indexOf(e.type) !== -1) { lbColor = '#4caf50'; lbBg = '#e8f5e9'; }
+        else if (['Stock Shark','Trend Rider','Bold Adventurer','Risk Ranger','Power Player','Fearless Tiger','Thunder Trader','Diamond Hands','Wolf of Wall Street','Fire Starter','Moon Shooter','Rocket Rider','Money Rocket','Legendary Investor'].indexOf(e.type) !== -1) { lbColor = '#e91e63'; lbBg = '#fce4ec'; }
+        html += '<div class="lb-entry"><span class="lb-rank">#' + (i + 1) + '</span><span class="lb-name">' + e.name + '</span><span class="lb-type" style="background:' + lbBg + ';color:' + lbColor + '">' + e.type + '</span></div>';
       });
       document.getElementById('lbEntries').innerHTML = html || '<p style="text-align:center;color:#bbb;padding:10px;">No entries yet! Be the first!</p>';
     }
