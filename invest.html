@@ -525,8 +525,38 @@
       <a href="#savings">Savings</a>
       <a href="#glossary">Glossary</a>
       <a href="#tips">Tips</a>
+      <a href="#" onclick="showAuthModal();return false;" id="authBtn" style="background:rgba(255,255,255,0.25);color:#fff;">&#x1F464; Log In</a>
     </div>
   </nav>
+
+  <!-- Auth Modal -->
+  <div id="authModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:200;display:none;justify-content:center;align-items:center;">
+    <div style="background:#fff;border-radius:25px;padding:30px;max-width:380px;width:90%;box-shadow:0 10px 40px rgba(0,0,0,0.3);position:relative;max-height:90vh;overflow-y:auto;">
+      <button onclick="hideAuthModal()" style="position:absolute;top:12px;right:15px;background:none;border:none;font-size:1.5rem;cursor:pointer;color:#aaa;">&#x2715;</button>
+      <div id="authLogin">
+        <h3 style="font-family:'Fredoka One',cursive;color:#a259ff;text-align:center;font-size:1.3rem;">&#x1F513; Log In</h3>
+        <div style="margin-top:15px;">
+          <input type="email" id="loginEmail" placeholder="Email" style="width:100%;padding:12px 15px;border:3px solid #ddd;border-radius:15px;font-family:'Baloo 2',cursive;font-size:0.95rem;font-weight:600;margin-bottom:10px;-webkit-appearance:none;">
+          <input type="password" id="loginPass" placeholder="Password" style="width:100%;padding:12px 15px;border:3px solid #ddd;border-radius:15px;font-family:'Baloo 2',cursive;font-size:0.95rem;font-weight:600;margin-bottom:15px;-webkit-appearance:none;">
+          <button onclick="doLogin()" style="width:100%;padding:12px;background:linear-gradient(135deg,#a259ff,#ff6b9d);color:#fff;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:1rem;cursor:pointer;">Log In</button>
+          <p id="loginError" style="color:#e91e63;font-size:0.85rem;text-align:center;margin-top:8px;display:none;"></p>
+        </div>
+        <p style="text-align:center;margin-top:12px;color:#aaa;font-size:0.85rem;">Don't have an account? <a href="#" onclick="showSignup();return false;" style="color:#a259ff;font-weight:700;">Sign Up!</a></p>
+      </div>
+      <div id="authSignup" style="display:none;">
+        <h3 style="font-family:'Fredoka One',cursive;color:#44d492;text-align:center;font-size:1.3rem;">&#x1F31F; Create Account</h3>
+        <div style="margin-top:15px;">
+          <input type="text" id="signupName" placeholder="Your Name" maxlength="20" style="width:100%;padding:12px 15px;border:3px solid #ddd;border-radius:15px;font-family:'Baloo 2',cursive;font-size:0.95rem;font-weight:600;margin-bottom:10px;-webkit-appearance:none;">
+          <input type="email" id="signupEmail" placeholder="Email" style="width:100%;padding:12px 15px;border:3px solid #ddd;border-radius:15px;font-family:'Baloo 2',cursive;font-size:0.95rem;font-weight:600;margin-bottom:10px;-webkit-appearance:none;">
+          <input type="password" id="signupPass" placeholder="Password" style="width:100%;padding:12px 15px;border:3px solid #ddd;border-radius:15px;font-family:'Baloo 2',cursive;font-size:0.95rem;font-weight:600;margin-bottom:10px;-webkit-appearance:none;">
+          <input type="password" id="signupPass2" placeholder="Confirm Password" style="width:100%;padding:12px 15px;border:3px solid #ddd;border-radius:15px;font-family:'Baloo 2',cursive;font-size:0.95rem;font-weight:600;margin-bottom:15px;-webkit-appearance:none;">
+          <button onclick="doSignup()" style="width:100%;padding:12px;background:linear-gradient(135deg,#44d492,#2ecc71);color:#fff;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:1rem;cursor:pointer;">Create Account</button>
+          <p id="signupError" style="color:#e91e63;font-size:0.85rem;text-align:center;margin-top:8px;display:none;"></p>
+        </div>
+        <p style="text-align:center;margin-top:12px;color:#aaa;font-size:0.85rem;">Already have an account? <a href="#" onclick="showLogin();return false;" style="color:#a259ff;font-weight:700;">Log In!</a></p>
+      </div>
+    </div>
+  </div>
 
   <div class="hero">
     <div class="hero-emoji">&#x1F911;</div>
@@ -1000,7 +1030,7 @@
     Mekal Invest - Real data, real ETFs, real learning! But NOT real financial advice. Always talk to a grown-up.
   </footer>
 
-  <div id="version">v3.6</div>
+  <div id="version">v3.7</div>
 
   <script>
     // ===== FUN FACTS =====
@@ -1046,6 +1076,92 @@
       tickerHTML += '<span><span class="sym">' + s.sym + '</span> $' + s.price.toFixed(2) + ' <span class="' + cls + '">' + arrow + ' ' + Math.abs(s.chg).toFixed(1) + '%</span></span>';
     });
     document.getElementById('tickerTape').innerHTML = tickerHTML + tickerHTML;
+
+    // ===== AUTH SYSTEM =====
+    var currentUser = JSON.parse(localStorage.getItem('mekalCurrentUser') || 'null');
+
+    function getAccounts() { return JSON.parse(localStorage.getItem('mekalAccounts') || '[]'); }
+
+    function showAuthModal() {
+      if (currentUser) { doLogout(); return; }
+      document.getElementById('authModal').style.display = 'flex';
+      showLogin();
+    }
+    function hideAuthModal() { document.getElementById('authModal').style.display = 'none'; }
+    function showLogin() { document.getElementById('authLogin').style.display = ''; document.getElementById('authSignup').style.display = 'none'; }
+    function showSignup() { document.getElementById('authLogin').style.display = 'none'; document.getElementById('authSignup').style.display = ''; }
+
+    function doSignup() {
+      var name = document.getElementById('signupName').value.trim();
+      var email = document.getElementById('signupEmail').value.trim().toLowerCase();
+      var pass = document.getElementById('signupPass').value;
+      var pass2 = document.getElementById('signupPass2').value;
+      var err = document.getElementById('signupError');
+      err.style.display = 'none';
+
+      if (!name) { err.textContent = 'Please enter your name!'; err.style.display = ''; return; }
+      if (!email || !email.includes('@')) { err.textContent = 'Please enter a valid email!'; err.style.display = ''; return; }
+      if (pass.length < 4) { err.textContent = 'Password must be at least 4 characters!'; err.style.display = ''; return; }
+      if (pass !== pass2) { err.textContent = 'Passwords don\'t match!'; err.style.display = ''; return; }
+
+      var accounts = getAccounts();
+      if (accounts.find(function(a) { return a.email === email; })) {
+        err.textContent = 'This email is already taken! Try logging in.';
+        err.style.display = '';
+        return;
+      }
+
+      var user = { name: name, email: email, pass: pass, rank: '', created: new Date().toLocaleDateString() };
+      accounts.push(user);
+      localStorage.setItem('mekalAccounts', JSON.stringify(accounts));
+      currentUser = user;
+      localStorage.setItem('mekalCurrentUser', JSON.stringify(user));
+      hideAuthModal();
+      updateAuthUI();
+      alert('Welcome ' + name + '! Your account is created!');
+    }
+
+    function doLogin() {
+      var email = document.getElementById('loginEmail').value.trim().toLowerCase();
+      var pass = document.getElementById('loginPass').value;
+      var err = document.getElementById('loginError');
+      err.style.display = 'none';
+
+      if (!email || !pass) { err.textContent = 'Enter email and password!'; err.style.display = ''; return; }
+
+      var accounts = getAccounts();
+      var user = accounts.find(function(a) { return a.email === email && a.pass === pass; });
+      if (!user) { err.textContent = 'Wrong email or password!'; err.style.display = ''; return; }
+
+      currentUser = user;
+      localStorage.setItem('mekalCurrentUser', JSON.stringify(user));
+      hideAuthModal();
+      updateAuthUI();
+      alert('Welcome back ' + user.name + '!');
+    }
+
+    function doLogout() {
+      if (confirm('Log out of ' + currentUser.name + '?')) {
+        currentUser = null;
+        localStorage.removeItem('mekalCurrentUser');
+        updateAuthUI();
+      }
+    }
+
+    function updateAuthUI() {
+      var btn = document.getElementById('authBtn');
+      if (currentUser) {
+        btn.innerHTML = '&#x1F464; ' + currentUser.name;
+        btn.style.background = '#44d492';
+        // auto-fill leaderboard name
+        var lbName = document.getElementById('lbName');
+        if (lbName) lbName.value = currentUser.name;
+      } else {
+        btn.innerHTML = '&#x1F464; Log In';
+        btn.style.background = 'rgba(255,255,255,0.25)';
+      }
+    }
+    updateAuthUI();
 
     // ===== CLEAR LEADERBOARD =====
     function clearLeaderboard() {
@@ -1245,8 +1361,17 @@
     }
     function saveToLeaderboard() {
       var name = document.getElementById('lbName').value.trim();
+      if (!name && currentUser) name = currentUser.name;
       if (!name) { alert('Type your name first!'); return; }
       if (!lastProfile) { alert('Take the quiz first!'); return; }
+      // Save rank to account if logged in
+      if (currentUser) {
+        currentUser.rank = lastProfile;
+        localStorage.setItem('mekalCurrentUser', JSON.stringify(currentUser));
+        var accounts = getAccounts();
+        var acc = accounts.find(function(a) { return a.email === currentUser.email; });
+        if (acc) { acc.rank = lastProfile; localStorage.setItem('mekalAccounts', JSON.stringify(accounts)); }
+      }
       var lb = getLeaderboard();
       lb.unshift({ name: name, type: lastProfile, date: new Date().toLocaleDateString() });
       if (lb.length > 20) lb = lb.slice(0, 20);
