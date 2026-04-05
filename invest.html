@@ -659,6 +659,16 @@
         <button onclick="saveToLeaderboard()">Save Me!</button>
       </div>
       <div class="lb-entries" id="lbEntries"></div>
+      <button class="reset-btn" style="margin-top:10px;font-size:0.75rem;padding:6px 15px;background:#ccc;color:#666;" onclick="clearLeaderboard()">&#x1F5D1; Clear Leaderboard</button>
+    </div>
+
+    <!-- All 30 Ranks -->
+    <div class="quiz-card" style="border-color: #ffe14d; background: #fffde6; margin-top: 20px;">
+      <label><span class="q-emoji">&#x1F451;</span> All 30 Investor Ranks</label>
+      <div style="text-align:center;margin-bottom:10px;">
+        <button class="buy-btn buy" style="padding:8px 20px;border-radius:50px;font-size:0.85rem;" onclick="toggleRanks();" id="ranksToggle">Show All Ranks</button>
+      </div>
+      <div id="allRanks" style="display:none;"></div>
     </div>
   </div>
 
@@ -991,7 +1001,7 @@
     Mekal Invest - Real data, real ETFs, real learning! But NOT real financial advice. Always talk to a grown-up.
   </footer>
 
-  <div id="version">v3.1</div>
+  <div id="version">v3.2</div>
 
   <script>
     // ===== FUN FACTS =====
@@ -1037,6 +1047,68 @@
       tickerHTML += '<span><span class="sym">' + s.sym + '</span> $' + s.price.toFixed(2) + ' <span class="' + cls + '">' + arrow + ' ' + Math.abs(s.chg).toFixed(1) + '%</span></span>';
     });
     document.getElementById('tickerTape').innerHTML = tickerHTML + tickerHTML;
+
+    // ===== CLEAR LEADERBOARD =====
+    function clearLeaderboard() {
+      if (confirm('Clear the entire leaderboard?')) {
+        localStorage.removeItem('mekalLeaderboard');
+        renderLeaderboard();
+      }
+    }
+
+    // ===== ALL RANKS DISPLAY =====
+    function toggleRanks() {
+      var div = document.getElementById('allRanks');
+      var btn = document.getElementById('ranksToggle');
+      if (div.style.display === 'none') {
+        div.style.display = 'block';
+        btn.textContent = 'Hide Ranks';
+        renderAllRanks();
+      } else {
+        div.style.display = 'none';
+        btn.textContent = 'Show All Ranks';
+      }
+    }
+    function renderAllRanks() {
+      var allRanks = [
+        {n:1, name:'Piggy Bank Protector', em:'&#x1F416;', risk:'Low', color:'#4caf50'},
+        {n:2, name:'Careful Saver', em:'&#x1F6E1;&#xFE0F;', risk:'Low', color:'#4caf50'},
+        {n:3, name:'Penny Guardian', em:'&#x1FA99;', risk:'Low', color:'#4caf50'},
+        {n:4, name:'Steady Turtle', em:'&#x1F422;', risk:'Low', color:'#4caf50'},
+        {n:5, name:'Safe Keeper', em:'&#x1F512;', risk:'Low', color:'#4caf50'},
+        {n:6, name:'Savings Shield', em:'&#x1F6E1;', risk:'Low', color:'#4caf50'},
+        {n:7, name:'Smart Cookie', em:'&#x1F36A;', risk:'Low', color:'#4caf50'},
+        {n:8, name:'Wise Owl', em:'&#x1F989;', risk:'Medium', color:'#ff9800'},
+        {n:9, name:'Balanced Explorer', em:'&#x1F9ED;', risk:'Medium', color:'#ff9800'},
+        {n:10, name:'Money Mapper', em:'&#x1F5FA;', risk:'Medium', color:'#ff9800'},
+        {n:11, name:'Growth Seeker', em:'&#x1F33B;', risk:'Medium', color:'#ff9800'},
+        {n:12, name:'Coin Collector', em:'&#x1FA99;', risk:'Medium', color:'#ff9800'},
+        {n:13, name:'Growth Hunter', em:'&#x1F3F9;', risk:'Medium', color:'#ff9800'},
+        {n:14, name:'Profit Planner', em:'&#x1F4CB;', risk:'Medium', color:'#ff9800'},
+        {n:15, name:'Rising Star', em:'&#x2B50;', risk:'Medium', color:'#ff9800'},
+        {n:16, name:'Market Surfer', em:'&#x1F3C4;', risk:'Medium', color:'#ff9800'},
+        {n:17, name:'Stock Shark', em:'&#x1F988;', risk:'High', color:'#e91e63'},
+        {n:18, name:'Trend Rider', em:'&#x1F3A2;', risk:'High', color:'#e91e63'},
+        {n:19, name:'Bold Adventurer', em:'&#x1F525;', risk:'High', color:'#e91e63'},
+        {n:20, name:'Risk Ranger', em:'&#x1F3AF;', risk:'High', color:'#e91e63'},
+        {n:21, name:'Power Player', em:'&#x26A1;', risk:'High', color:'#e91e63'},
+        {n:22, name:'Fearless Tiger', em:'&#x1F405;', risk:'High', color:'#e91e63'},
+        {n:23, name:'Thunder Trader', em:'&#x26C8;', risk:'High', color:'#e91e63'},
+        {n:24, name:'Diamond Hands', em:'&#x1F48E;', risk:'High', color:'#e91e63'},
+        {n:25, name:'Wolf of Wall Street', em:'&#x1F43A;', risk:'High', color:'#e91e63'},
+        {n:26, name:'Fire Starter', em:'&#x1F525;', risk:'High', color:'#e91e63'},
+        {n:27, name:'Moon Shooter', em:'&#x1F319;', risk:'High', color:'#e91e63'},
+        {n:28, name:'Rocket Rider', em:'&#x1F680;', risk:'High', color:'#e91e63'},
+        {n:29, name:'Money Rocket', em:'&#x1F680;&#x1F4B0;', risk:'High', color:'#e91e63'},
+        {n:30, name:'Legendary Investor', em:'&#x1F451;&#x1F680;', risk:'MAX', color:'#a259ff'}
+      ];
+      var html = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;">';
+      allRanks.forEach(function(r) {
+        html += '<div style="background:#fff;border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:8px;border-left:4px solid ' + r.color + ';"><span style="font-size:1.4rem;">' + r.em + '</span><div><div style="font-weight:800;font-size:0.85rem;color:#444;">#' + r.n + ' ' + r.name + '</div><div style="font-size:0.7rem;color:' + r.color + ';font-weight:700;">' + r.risk + ' Risk</div></div></div>';
+      });
+      html += '</div>';
+      document.getElementById('allRanks').innerHTML = html;
+    }
 
     // ===== QUIZ TOGGLE =====
     function toggleQuiz() {
