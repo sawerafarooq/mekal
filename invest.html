@@ -1031,7 +1031,7 @@
     Mekal Invest - Real data, real ETFs, real learning! But NOT real financial advice. Always talk to a grown-up.
   </footer>
 
-  <div id="version">v3.8</div>
+  <div id="version">v3.9</div>
 
   <script>
     // ===== FUN FACTS =====
@@ -1286,36 +1286,36 @@
 
       // 10 questions, min 10 max 40. 30 ranks.
       var ranks = [
-        {max:11, name:'Piggy Bank Protector', em:'&#x1F416;', cls:'risk-low', desc:"You guard your money like a dragon guards gold! Zero risk, maximum safety.", bnd:85, vti:10, vxus:5},
-        {max:12, name:'Careful Saver', em:'&#x1F6E1;&#xFE0F;', cls:'risk-low', desc:"Super safe and smart! You keep almost everything in bonds and savings.", bnd:80, vti:14, vxus:6},
-        {max:13, name:'Penny Guardian', em:'&#x1FA99;', cls:'risk-low', desc:"Every penny is precious to you! You protect your money like a superhero.", bnd:75, vti:17, vxus:8},
-        {max:14, name:'Steady Turtle', em:'&#x1F422;', cls:'risk-low', desc:"Slow and steady wins the race! No rush, just safe and steady growth.", bnd:70, vti:20, vxus:10},
-        {max:15, name:'Safe Keeper', em:'&#x1F512;', cls:'risk-low', desc:"Your money is locked up safe! You only take tiny risks with a small amount.", bnd:65, vti:23, vxus:12},
-        {max:16, name:'Savings Shield', em:'&#x1F6E1;', cls:'risk-low', desc:"You've got a shield around your savings! Mostly safe with a sprinkle of growth.", bnd:60, vti:27, vxus:13},
-        {max:17, name:'Smart Cookie', em:'&#x1F36A;', cls:'risk-low', desc:"One smart cookie! You're starting to balance safety with some growth.", bnd:55, vti:30, vxus:15},
-        {max:18, name:'Wise Owl', em:'&#x1F989;', cls:'risk-medium', desc:"Wise like an owl! You think carefully and make balanced money decisions.", bnd:50, vti:33, vxus:17},
-        {max:19, name:'Balanced Explorer', em:'&#x1F9ED;', cls:'risk-medium', desc:"Perfect balance! Half safe, half growth. You explore but always have a backup plan.", bnd:45, vti:35, vxus:20},
-        {max:20, name:'Money Mapper', em:'&#x1F5FA;', cls:'risk-medium', desc:"You've mapped out your money journey! A solid mix of stocks and bonds.", bnd:42, vti:38, vxus:20},
-        {max:21, name:'Growth Seeker', em:'&#x1F33B;', cls:'risk-medium', desc:"You're seeking growth like a sunflower seeks the sun! Leaning more into stocks.", bnd:38, vti:40, vxus:22},
-        {max:22, name:'Coin Collector', em:'&#x1FA99;', cls:'risk-medium', desc:"You're collecting wins! More stocks than bonds now - you like to see your money grow.", bnd:35, vti:42, vxus:23},
-        {max:23, name:'Growth Hunter', em:'&#x1F3F9;', cls:'risk-medium', desc:"Hunting for growth! Your portfolio is getting stock-heavy. Nice moves!", bnd:30, vti:45, vxus:25},
-        {max:24, name:'Profit Planner', em:'&#x1F4CB;', cls:'risk-medium', desc:"You plan for profits! You've got a strategy and you're sticking to it.", bnd:27, vti:48, vxus:25},
-        {max:25, name:'Rising Star', em:'&#x2B50;', cls:'risk-medium', desc:"A rising star in investing! You lean towards growth and aren't scared of some risk.", bnd:23, vti:50, vxus:27},
-        {max:26, name:'Market Surfer', em:'&#x1F3C4;', cls:'risk-medium', desc:"Riding the market waves like a pro surfer! You enjoy the ups and downs.", bnd:20, vti:52, vxus:28},
-        {max:27, name:'Stock Shark', em:'&#x1F988;', cls:'risk-high', desc:"You smell opportunity like a shark smells fish! Heavy on stocks, light on bonds.", bnd:18, vti:53, vxus:29},
-        {max:28, name:'Trend Rider', em:'&#x1F3A2;', cls:'risk-high', desc:"You ride the trends like a roller coaster! Mostly stocks, barely any safety net.", bnd:15, vti:55, vxus:30},
-        {max:29, name:'Bold Adventurer', em:'&#x1F525;', cls:'risk-high', desc:"Not afraid of big moves! You go heavy on stocks for maximum growth.", bnd:13, vti:57, vxus:30},
-        {max:30, name:'Risk Ranger', em:'&#x1F3AF;', cls:'risk-high', desc:"You range into risky territory on purpose! You know the bigger the risk, the bigger the reward.", bnd:11, vti:58, vxus:31},
-        {max:31, name:'Power Player', em:'&#x26A1;', cls:'risk-high', desc:"A power player in the money game! You play to win and you're not holding back.", bnd:9, vti:59, vxus:32},
-        {max:32, name:'Fearless Tiger', em:'&#x1F405;', cls:'risk-high', desc:"Fearless like a tiger! Almost all stocks. You believe in going big or going home.", bnd:7, vti:60, vxus:33},
-        {max:33, name:'Thunder Trader', em:'&#x26C8;', cls:'risk-high', desc:"You trade like thunder - fast, loud, and powerful! Maximum aggression in your portfolio.", bnd:6, vti:61, vxus:33},
-        {max:34, name:'Diamond Hands', em:'&#x1F48E;', cls:'risk-high', desc:"Diamond hands! You NEVER sell, no matter how scary it gets. You hold forever!", bnd:5, vti:62, vxus:33},
-        {max:35, name:'Wolf of Wall Street', em:'&#x1F43A;', cls:'risk-high', desc:"The Wolf of Wall Street! You're aggressive, fearless, and always hunting for the next big win.", bnd:4, vti:63, vxus:33},
-        {max:36, name:'Fire Starter', em:'&#x1F525;', cls:'risk-high', desc:"You're on FIRE! Your portfolio is blazing hot with almost pure stocks. Maximum heat!", bnd:3, vti:64, vxus:33},
-        {max:37, name:'Moon Shooter', em:'&#x1F319;', cls:'risk-high', desc:"Shooting for the moon! You want your money to fly as high as possible!", bnd:2, vti:65, vxus:33},
-        {max:38, name:'Rocket Rider', em:'&#x1F680;', cls:'risk-high', desc:"Riding a money rocket! Almost zero safety net, pure growth energy!", bnd:1, vti:66, vxus:33},
-        {max:39, name:'Money Rocket', em:'&#x1F680;&#x1F4B0;', cls:'risk-high', desc:"You ARE the money rocket! Maximum stocks, maximum risk, maximum adventure!", bnd:1, vti:66, vxus:33},
-        {max:99, name:'Legendary Investor', em:'&#x1F451;&#x1F680;', cls:'risk-high', desc:"LEGENDARY! You scored the absolute maximum! You are the ultimate investing daredevil. Wall Street is shaking! Just remember - even legends diversify a little!"}
+        {max:11, rank:30, name:'Piggy Bank Protector', em:'&#x1F416;', cls:'risk-low', desc:"You guard your money like a dragon guards gold! Zero risk, maximum safety.", bnd:85, vti:10, vxus:5},
+        {max:12, rank:29, name:'Careful Saver', em:'&#x1F6E1;&#xFE0F;', cls:'risk-low', desc:"Super safe and smart! You keep almost everything in bonds and savings.", bnd:80, vti:14, vxus:6},
+        {max:13, rank:28, name:'Penny Guardian', em:'&#x1FA99;', cls:'risk-low', desc:"Every penny is precious to you! You protect your money like a superhero.", bnd:75, vti:17, vxus:8},
+        {max:14, rank:27, name:'Steady Turtle', em:'&#x1F422;', cls:'risk-low', desc:"Slow and steady wins the race! No rush, just safe and steady growth.", bnd:70, vti:20, vxus:10},
+        {max:15, rank:26, name:'Safe Keeper', em:'&#x1F512;', cls:'risk-low', desc:"Your money is locked up safe! You only take tiny risks with a small amount.", bnd:65, vti:23, vxus:12},
+        {max:16, rank:25, name:'Savings Shield', em:'&#x1F6E1;', cls:'risk-low', desc:"You've got a shield around your savings! Mostly safe with a sprinkle of growth.", bnd:60, vti:27, vxus:13},
+        {max:17, rank:24, name:'Smart Cookie', em:'&#x1F36A;', cls:'risk-low', desc:"One smart cookie! You're starting to balance safety with some growth.", bnd:55, vti:30, vxus:15},
+        {max:18, rank:23, name:'Wise Owl', em:'&#x1F989;', cls:'risk-medium', desc:"Wise like an owl! You think carefully and make balanced money decisions.", bnd:50, vti:33, vxus:17},
+        {max:19, rank:22, name:'Balanced Explorer', em:'&#x1F9ED;', cls:'risk-medium', desc:"Perfect balance! Half safe, half growth. You explore but always have a backup plan.", bnd:45, vti:35, vxus:20},
+        {max:20, rank:21, name:'Money Mapper', em:'&#x1F5FA;', cls:'risk-medium', desc:"You've mapped out your money journey! A solid mix of stocks and bonds.", bnd:42, vti:38, vxus:20},
+        {max:21, rank:20, name:'Growth Seeker', em:'&#x1F33B;', cls:'risk-medium', desc:"You're seeking growth like a sunflower seeks the sun! Leaning more into stocks.", bnd:38, vti:40, vxus:22},
+        {max:22, rank:19, name:'Coin Collector', em:'&#x1FA99;', cls:'risk-medium', desc:"You're collecting wins! More stocks than bonds now - you like to see your money grow.", bnd:35, vti:42, vxus:23},
+        {max:23, rank:18, name:'Growth Hunter', em:'&#x1F3F9;', cls:'risk-medium', desc:"Hunting for growth! Your portfolio is getting stock-heavy. Nice moves!", bnd:30, vti:45, vxus:25},
+        {max:24, rank:17, name:'Profit Planner', em:'&#x1F4CB;', cls:'risk-medium', desc:"You plan for profits! You've got a strategy and you're sticking to it.", bnd:27, vti:48, vxus:25},
+        {max:25, rank:16, name:'Rising Star', em:'&#x2B50;', cls:'risk-medium', desc:"A rising star in investing! You lean towards growth and aren't scared of some risk.", bnd:23, vti:50, vxus:27},
+        {max:26, rank:15, name:'Market Surfer', em:'&#x1F3C4;', cls:'risk-medium', desc:"Riding the market waves like a pro surfer! You enjoy the ups and downs.", bnd:20, vti:52, vxus:28},
+        {max:27, rank:14, name:'Stock Shark', em:'&#x1F988;', cls:'risk-high', desc:"You smell opportunity like a shark smells fish! Heavy on stocks, light on bonds.", bnd:18, vti:53, vxus:29},
+        {max:28, rank:13, name:'Trend Rider', em:'&#x1F3A2;', cls:'risk-high', desc:"You ride the trends like a roller coaster! Mostly stocks, barely any safety net.", bnd:15, vti:55, vxus:30},
+        {max:29, rank:12, name:'Bold Adventurer', em:'&#x1F525;', cls:'risk-high', desc:"Not afraid of big moves! You go heavy on stocks for maximum growth.", bnd:13, vti:57, vxus:30},
+        {max:30, rank:11, name:'Risk Ranger', em:'&#x1F3AF;', cls:'risk-high', desc:"You range into risky territory on purpose! You know the bigger the risk, the bigger the reward.", bnd:11, vti:58, vxus:31},
+        {max:31, rank:10, name:'Power Player', em:'&#x26A1;', cls:'risk-high', desc:"A power player in the money game! You play to win and you're not holding back.", bnd:9, vti:59, vxus:32},
+        {max:32, rank:9, name:'Fearless Tiger', em:'&#x1F405;', cls:'risk-high', desc:"Fearless like a tiger! Almost all stocks. You believe in going big or going home.", bnd:7, vti:60, vxus:33},
+        {max:33, rank:8, name:'Thunder Trader', em:'&#x26C8;', cls:'risk-high', desc:"You trade like thunder - fast, loud, and powerful! Maximum aggression in your portfolio.", bnd:6, vti:61, vxus:33},
+        {max:34, rank:7, name:'Diamond Hands', em:'&#x1F48E;', cls:'risk-high', desc:"Diamond hands! You NEVER sell, no matter how scary it gets. You hold forever!", bnd:5, vti:62, vxus:33},
+        {max:35, rank:6, name:'Wolf of Wall Street', em:'&#x1F43A;', cls:'risk-high', desc:"The Wolf of Wall Street! You're aggressive, fearless, and always hunting for the next big win.", bnd:4, vti:63, vxus:33},
+        {max:36, rank:5, name:'Fire Starter', em:'&#x1F525;', cls:'risk-high', desc:"You're on FIRE! Your portfolio is blazing hot with almost pure stocks. Maximum heat!", bnd:3, vti:64, vxus:33},
+        {max:37, rank:4, name:'Moon Shooter', em:'&#x1F319;', cls:'risk-high', desc:"Shooting for the moon! You want your money to fly as high as possible!", bnd:2, vti:65, vxus:33},
+        {max:38, rank:3, name:'Rocket Rider', em:'&#x1F680;', cls:'risk-high', desc:"Riding a money rocket! Almost zero safety net, pure growth energy!", bnd:1, vti:66, vxus:33},
+        {max:39, rank:2, name:'Money Rocket', em:'&#x1F680;&#x1F4B0;', cls:'risk-high', desc:"You ARE the money rocket! Maximum stocks, maximum risk, maximum adventure!", bnd:1, vti:66, vxus:33},
+        {max:99, rank:1, name:'Legendary Investor', em:'&#x1F451;&#x1F680;', cls:'risk-high', desc:"LEGENDARY! You scored the absolute maximum! You are the ultimate investing daredevil. Wall Street is shaking! Just remember - even legends diversify a little!"}
       ];
       var r = ranks.find(function(rk) { return total <= rk.max; });
       if (!r) r = ranks[ranks.length - 1];
@@ -1330,7 +1330,7 @@
       description = r.desc;
       lastProfile = profile;
       title.innerHTML = emoji + ' You are a...';
-      badge.innerHTML = '<span class="risk-badge ' + badgeClass + '">' + profile + '</span>';
+      badge.innerHTML = '<span class="risk-badge ' + badgeClass + '">#' + r.rank + ' ' + profile + '</span>';
       desc.textContent = description;
       alloc.innerHTML = '<p style="font-family:Fredoka One,cursive;color:#a259ff;margin-bottom:5px;font-size:1.05rem;">Here\'s how you could split your money:</p><p style="color:#aaa;font-size:0.78rem;margin-bottom:10px;">Based on real Vanguard &amp; industry model portfolios using ETFs</p>' + bars;
       result.classList.add('show');
