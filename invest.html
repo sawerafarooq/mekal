@@ -542,7 +542,11 @@
   <!-- Quiz Section -->
   <div class="section" id="quiz">
     <h2>&#x1F9E9; What Kind of Saver Are You?</h2>
-    <p class="subtitle">Pick one answer for each question - there are NO wrong answers!</p>
+    <p class="subtitle">Find out your investor rank! 10 questions, 30 possible ranks.</p>
+    <div style="text-align:center;margin-bottom:15px;">
+      <button class="cta-btn" onclick="toggleQuiz()" id="quizToggle">&#x1F3AE; Start the Quiz!</button>
+    </div>
+    <div id="quizQuestions" style="display:none;">
 
     <div class="quiz-card">
       <label><span class="q-emoji">&#x1F4B5;</span> 1. How much money do you have saved up?</label>
@@ -638,6 +642,7 @@
     <div style="text-align: center; margin-top: 20px;">
       <button class="cta-btn" id="quizBtn" onclick="showResult()" disabled>&#x1F389; Show Me My Results!</button>
     </div>
+    </div><!-- end quizQuestions -->
 
     <div id="result">
       <h3 id="resultTitle" style="font-family: 'Fredoka One', cursive; color: #555; font-size: 1.2rem;"></h3>
@@ -986,7 +991,7 @@
     Mekal Invest - Real data, real ETFs, real learning! But NOT real financial advice. Always talk to a grown-up.
   </footer>
 
-  <div id="version">v3.0</div>
+  <div id="version">v3.1</div>
 
   <script>
     // ===== FUN FACTS =====
@@ -1032,6 +1037,20 @@
       tickerHTML += '<span><span class="sym">' + s.sym + '</span> $' + s.price.toFixed(2) + ' <span class="' + cls + '">' + arrow + ' ' + Math.abs(s.chg).toFixed(1) + '%</span></span>';
     });
     document.getElementById('tickerTape').innerHTML = tickerHTML + tickerHTML;
+
+    // ===== QUIZ TOGGLE =====
+    function toggleQuiz() {
+      var q = document.getElementById('quizQuestions');
+      var btn = document.getElementById('quizToggle');
+      if (q.style.display === 'none') {
+        q.style.display = 'block';
+        btn.innerHTML = '&#x274C; Hide the Quiz';
+        q.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        q.style.display = 'none';
+        btn.innerHTML = '&#x1F3AE; Start the Quiz!';
+      }
+    }
 
     // ===== QUIZ =====
     var answers = [null, null, null, null, null, null, null, null, null, null];
