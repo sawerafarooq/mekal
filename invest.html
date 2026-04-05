@@ -654,7 +654,7 @@
     <!-- Leaderboard -->
     <div class="leaderboard">
       <h3>&#x1F3C6; Leaderboard - Who's Who?</h3>
-      <div class="lb-form">
+      <div class="lb-form" id="lbForm" style="display:none;">
         <input type="text" id="lbName" placeholder="Your name..." maxlength="20">
         <button onclick="saveToLeaderboard()">Save Me!</button>
       </div>
@@ -1000,7 +1000,7 @@
     Mekal Invest - Real data, real ETFs, real learning! But NOT real financial advice. Always talk to a grown-up.
   </footer>
 
-  <div id="version">v3.4</div>
+  <div id="version">v3.5</div>
 
   <script>
     // ===== FUN FACTS =====
@@ -1217,6 +1217,7 @@
       desc.textContent = description;
       alloc.innerHTML = '<p style="font-family:Fredoka One,cursive;color:#a259ff;margin-bottom:5px;font-size:1.05rem;">Here\'s how you could split your money:</p><p style="color:#aaa;font-size:0.78rem;margin-bottom:10px;">Based on real Vanguard &amp; industry model portfolios using ETFs</p>' + bars;
       result.classList.add('show');
+      document.getElementById('lbForm').style.display = '';
       spawnConfetti();
       setTimeout(function() {
         result.querySelectorAll('.alloc-fill').forEach(function(bar) {
