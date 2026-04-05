@@ -1000,7 +1000,7 @@
     Mekal Invest - Real data, real ETFs, real learning! But NOT real financial advice. Always talk to a grown-up.
   </footer>
 
-  <div id="version">v3.3</div>
+  <div id="version">v3.4</div>
 
   <script>
     // ===== FUN FACTS =====
@@ -1070,36 +1070,36 @@
     }
     function renderAllRanks() {
       var allRanks = [
-        {n:1, name:'Piggy Bank Protector', em:'&#x1F416;', risk:'Low', color:'#4caf50'},
-        {n:2, name:'Careful Saver', em:'&#x1F6E1;&#xFE0F;', risk:'Low', color:'#4caf50'},
-        {n:3, name:'Penny Guardian', em:'&#x1FA99;', risk:'Low', color:'#4caf50'},
-        {n:4, name:'Steady Turtle', em:'&#x1F422;', risk:'Low', color:'#4caf50'},
-        {n:5, name:'Safe Keeper', em:'&#x1F512;', risk:'Low', color:'#4caf50'},
-        {n:6, name:'Savings Shield', em:'&#x1F6E1;', risk:'Low', color:'#4caf50'},
-        {n:7, name:'Smart Cookie', em:'&#x1F36A;', risk:'Low', color:'#4caf50'},
-        {n:8, name:'Wise Owl', em:'&#x1F989;', risk:'Medium', color:'#ff9800'},
-        {n:9, name:'Balanced Explorer', em:'&#x1F9ED;', risk:'Medium', color:'#ff9800'},
-        {n:10, name:'Money Mapper', em:'&#x1F5FA;', risk:'Medium', color:'#ff9800'},
-        {n:11, name:'Growth Seeker', em:'&#x1F33B;', risk:'Medium', color:'#ff9800'},
-        {n:12, name:'Coin Collector', em:'&#x1FA99;', risk:'Medium', color:'#ff9800'},
-        {n:13, name:'Growth Hunter', em:'&#x1F3F9;', risk:'Medium', color:'#ff9800'},
-        {n:14, name:'Profit Planner', em:'&#x1F4CB;', risk:'Medium', color:'#ff9800'},
-        {n:15, name:'Rising Star', em:'&#x2B50;', risk:'Medium', color:'#ff9800'},
-        {n:16, name:'Market Surfer', em:'&#x1F3C4;', risk:'Medium', color:'#ff9800'},
-        {n:17, name:'Stock Shark', em:'&#x1F988;', risk:'High', color:'#e91e63'},
-        {n:18, name:'Trend Rider', em:'&#x1F3A2;', risk:'High', color:'#e91e63'},
-        {n:19, name:'Bold Adventurer', em:'&#x1F525;', risk:'High', color:'#e91e63'},
-        {n:20, name:'Risk Ranger', em:'&#x1F3AF;', risk:'High', color:'#e91e63'},
-        {n:21, name:'Power Player', em:'&#x26A1;', risk:'High', color:'#e91e63'},
-        {n:22, name:'Fearless Tiger', em:'&#x1F405;', risk:'High', color:'#e91e63'},
-        {n:23, name:'Thunder Trader', em:'&#x26C8;', risk:'High', color:'#e91e63'},
-        {n:24, name:'Diamond Hands', em:'&#x1F48E;', risk:'High', color:'#e91e63'},
-        {n:25, name:'Wolf of Wall Street', em:'&#x1F43A;', risk:'High', color:'#e91e63'},
-        {n:26, name:'Fire Starter', em:'&#x1F525;', risk:'High', color:'#e91e63'},
-        {n:27, name:'Moon Shooter', em:'&#x1F319;', risk:'High', color:'#e91e63'},
-        {n:28, name:'Rocket Rider', em:'&#x1F680;', risk:'High', color:'#e91e63'},
-        {n:29, name:'Money Rocket', em:'&#x1F680;&#x1F4B0;', risk:'High', color:'#e91e63'},
-        {n:30, name:'Legendary Investor', em:'&#x1F451;&#x1F680;', risk:'MAX', color:'#a259ff'}
+        {n:1, name:'Legendary Investor', em:'&#x1F451;&#x1F680;', risk:'MAX', color:'#a259ff'},
+        {n:2, name:'Money Rocket', em:'&#x1F680;&#x1F4B0;', risk:'High', color:'#e91e63'},
+        {n:3, name:'Rocket Rider', em:'&#x1F680;', risk:'High', color:'#e91e63'},
+        {n:4, name:'Moon Shooter', em:'&#x1F319;', risk:'High', color:'#e91e63'},
+        {n:5, name:'Fire Starter', em:'&#x1F525;', risk:'High', color:'#e91e63'},
+        {n:6, name:'Wolf of Wall Street', em:'&#x1F43A;', risk:'High', color:'#e91e63'},
+        {n:7, name:'Diamond Hands', em:'&#x1F48E;', risk:'High', color:'#e91e63'},
+        {n:8, name:'Thunder Trader', em:'&#x26C8;', risk:'High', color:'#e91e63'},
+        {n:9, name:'Fearless Tiger', em:'&#x1F405;', risk:'High', color:'#e91e63'},
+        {n:10, name:'Power Player', em:'&#x26A1;', risk:'High', color:'#e91e63'},
+        {n:11, name:'Risk Ranger', em:'&#x1F3AF;', risk:'High', color:'#e91e63'},
+        {n:12, name:'Bold Adventurer', em:'&#x1F525;', risk:'High', color:'#e91e63'},
+        {n:13, name:'Trend Rider', em:'&#x1F3A2;', risk:'High', color:'#e91e63'},
+        {n:14, name:'Stock Shark', em:'&#x1F988;', risk:'High', color:'#e91e63'},
+        {n:15, name:'Market Surfer', em:'&#x1F3C4;', risk:'Medium', color:'#ff9800'},
+        {n:16, name:'Rising Star', em:'&#x2B50;', risk:'Medium', color:'#ff9800'},
+        {n:17, name:'Profit Planner', em:'&#x1F4CB;', risk:'Medium', color:'#ff9800'},
+        {n:18, name:'Growth Hunter', em:'&#x1F3F9;', risk:'Medium', color:'#ff9800'},
+        {n:19, name:'Coin Collector', em:'&#x1FA99;', risk:'Medium', color:'#ff9800'},
+        {n:20, name:'Growth Seeker', em:'&#x1F33B;', risk:'Medium', color:'#ff9800'},
+        {n:21, name:'Money Mapper', em:'&#x1F5FA;', risk:'Medium', color:'#ff9800'},
+        {n:22, name:'Balanced Explorer', em:'&#x1F9ED;', risk:'Medium', color:'#ff9800'},
+        {n:23, name:'Wise Owl', em:'&#x1F989;', risk:'Medium', color:'#ff9800'},
+        {n:24, name:'Smart Cookie', em:'&#x1F36A;', risk:'Low', color:'#4caf50'},
+        {n:25, name:'Savings Shield', em:'&#x1F6E1;', risk:'Low', color:'#4caf50'},
+        {n:26, name:'Safe Keeper', em:'&#x1F512;', risk:'Low', color:'#4caf50'},
+        {n:27, name:'Steady Turtle', em:'&#x1F422;', risk:'Low', color:'#4caf50'},
+        {n:28, name:'Penny Guardian', em:'&#x1FA99;', risk:'Low', color:'#4caf50'},
+        {n:29, name:'Careful Saver', em:'&#x1F6E1;&#xFE0F;', risk:'Low', color:'#4caf50'},
+        {n:30, name:'Piggy Bank Protector', em:'&#x1F416;', risk:'Low', color:'#4caf50'}
       ];
       var html = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;">';
       allRanks.forEach(function(r) {
