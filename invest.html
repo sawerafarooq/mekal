@@ -261,7 +261,8 @@
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-8px); }
     }
-    .card h3 { font-family: 'Fredoka One', cursive; font-size: 1.15rem; margin-bottom: 8px; color: #555; }
+    .card h3 { font-family: 'Fredoka One', cursive; font-size: 1.15rem; margin-bottom: 4px; color: #555; }
+    .stock-exchange { font-size: 0.75rem; font-weight: 800; color: #a259ff; background: #f0e6ff; display: inline-block; padding: 2px 10px; border-radius: 10px; margin-bottom: 8px; }
     .card p { font-size: 0.95rem; color: #888; line-height: 1.6; }
     .card .tag {
       display: inline-block;
@@ -354,6 +355,7 @@
     <div class="nav-links">
       <a href="#quiz">Quiz</a>
       <a href="#learn">Learn</a>
+      <a href="#stocks">Stocks</a>
       <a href="#tips">Tips</a>
     </div>
   </nav>
@@ -474,6 +476,71 @@
     </div>
   </div>
 
+  <div class="section" id="stocks">
+    <h2>&#x1F4C8; Strong Buy Stocks</h2>
+    <p class="subtitle">These are stocks that top Wall Street experts say are GREAT to buy right now!</p>
+    <p style="text-align:center;color:rgba(255,255,255,0.6);font-size:0.8rem;margin-bottom:20px;">Data from Yahoo Finance &amp; Wall Street Analysts - April 2026</p>
+    <div class="cards">
+      <div class="card">
+        <span class="card-icon">&#x1F4BB;</span>
+        <h3>Microsoft (MSFT)</h3>
+        <p class="stock-exchange">NASDAQ</p>
+        <p>They make Windows, Xbox, and the cloud! 54 out of 56 experts say BUY. One of the biggest companies in the world!</p>
+        <span class="tag tag-safe">&#x2B50; Strong Buy</span>
+      </div>
+      <div class="card">
+        <span class="card-icon">&#x1F916;</span>
+        <h3>NVIDIA (NVDA)</h3>
+        <p class="stock-exchange">NASDAQ</p>
+        <p>They make the super-fast chips that power AI and video games! 59 out of 63 experts say BUY. Leading the AI revolution!</p>
+        <span class="tag tag-safe">&#x2B50; Strong Buy</span>
+      </div>
+      <div class="card">
+        <span class="card-icon">&#x1F4E6;</span>
+        <h3>Amazon (AMZN)</h3>
+        <p class="stock-exchange">NASDAQ</p>
+        <p>The everything store! They also run the biggest cloud service. 45 out of 46 experts say BUY. They deliver to your door!</p>
+        <span class="tag tag-safe">&#x2B50; Strong Buy</span>
+      </div>
+      <div class="card">
+        <span class="card-icon">&#x1F50D;</span>
+        <h3>Alphabet (GOOGL)</h3>
+        <p class="stock-exchange">NASDAQ</p>
+        <p>The company that owns Google and YouTube! Experts call it a top pick for 2026. Everyone uses Google every day!</p>
+        <span class="tag tag-safe">&#x2B50; Strong Buy</span>
+      </div>
+      <div class="card">
+        <span class="card-icon">&#x1F9E0;</span>
+        <h3>Micron (MU)</h3>
+        <p class="stock-exchange">NASDAQ</p>
+        <p>They make memory chips for phones and computers. Experts predict 232% earnings growth! That's HUGE!</p>
+        <span class="tag tag-safe">&#x2B50; Strong Buy</span>
+      </div>
+      <div class="card">
+        <span class="card-icon">&#x1F4A1;</span>
+        <h3>Broadcom (AVGO)</h3>
+        <p class="stock-exchange">NASDAQ</p>
+        <p>They make chips that connect everything to the internet! Bank of America says they'll lead a $1 trillion chip boom!</p>
+        <span class="tag tag-safe">&#x2B50; Strong Buy</span>
+      </div>
+      <div class="card">
+        <span class="card-icon">&#x1F3E5;</span>
+        <h3>Tenet Healthcare (THC)</h3>
+        <p class="stock-exchange">NYSE</p>
+        <p>They run hospitals and health centers. 15 analysts say Strong Buy! Helping people stay healthy is always a good business.</p>
+        <span class="tag tag-safe">&#x2B50; Strong Buy</span>
+      </div>
+      <div class="card">
+        <span class="card-icon">&#x26FD;</span>
+        <h3>Valero (VLO)</h3>
+        <p class="stock-exchange">NYSE</p>
+        <p>They make the fuel that powers cars and planes! 7 out of 11 analysts say Strong Buy. Energy is always needed!</p>
+        <span class="tag tag-safe">&#x2B50; Strong Buy</span>
+      </div>
+    </div>
+    <p style="text-align:center;color:rgba(255,255,255,0.5);font-size:0.75rem;margin-top:20px;">This is NOT financial advice! Always talk to a grown-up before buying anything. Prices change every day!</p>
+  </div>
+
   <div class="section" id="tips">
     <h2>&#x1F451; Money Rules Every Kid Should Know</h2>
     <p class="subtitle">Follow these simple rules and you'll be a money genius!</p>
@@ -527,7 +594,7 @@
     Mekal Invest - This is for learning only! Always talk to a grown-up before using real money.
   </footer>
 
-  <div id="version">v2.0</div>
+  <div id="version">v2.1</div>
 
   <script>
     const answers = [null, null, null, null, null];
