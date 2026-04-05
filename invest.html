@@ -368,8 +368,18 @@
     <p class="subtitle">Pick one answer for each question - there's no wrong answer!</p>
 
     <div class="quiz-card">
-      <label><span class="q-emoji">&#x23f0;</span> 1. How long can you save without touching your money?</label>
+      <label><span class="q-emoji">&#x1f4b5;</span> 1. How much money do you have to start investing?</label>
       <div class="options" data-q="0">
+        <button data-val="1" onclick="selectOption(this)">Less than $10</button>
+        <button data-val="2" onclick="selectOption(this)">$10 - $50</button>
+        <button data-val="3" onclick="selectOption(this)">$50 - $200</button>
+        <button data-val="4" onclick="selectOption(this)">More than $200</button>
+      </div>
+    </div>
+
+    <div class="quiz-card">
+      <label><span class="q-emoji">&#x23f0;</span> 2. How long can you save without touching your money?</label>
+      <div class="options" data-q="1">
         <button data-val="1" onclick="selectOption(this)">Just a few months</button>
         <button data-val="2" onclick="selectOption(this)">About a year</button>
         <button data-val="3" onclick="selectOption(this)">A couple of years</button>
@@ -378,8 +388,8 @@
     </div>
 
     <div class="quiz-card">
-      <label><span class="q-emoji">&#x1f4c9;</span> 2. Imagine you saved $100 and it went down to $80. What would you do?</label>
-      <div class="options" data-q="1">
+      <label><span class="q-emoji">&#x1f4c9;</span> 3. Imagine you saved $100 and it went down to $80. What would you do?</label>
+      <div class="options" data-q="2">
         <button data-val="1" onclick="selectOption(this)">Take my money out right away!</button>
         <button data-val="2" onclick="selectOption(this)">Take some out, keep some</button>
         <button data-val="3" onclick="selectOption(this)">Wait and see what happens</button>
@@ -388,8 +398,8 @@
     </div>
 
     <div class="quiz-card">
-      <label><span class="q-emoji">&#x1f3af;</span> 3. What do you want to do with your money?</label>
-      <div class="options" data-q="2">
+      <label><span class="q-emoji">&#x1f3af;</span> 4. What do you want to do with your money?</label>
+      <div class="options" data-q="3">
         <button data-val="1" onclick="selectOption(this)">Keep it super safe</button>
         <button data-val="2" onclick="selectOption(this)">Grow it slowly and safely</button>
         <button data-val="3" onclick="selectOption(this)">Grow it a good amount</button>
@@ -398,8 +408,8 @@
     </div>
 
     <div class="quiz-card">
-      <label><span class="q-emoji">&#x1f9e0;</span> 4. How much do you know about saving and investing?</label>
-      <div class="options" data-q="3">
+      <label><span class="q-emoji">&#x1f9e0;</span> 5. How much do you know about saving and investing?</label>
+      <div class="options" data-q="4">
         <button data-val="1" onclick="selectOption(this)">Nothing yet - I'm new!</button>
         <button data-val="2" onclick="selectOption(this)">I know a tiny bit</button>
         <button data-val="3" onclick="selectOption(this)">I've learned some stuff</button>
@@ -517,10 +527,10 @@
     Mekal Invest - This is for learning only! Always talk to a grown-up before using real money.
   </footer>
 
-  <div id="version">v1.6</div>
+  <div id="version">v1.7</div>
 
   <script>
-    const answers = [null, null, null, null];
+    const answers = [null, null, null, null, null];
 
     function selectOption(btn) {
       const parent = btn.parentElement;
@@ -553,7 +563,7 @@
 
       let profile, badgeClass, emoji, description, bars;
 
-      if (total <= 7) {
+      if (total <= 9) {
         profile = 'Careful Saver';
         emoji = '&#x1f6e1;&#xfe0f;';
         badgeClass = 'risk-low';
@@ -562,7 +572,7 @@
              + makeBar('Index Funds', 30, '#66bb6a')
              + makeBar('Real Estate', 15, '#ff9800')
              + makeBar('Keep as Cash', 5, '#90a4ae');
-      } else if (total <= 12) {
+      } else if (total <= 15) {
         profile = 'Smart Explorer';
         emoji = '&#x1f9ed;';
         badgeClass = 'risk-medium';
