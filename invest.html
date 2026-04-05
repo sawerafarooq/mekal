@@ -316,6 +316,16 @@
       transition: width 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
       text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
     }
+    .disclaimer-box {
+      max-width: 850px; margin: 0 auto 0; padding: 20px 25px;
+      background: rgba(255,255,255,0.95); border: 4px dashed #ff6b9d;
+      border-radius: 20px; display: flex; gap: 15px; align-items: flex-start;
+      box-shadow: 6px 6px 0 rgba(0,0,0,0.08);
+      position: relative; z-index: 1; margin-top: 20px;
+    }
+    .disclaimer-icon { font-size: 2.5rem; flex-shrink: 0; }
+    .disclaimer-box strong { font-family: 'Fredoka One', cursive; color: #ff6b9d; font-size: 1.1rem; }
+    .disclaimer-box p { color: #777; font-size: 0.85rem; line-height: 1.6; margin-top: 5px; }
     .stock-page { display: none; }
     .stock-page.active { display: block; animation: fadeIn 0.4s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
@@ -714,11 +724,19 @@
     </ul>
   </div>
 
+  <div class="disclaimer-box">
+    <span class="disclaimer-icon">&#x1F92A;</span>
+    <div>
+      <strong>Super Important Funny Warning!</strong>
+      <p>We're kids learning about money, not Wall Street wizards! This app uses REAL data from real analysts and real ETFs, but investing can go up AND down - like a roller coaster that sometimes gets stuck upside down. Never invest your lunch money, birthday money you need, or money meant for that new video game. Always grab a grown-up (parents, guardians, or a real financial advisor) before spending real money. We're here to learn and have fun - not to turn your piggy bank into a sad empty pig!</p>
+    </div>
+  </div>
+
   <footer>
-    Mekal Invest - This is for learning only! Always talk to a grown-up before using real money.
+    Mekal Invest - Real data, real ETFs, real learning! But NOT real financial advice. Always talk to a grown-up before using real money.
   </footer>
 
-  <div id="version">v2.2</div>
+  <div id="version">v2.3</div>
 
   <script>
     const answers = [null, null, null, null, null];
@@ -773,41 +791,32 @@
         profile = 'Careful Saver';
         emoji = '&#x1F6E1;&#xFE0F;';
         badgeClass = 'risk-low';
-        description = "You like to play it safe - and that's awesome! You'd rather keep your money protected and let it grow slowly. Think of yourself like a turtle - slow and steady wins the race!";
-        bars = makeBar('Microsoft (MSFT)', 30, '#4caf50')
-             + makeBar('Amazon (AMZN)', 25, '#66bb6a')
-             + makeBar('Alphabet (GOOGL)', 20, '#2b86c5')
-             + makeBar('Broadcom (AVGO)', 15, '#ff9800')
-             + makeBar('Valero (VLO)', 10, '#90a4ae');
+        description = "You like to play it safe - and that's awesome! Your portfolio is mostly bonds to protect your money, with some stocks for slow growth. This is based on real Vanguard conservative model portfolios!";
+        bars = makeBar('BND (US Bonds)', 60, '#4caf50')
+             + makeBar('VTI (US Stocks)', 30, '#2b86c5')
+             + makeBar('VXUS (World Stocks)', 10, '#ff9800');
       } else if (total <= 15) {
         profile = 'Smart Explorer';
         emoji = '&#x1F9ED;';
         badgeClass = 'risk-medium';
-        description = "You like to try new things but you're also smart about it! You want your money to grow but you don't want to risk too much. You're like a smart explorer - adventurous but prepared!";
-        bars = makeBar('NVIDIA (NVDA)', 25, '#a259ff')
-             + makeBar('Microsoft (MSFT)', 20, '#4caf50')
-             + makeBar('Amazon (AMZN)', 20, '#2b86c5')
-             + makeBar('Micron (MU)', 15, '#ff9800')
-             + makeBar('Meta (META)', 10, '#ff6b9d')
-             + makeBar('Broadcom (AVGO)', 10, '#44d492');
+        description = "You want growth AND safety - smart move! Your mix is balanced between stocks and bonds. This is based on real Vanguard balanced model portfolios used by millions of investors!";
+        bars = makeBar('VTI (US Stocks)', 42, '#2b86c5')
+             + makeBar('BND (US Bonds)', 40, '#4caf50')
+             + makeBar('VXUS (World Stocks)', 18, '#ff9800');
       } else {
         profile = 'Bold Adventurer';
         emoji = '&#x1F525;';
         badgeClass = 'risk-high';
-        description = "You're not afraid to take big chances! You dream big and you're willing to risk some money to make a lot more. You're like a brave adventurer looking for treasure! Just remember - sometimes treasure hunts don't work out, and that's okay.";
-        bars = makeBar('NVIDIA (NVDA)', 25, '#e91e63')
-             + makeBar('Amazon (AMZN)', 20, '#ff9800')
-             + makeBar('Micron (MU)', 15, '#a259ff')
-             + makeBar('Meta (META)', 15, '#2b86c5')
-             + makeBar('Broadcom (AVGO)', 10, '#44d492')
-             + makeBar('Lam Research (LRCX)', 10, '#ff6b9d')
-             + makeBar('Ciena (CIEN)', 5, '#ffb347');
+        description = "You're going all-in on growth! Your portfolio is almost all stocks for maximum returns. This is based on real aggressive model portfolios. More risk, but more reward over many years!";
+        bars = makeBar('VTI (US Stocks)', 60, '#e91e63')
+             + makeBar('VXUS (World Stocks)', 25, '#ff9800')
+             + makeBar('BND (US Bonds)', 15, '#4caf50');
       }
 
       title.innerHTML = emoji + ' You are a...';
       badge.innerHTML = '<span class="risk-badge ' + badgeClass + '">' + profile + '</span>';
       desc.textContent = description;
-      alloc.innerHTML = '<p style="font-family:Fredoka One,cursive;color:#a259ff;margin-bottom:12px;font-size:1.1rem;">Here\'s how you could split your money:</p>' + bars;
+      alloc.innerHTML = '<p style="font-family:Fredoka One,cursive;color:#a259ff;margin-bottom:5px;font-size:1.1rem;">Here\'s how you could split your money:</p><p style="color:#aaa;font-size:0.8rem;margin-bottom:12px;">Based on real Vanguard &amp; industry model portfolios using ETFs</p>' + bars;
       result.classList.add('show');
       spawnConfetti();
 
