@@ -1031,7 +1031,7 @@
     Mekal Invest - Real data, real ETFs, real learning! But NOT real financial advice. Always talk to a grown-up.
   </footer>
 
-  <div id="version">v3.9</div>
+  <div id="version">v4.0</div>
 
   <script>
     // ===== FUN FACTS =====
@@ -1218,11 +1218,14 @@
         {n:29, name:'Careful Saver', em:'&#x1F6E1;&#xFE0F;', risk:'Low', color:'#4caf50'},
         {n:30, name:'Piggy Bank Protector', em:'&#x1F416;', risk:'Low', color:'#4caf50'}
       ];
-      var html = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;">';
+      var html = '';
       allRanks.forEach(function(r) {
-        html += '<div style="background:#fff;border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:8px;border-left:4px solid ' + r.color + ';"><span style="font-size:1.4rem;">' + r.em + '</span><div><div style="font-weight:800;font-size:0.85rem;color:#444;">#' + r.n + ' ' + r.name + '</div><div style="font-size:0.7rem;color:' + r.color + ';font-weight:700;">' + r.risk + ' Risk</div></div></div>';
+        var medal = '';
+        if (r.n === 1) medal = ' &#x1F947;';
+        else if (r.n === 2) medal = ' &#x1F948;';
+        else if (r.n === 3) medal = ' &#x1F949;';
+        html += '<div style="background:#fff;border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:10px;border-left:5px solid ' + r.color + ';margin-bottom:6px;"><span style="font-family:Fredoka One,cursive;font-size:1rem;color:' + r.color + ';min-width:35px;">#' + r.n + '</span><span style="font-size:1.5rem;">' + r.em + '</span><div style="flex:1;"><div style="font-weight:800;font-size:0.9rem;color:#444;">' + r.name + medal + '</div><div style="font-size:0.7rem;color:' + r.color + ';font-weight:700;">' + r.risk + ' Risk</div></div></div>';
       });
-      html += '</div>';
       document.getElementById('allRanks').innerHTML = html;
     }
 
@@ -1349,14 +1352,31 @@
     function getLeaderboard() {
       return JSON.parse(localStorage.getItem('mekalLeaderboard') || '[]');
     }
+    // Rank order: #1 best to #30 worst
+    var rankOrder = [
+      'Legendary Investor','Money Rocket','Rocket Rider','Moon Shooter','Fire Starter',
+      'Wolf of Wall Street','Diamond Hands','Thunder Trader','Fearless Tiger','Power Player',
+      'Risk Ranger','Bold Adventurer','Trend Rider','Stock Shark','Market Surfer',
+      'Rising Star','Profit Planner','Growth Hunter','Coin Collector','Growth Seeker',
+      'Money Mapper','Balanced Explorer','Wise Owl','Smart Cookie','Savings Shield',
+      'Safe Keeper','Steady Turtle','Penny Guardian','Careful Saver','Piggy Bank Protector'
+    ];
+    function getRankNum(type) {
+      var idx = rankOrder.indexOf(type);
+      return idx === -1 ? 99 : idx + 1;
+    }
     function renderLeaderboard() {
       var entries = getLeaderboard();
+      // Sort by rank (best first, lowest number = best)
+      entries.sort(function(a, b) { return getRankNum(a.type) - getRankNum(b.type); });
       var html = '';
-      entries.slice(0, 10).forEach(function(e, i) {
+      entries.slice(0, 100).forEach(function(e, i) {
+        var rn = getRankNum(e.type);
         var lbColor = '#ff9800'; var lbBg = '#fff8e1';
-        if (['Piggy Bank Protector','Careful Saver','Penny Guardian','Steady Turtle','Safe Keeper','Savings Shield','Smart Cookie'].indexOf(e.type) !== -1) { lbColor = '#4caf50'; lbBg = '#e8f5e9'; }
-        else if (['Stock Shark','Trend Rider','Bold Adventurer','Risk Ranger','Power Player','Fearless Tiger','Thunder Trader','Diamond Hands','Wolf of Wall Street','Fire Starter','Moon Shooter','Rocket Rider','Money Rocket','Legendary Investor'].indexOf(e.type) !== -1) { lbColor = '#e91e63'; lbBg = '#fce4ec'; }
-        html += '<div class="lb-entry"><span class="lb-rank">#' + (i + 1) + '</span><span class="lb-name">' + e.name + '</span><span class="lb-type" style="background:' + lbBg + ';color:' + lbColor + '">' + e.type + '</span></div>';
+        if (rn >= 24) { lbColor = '#4caf50'; lbBg = '#e8f5e9'; }
+        else if (rn <= 14) { lbColor = '#e91e63'; lbBg = '#fce4ec'; }
+        else if (rn === 1) { lbColor = '#a259ff'; lbBg = '#f0e6ff'; }
+        html += '<div class="lb-entry"><span class="lb-rank">#' + (i + 1) + '</span><span class="lb-name">' + e.name + '</span><span class="lb-type" style="background:' + lbBg + ';color:' + lbColor + '">#' + rn + ' ' + e.type + '</span></div>';
       });
       document.getElementById('lbEntries').innerHTML = html || '<p style="text-align:center;color:#bbb;padding:10px;">No entries yet! Be the first!</p>';
     }
