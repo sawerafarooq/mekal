@@ -655,8 +655,8 @@
     <div class="leaderboard">
       <h3>&#x1F3C6; Leaderboard - Who's Who?</h3>
       <div class="lb-form" id="lbForm" style="display:none;">
-        <input type="text" id="lbName" placeholder="Your name..." maxlength="20">
-        <button onclick="saveToLeaderboard()">Save Me!</button>
+        <input type="text" id="lbName" placeholder="Your name..." maxlength="20" autocomplete="off" autocorrect="off" style="flex:1;padding:10px 15px;border:3px solid #ddd;border-radius:50px;font-family:'Baloo 2',cursive;font-size:1rem;font-weight:600;-webkit-appearance:none;">
+        <button onclick="saveToLeaderboard()" style="padding:10px 20px;background:linear-gradient(135deg,#a259ff,#ff6b9d);color:#fff;border:none;border-radius:50px;font-family:'Fredoka One',cursive;cursor:pointer;font-size:0.9rem;white-space:nowrap;">Save Me!</button>
       </div>
       <div class="lb-entries" id="lbEntries"></div>
     </div>
@@ -1000,7 +1000,7 @@
     Mekal Invest - Real data, real ETFs, real learning! But NOT real financial advice. Always talk to a grown-up.
   </footer>
 
-  <div id="version">v3.5</div>
+  <div id="version">v3.6</div>
 
   <script>
     // ===== FUN FACTS =====
