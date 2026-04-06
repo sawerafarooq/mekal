@@ -758,18 +758,6 @@
         <span class="tag tag-safe">Super Safe</span>
       </div>
       <div class="card">
-        <span class="card-icon">&#x1F947;</span>
-        <h3>Gold</h3>
-        <p>Buy real gold or gold coins! Gold has been valuable for thousands of years.</p>
-        <span class="tag tag-moderate">Low-Medium Risk</span>
-      </div>
-      <div class="card">
-        <span class="card-icon">&#x1F0CF;</span>
-        <h3>Collectibles</h3>
-        <p>Buy Pokemon cards, rare sneakers, LEGO sets, or trading cards. They can become worth a LOT over time!</p>
-        <span class="tag tag-moderate">Medium Risk</span>
-      </div>
-      <div class="card">
         <span class="card-icon">&#x1F3E0;</span>
         <h3>Real Estate</h3>
         <p>Owning a house and renting it out. Your property can become worth more over time!</p>
@@ -1081,7 +1069,7 @@
     Mekal Invest - Real data, real ETFs, real learning! But NOT real financial advice. Always talk to a grown-up.
   </footer>
 
-  <div id="version">v5.4</div>
+  <div id="version">v5.5</div>
 
   <script>
     // ===== FUN FACTS =====
@@ -1319,39 +1307,35 @@
       }
     }
 
-    // ===== ALLOCATION MAPPING (1-30 ranks to 8 investment options) =====
+    // ===== ALLOCATION MAPPING (1-30 ranks to 6 investment options) =====
     function getAllocation(rank) {
-      // 8 simple kid-friendly investment options
+      // 6 simple kid-friendly investment options
       var PIGGY   = {name:'Piggy Bank',       icon:'&#x1F416;', color:'#90a4ae'};
       var SAVINGS = {name:'Savings Account',  icon:'&#x1F3E6;', color:'#4caf50'};
-      var GOLD    = {name:'Gold',             icon:'&#x1F947;', color:'#ffd700'};
-      var COLLECT = {name:'Collectibles',     icon:'&#x1F0CF;', color:'#ffb347'};
       var REAL    = {name:'Real Estate',      icon:'&#x1F3E0;', color:'#ff9800'};
       var STOCKS  = {name:'Company Stocks',   icon:'&#x1F4C8;', color:'#a259ff'};
       var CRYPTO  = {name:'Crypto',           icon:'&#x1FA99;', color:'#e91e63'};
       var BIZ     = {name:'Start a Business', icon:'&#x1F4A1;', color:'#ff3cac'};
 
       // Allocation tier based on rank (1=best/most aggressive, 30=worst/safest)
-      // [Piggy, Savings, Gold, Collect, Real, Stocks, Crypto, Biz]
+      // [Piggy, Savings, Real, Stocks, Crypto, Biz]
       var t;
-      if (rank === 1)        t = [0,  0,  5,  5,  10, 30, 30, 20]; // #1 Legendary
-      else if (rank <= 5)    t = [0,  0,  5,  10, 10, 30, 25, 20]; // #2-5 Money Rocket - Fire Starter
-      else if (rank <= 10)   t = [0,  0,  10, 10, 10, 35, 20, 15]; // #6-10 Wolf - Power Player
-      else if (rank <= 14)   t = [0,  5,  10, 15, 15, 35, 15, 5];  // #11-14 Risk Ranger - Stock Shark
-      else if (rank <= 19)   t = [0,  10, 15, 15, 20, 25, 10, 5];  // #15-19 Market Surfer - Coin Collector
-      else if (rank <= 23)   t = [5,  20, 20, 15, 20, 15, 5,  0];  // #20-23 Growth Seeker - Wise Owl
-      else if (rank <= 27)   t = [15, 35, 20, 10, 10, 10, 0,  0];  // #24-27 Smart Cookie - Steady Turtle
-      else                   t = [40, 45, 10, 5,  0,  0,  0,  0];  // #28-30 Penny Guardian - Piggy Bank
+      if (rank === 1)        t = [0,  0,  10, 30, 35, 25]; // #1 Legendary
+      else if (rank <= 5)    t = [0,  0,  10, 35, 30, 25]; // #2-5 Money Rocket - Fire Starter
+      else if (rank <= 10)   t = [0,  0,  15, 40, 25, 20]; // #6-10 Wolf - Power Player
+      else if (rank <= 14)   t = [0,  5,  20, 40, 20, 15]; // #11-14 Risk Ranger - Stock Shark
+      else if (rank <= 19)   t = [0,  15, 25, 35, 15, 10]; // #15-19 Market Surfer - Coin Collector
+      else if (rank <= 23)   t = [10, 25, 25, 25, 10, 5];  // #20-23 Growth Seeker - Wise Owl
+      else if (rank <= 27)   t = [25, 40, 15, 15, 5,  0];  // #24-27 Smart Cookie - Steady Turtle
+      else                   t = [50, 40, 10, 0,  0,  0]; // #28-30 Penny Guardian - Piggy Bank
 
       return [
         Object.assign({pct:t[0]}, PIGGY),
         Object.assign({pct:t[1]}, SAVINGS),
-        Object.assign({pct:t[2]}, GOLD),
-        Object.assign({pct:t[3]}, COLLECT),
-        Object.assign({pct:t[4]}, REAL),
-        Object.assign({pct:t[5]}, STOCKS),
-        Object.assign({pct:t[6]}, CRYPTO),
-        Object.assign({pct:t[7]}, BIZ)
+        Object.assign({pct:t[2]}, REAL),
+        Object.assign({pct:t[3]}, STOCKS),
+        Object.assign({pct:t[4]}, CRYPTO),
+        Object.assign({pct:t[5]}, BIZ)
       ];
     }
 
@@ -1439,7 +1423,7 @@
       title.innerHTML = emoji + ' You are an...<br><span style="font-family:Fredoka One,cursive;font-size:2.8rem;color:' + bigColor + ';text-shadow:3px 3px 0 rgba(0,0,0,0.1);display:block;margin-top:8px;">' + bigType + '</span><p style="font-size:0.9rem;font-weight:600;color:#777;margin-top:8px;line-height:1.5;font-family:Baloo 2,cursive;">' + bigExplain + '</p>';
       badge.innerHTML = '<span class="risk-badge ' + badgeClass + '">#' + r.rank + ' ' + profile + '</span>';
       desc.textContent = description;
-      alloc.innerHTML = '<p style="font-family:Fredoka One,cursive;color:#a259ff;margin-bottom:5px;font-size:1.05rem;">Here\'s how you could split your money:</p><p style="color:#aaa;font-size:0.78rem;margin-bottom:10px;">Pick from these 8 ways to invest!</p>' + bars;
+      alloc.innerHTML = '<p style="font-family:Fredoka One,cursive;color:#a259ff;margin-bottom:5px;font-size:1.05rem;">Here\'s how you could split your money:</p><p style="color:#aaa;font-size:0.78rem;margin-bottom:10px;">Pick from these 6 ways to invest!</p>' + bars;
       result.classList.add('show');
       document.getElementById('lbForm').style.display = '';
       spawnConfetti();
