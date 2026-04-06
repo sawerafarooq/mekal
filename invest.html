@@ -1069,7 +1069,7 @@
     Mekal Invest - Real data, real ETFs, real learning! But NOT real financial advice. Always talk to a grown-up.
   </footer>
 
-  <div id="version">v5.0</div>
+  <div id="version">v5.1</div>
 
   <script>
     // ===== FUN FACTS =====
@@ -1382,7 +1382,9 @@
       emoji = r.em;
       description = r.desc;
       lastProfile = profile;
-      title.innerHTML = emoji + ' You are a...';
+      var bigType = r.rank <= 19 ? 'INVESTOR' : 'SAVER';
+      var bigColor = r.rank <= 19 ? '#e91e63' : '#44d492';
+      title.innerHTML = emoji + ' You are an...<br><span style="font-family:Fredoka One,cursive;font-size:2.8rem;color:' + bigColor + ';text-shadow:3px 3px 0 rgba(0,0,0,0.1);display:block;margin-top:8px;">' + bigType + '</span>';
       badge.innerHTML = '<span class="risk-badge ' + badgeClass + '">#' + r.rank + ' ' + profile + '</span>';
       desc.textContent = description;
       alloc.innerHTML = '<p style="font-family:Fredoka One,cursive;color:#a259ff;margin-bottom:5px;font-size:1.05rem;">Here\'s how you could split your money:</p><p style="color:#aaa;font-size:0.78rem;margin-bottom:10px;">Based on real Vanguard &amp; industry model portfolios using ETFs</p>' + bars;
