@@ -484,6 +484,46 @@
       margin-top: 30px;
     }
     #version { position: fixed; bottom: 10px; right: 15px; font-size: 0.75rem; color: rgba(255,255,255,0.4); }
+    /* Dark Mode */
+    body.dark-mode {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%);
+    }
+    body.dark-mode .quiz-card,
+    body.dark-mode .card,
+    body.dark-mode .tip-list li,
+    body.dark-mode .leaderboard,
+    body.dark-mode .funfact,
+    body.dark-mode .gloss-card,
+    body.dark-mode .disclaimer-box,
+    body.dark-mode .portfolio-balance,
+    body.dark-mode #result { background: #1a1a3a !important; color: #ddd; }
+    body.dark-mode .quiz-card label,
+    body.dark-mode .card h3,
+    body.dark-mode .gloss-card .gloss-word,
+    body.dark-mode .tip-content h4,
+    body.dark-mode .leaderboard h3 { color: #eee !important; }
+    body.dark-mode .quiz-card p,
+    body.dark-mode .card p,
+    body.dark-mode .tip-content p,
+    body.dark-mode .gloss-card .gloss-def,
+    body.dark-mode .disclaimer-box p,
+    body.dark-mode .lb-entry .lb-name { color: #aaa !important; }
+    body.dark-mode .options button { background: #252550; color: #bbb; border-color: #3a3a5a; }
+    body.dark-mode .options button:hover { background: #302060; color: #a259ff; border-color: #a259ff; }
+    body.dark-mode .options button.selected { background: linear-gradient(135deg, #a259ff, #ff6b9d); color: #fff; border-color: transparent; }
+    body.dark-mode .quiz-card { border-color: #3a3a5a !important; background: #1a1a3a !important; }
+    body.dark-mode .card { border-color: #3a3a5a !important; }
+    body.dark-mode .lb-entry:nth-child(odd) { background: #252550; }
+    body.dark-mode .search-box input,
+    body.dark-mode .glossary-search input,
+    body.dark-mode .lb-form input { background: #252550; color: #ddd; border-color: #3a3a5a; }
+    body.dark-mode .search-box input::placeholder,
+    body.dark-mode .glossary-search input::placeholder { color: #666; }
+    body.dark-mode footer { color: rgba(255,255,255,0.3); }
+    body.dark-mode .stock-exchange { background: #252550; color: #a259ff; }
+    body.dark-mode .ticker-wrap { background: rgba(0,0,0,0.5); }
+    body.dark-mode .alloc-track { background: #252550; border-color: #3a3a5a; }
+
     @media (max-width: 600px) {
       .hero h1 { font-size: 2rem; }
       .hero-emoji { font-size: 3.5rem; }
@@ -526,6 +566,7 @@
       <a href="#glossary">Glossary</a>
       <a href="#tips">Tips</a>
       <a href="#" onclick="showAuthModal();return false;" id="authBtn" style="background:rgba(255,255,255,0.25);color:#fff;">&#x1F464; Log In</a>
+      <a href="#" onclick="toggleDarkMode();return false;" id="themeBtn" style="background:rgba(255,255,255,0.25);color:#fff;">&#x1F31E;</a>
     </div>
   </nav>
 
@@ -1031,7 +1072,7 @@
     Mekal Invest - Real data, real ETFs, real learning! But NOT real financial advice. Always talk to a grown-up.
   </footer>
 
-  <div id="version">v4.3</div>
+  <div id="version">v4.4</div>
 
   <script>
     // ===== FUN FACTS =====
@@ -1077,6 +1118,18 @@
       tickerHTML += '<span><span class="sym">' + s.sym + '</span> $' + s.price.toFixed(2) + ' <span class="' + cls + '">' + arrow + ' ' + Math.abs(s.chg).toFixed(1) + '%</span></span>';
     });
     document.getElementById('tickerTape').innerHTML = tickerHTML + tickerHTML;
+
+    // ===== DARK MODE =====
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      var isDark = document.body.classList.contains('dark-mode');
+      localStorage.setItem('mekalDarkMode', isDark ? 'on' : 'off');
+      document.getElementById('themeBtn').innerHTML = isDark ? '&#x1F31E;' : '&#x1F31A;';
+    }
+    if (localStorage.getItem('mekalDarkMode') === 'on') {
+      document.body.classList.add('dark-mode');
+      document.getElementById('themeBtn').innerHTML = '&#x1F31E;';
+    }
 
     // ===== AUTH SYSTEM =====
     var currentUser = JSON.parse(localStorage.getItem('mekalCurrentUser') || 'null');
