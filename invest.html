@@ -752,10 +752,22 @@
         <span class="tag tag-safe">Super Safe</span>
       </div>
       <div class="card">
+        <span class="card-icon">&#x1F4DC;</span>
+        <h3>Bonds</h3>
+        <p>You lend money to the government or a company. They pay you back with extra money later!</p>
+        <span class="tag tag-safe">Super Safe</span>
+      </div>
+      <div class="card">
         <span class="card-icon">&#x1F4E6;</span>
         <h3>Index Funds</h3>
         <p>Invest in a big group of companies at once. Like buying a piece of many stores!</p>
         <span class="tag tag-safe">Pretty Safe</span>
+      </div>
+      <div class="card">
+        <span class="card-icon">&#x1F947;</span>
+        <h3>Gold</h3>
+        <p>Buy real gold or gold coins! Gold has been valuable for thousands of years and protects from inflation.</p>
+        <span class="tag tag-moderate">Medium Risk</span>
       </div>
       <div class="card">
         <span class="card-icon">&#x1F3E0;</span>
@@ -1069,7 +1081,7 @@
     Mekal Invest - Real data, real ETFs, real learning! But NOT real financial advice. Always talk to a grown-up.
   </footer>
 
-  <div id="version">v5.2</div>
+  <div id="version">v5.3</div>
 
   <script>
     // ===== FUN FACTS =====
@@ -1307,6 +1319,41 @@
       }
     }
 
+    // ===== ALLOCATION MAPPING (1-30 ranks to 8 investment options) =====
+    function getAllocation(rank) {
+      // 8 investment options
+      var SAVINGS = {name:'Savings Account', icon:'&#x1F3E6;', color:'#4caf50'};
+      var BONDS   = {name:'Bonds',           icon:'&#x1F4DC;', color:'#66bb6a'};
+      var INDEX   = {name:'Index Funds',     icon:'&#x1F4E6;', color:'#2b86c5'};
+      var GOLD    = {name:'Gold',            icon:'&#x1F947;', color:'#ffb347'};
+      var REAL    = {name:'Real Estate',     icon:'&#x1F3E0;', color:'#ff9800'};
+      var STOCKS  = {name:'Company Stocks',  icon:'&#x1F4C8;', color:'#a259ff'};
+      var CRYPTO  = {name:'Crypto',          icon:'&#x1FA99;', color:'#e91e63'};
+      var BIZ     = {name:'Start a Business',icon:'&#x1F4A1;', color:'#ff3cac'};
+
+      // Allocation tier based on rank (1=best/most aggressive, 30=worst/safest)
+      var t;
+      if (rank === 1)        t = [10, 0, 10, 5, 10, 25, 25, 15];  // Legendary
+      else if (rank <= 5)    t = [0, 0, 15, 5, 10, 30, 25, 15];   // Money Rocket - Fire Starter
+      else if (rank <= 10)   t = [0, 5, 20, 5, 10, 35, 15, 10];   // Wolf - Power Player
+      else if (rank <= 14)   t = [0, 10, 25, 5, 15, 30, 10, 5];   // Risk Ranger - Stock Shark
+      else if (rank <= 19)   t = [5, 10, 30, 10, 15, 20, 5, 5];   // Market Surfer - Coin Collector
+      else if (rank <= 23)   t = [10, 15, 30, 10, 15, 15, 5, 0];  // Growth Seeker - Wise Owl
+      else if (rank <= 27)   t = [25, 25, 20, 10, 10, 10, 0, 0];  // Smart Cookie - Steady Turtle
+      else                   t = [50, 30, 10, 5, 5, 0, 0, 0];     // Penny Guardian - Piggy Bank
+
+      return [
+        Object.assign({pct:t[0]}, SAVINGS),
+        Object.assign({pct:t[1]}, BONDS),
+        Object.assign({pct:t[2]}, INDEX),
+        Object.assign({pct:t[3]}, GOLD),
+        Object.assign({pct:t[4]}, REAL),
+        Object.assign({pct:t[5]}, STOCKS),
+        Object.assign({pct:t[6]}, CRYPTO),
+        Object.assign({pct:t[7]}, BIZ)
+      ];
+    }
+
     function makeBar(label, pct, color) {
       return '<div class="alloc-bar"><div class="alloc-label">' + label + '</div><div class="alloc-track"><div class="alloc-fill" style="width:' + pct + '%;background:' + color + '">' + pct + '%</div></div></div>';
     }
@@ -1374,11 +1421,12 @@
       if (!r) r = ranks[ranks.length - 1];
       profile = r.name;
       badgeClass = r.cls;
-      if (r.bnd !== undefined) {
-        bars = makeBar('BND (US Bonds)', r.bnd, '#4caf50') + makeBar('VTI (US Stocks)', r.vti, '#2b86c5') + makeBar('VXUS (World Stocks)', r.vxus, '#ff9800');
-      } else {
-        bars = makeBar('VTI (US Stocks)', 67, '#e91e63') + makeBar('VXUS (World Stocks)', 33, '#ff9800') + makeBar('BND (US Bonds)', 0, '#4caf50');
-      }
+      // Map all 30 ranks to 8 investment categories
+      var allocs = getAllocation(r.rank);
+      bars = '';
+      allocs.forEach(function(a) {
+        if (a.pct > 0) bars += makeBar(a.icon + ' ' + a.name, a.pct, a.color);
+      });
       emoji = r.em;
       description = r.desc;
       lastProfile = profile;
@@ -1390,7 +1438,7 @@
       title.innerHTML = emoji + ' You are an...<br><span style="font-family:Fredoka One,cursive;font-size:2.8rem;color:' + bigColor + ';text-shadow:3px 3px 0 rgba(0,0,0,0.1);display:block;margin-top:8px;">' + bigType + '</span><p style="font-size:0.9rem;font-weight:600;color:#777;margin-top:8px;line-height:1.5;font-family:Baloo 2,cursive;">' + bigExplain + '</p>';
       badge.innerHTML = '<span class="risk-badge ' + badgeClass + '">#' + r.rank + ' ' + profile + '</span>';
       desc.textContent = description;
-      alloc.innerHTML = '<p style="font-family:Fredoka One,cursive;color:#a259ff;margin-bottom:5px;font-size:1.05rem;">Here\'s how you could split your money:</p><p style="color:#aaa;font-size:0.78rem;margin-bottom:10px;">Based on real Vanguard &amp; industry model portfolios using ETFs</p>' + bars;
+      alloc.innerHTML = '<p style="font-family:Fredoka One,cursive;color:#a259ff;margin-bottom:5px;font-size:1.05rem;">Here\'s how you could split your money:</p><p style="color:#aaa;font-size:0.78rem;margin-bottom:10px;">Pick from these 8 ways to invest!</p>' + bars;
       result.classList.add('show');
       document.getElementById('lbForm').style.display = '';
       spawnConfetti();
