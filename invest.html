@@ -1069,7 +1069,7 @@
     Mekal Invest - Real data, real ETFs, real learning! But NOT real financial advice. Always talk to a grown-up.
   </footer>
 
-  <div id="version">v5.5</div>
+  <div id="version">v5.6</div>
 
   <script>
     // ===== FUN FACTS =====
@@ -1307,9 +1307,9 @@
       }
     }
 
-    // ===== ALLOCATION MAPPING (1-30 ranks to 6 investment options) =====
+    // ===== ALLOCATION MAPPING (1-30 ranks to 3 real allocations) =====
     function getAllocation(rank) {
-      // 6 simple kid-friendly investment options
+      // 6 investment options
       var PIGGY   = {name:'Piggy Bank',       icon:'&#x1F416;', color:'#90a4ae'};
       var SAVINGS = {name:'Savings Account',  icon:'&#x1F3E6;', color:'#4caf50'};
       var REAL    = {name:'Real Estate',      icon:'&#x1F3E0;', color:'#ff9800'};
@@ -1317,26 +1317,25 @@
       var CRYPTO  = {name:'Crypto',           icon:'&#x1FA99;', color:'#e91e63'};
       var BIZ     = {name:'Start a Business', icon:'&#x1F4A1;', color:'#ff3cac'};
 
-      // Allocation tier based on rank (1=best/most aggressive, 30=worst/safest)
-      // [Piggy, Savings, Real, Stocks, Crypto, Biz]
-      var t;
-      if (rank === 1)        t = [0,  0,  10, 30, 35, 25]; // #1 Legendary
-      else if (rank <= 5)    t = [0,  0,  10, 35, 30, 25]; // #2-5 Money Rocket - Fire Starter
-      else if (rank <= 10)   t = [0,  0,  15, 40, 25, 20]; // #6-10 Wolf - Power Player
-      else if (rank <= 14)   t = [0,  5,  20, 40, 20, 15]; // #11-14 Risk Ranger - Stock Shark
-      else if (rank <= 19)   t = [0,  15, 25, 35, 15, 10]; // #15-19 Market Surfer - Coin Collector
-      else if (rank <= 23)   t = [10, 25, 25, 25, 10, 5];  // #20-23 Growth Seeker - Wise Owl
-      else if (rank <= 27)   t = [25, 40, 15, 15, 5,  0];  // #24-27 Smart Cookie - Steady Turtle
-      else                   t = [50, 40, 10, 0,  0,  0]; // #28-30 Penny Guardian - Piggy Bank
-
-      return [
-        Object.assign({pct:t[0]}, PIGGY),
-        Object.assign({pct:t[1]}, SAVINGS),
-        Object.assign({pct:t[2]}, REAL),
-        Object.assign({pct:t[3]}, STOCKS),
-        Object.assign({pct:t[4]}, CRYPTO),
-        Object.assign({pct:t[5]}, BIZ)
-      ];
+      // Each rank gets exactly 3 categories that match its risk profile
+      // Based on real industry risk-tolerance allocation models
+      if (rank === 1) {
+        return [Object.assign({pct:50}, STOCKS), Object.assign({pct:30}, CRYPTO), Object.assign({pct:20}, BIZ)];
+      } else if (rank <= 5) {
+        return [Object.assign({pct:55}, STOCKS), Object.assign({pct:25}, CRYPTO), Object.assign({pct:20}, BIZ)];
+      } else if (rank <= 10) {
+        return [Object.assign({pct:60}, STOCKS), Object.assign({pct:25}, CRYPTO), Object.assign({pct:15}, BIZ)];
+      } else if (rank <= 14) {
+        return [Object.assign({pct:60}, STOCKS), Object.assign({pct:25}, REAL), Object.assign({pct:15}, CRYPTO)];
+      } else if (rank <= 19) {
+        return [Object.assign({pct:50}, STOCKS), Object.assign({pct:30}, REAL), Object.assign({pct:20}, SAVINGS)];
+      } else if (rank <= 23) {
+        return [Object.assign({pct:40}, REAL), Object.assign({pct:35}, SAVINGS), Object.assign({pct:25}, STOCKS)];
+      } else if (rank <= 27) {
+        return [Object.assign({pct:55}, SAVINGS), Object.assign({pct:30}, REAL), Object.assign({pct:15}, STOCKS)];
+      } else {
+        return [Object.assign({pct:50}, SAVINGS), Object.assign({pct:35}, PIGGY), Object.assign({pct:15}, REAL)];
+      }
     }
 
     function makeBar(label, pct, color) {
@@ -1423,7 +1422,7 @@
       title.innerHTML = emoji + ' You are an...<br><span style="font-family:Fredoka One,cursive;font-size:2.8rem;color:' + bigColor + ';text-shadow:3px 3px 0 rgba(0,0,0,0.1);display:block;margin-top:8px;">' + bigType + '</span><p style="font-size:0.9rem;font-weight:600;color:#777;margin-top:8px;line-height:1.5;font-family:Baloo 2,cursive;">' + bigExplain + '</p>';
       badge.innerHTML = '<span class="risk-badge ' + badgeClass + '">#' + r.rank + ' ' + profile + '</span>';
       desc.textContent = description;
-      alloc.innerHTML = '<p style="font-family:Fredoka One,cursive;color:#a259ff;margin-bottom:5px;font-size:1.05rem;">Here\'s how you could split your money:</p><p style="color:#aaa;font-size:0.78rem;margin-bottom:10px;">Pick from these 6 ways to invest!</p>' + bars;
+      alloc.innerHTML = '<p style="font-family:Fredoka One,cursive;color:#a259ff;margin-bottom:5px;font-size:1.05rem;">Here\'s how you could split your money:</p><p style="color:#aaa;font-size:0.78rem;margin-bottom:10px;">Your 3 best investment options based on your rank</p>' + bars;
       result.classList.add('show');
       document.getElementById('lbForm').style.display = '';
       spawnConfetti();
