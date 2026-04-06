@@ -92,6 +92,11 @@
       color: #784ba0;
       transform: scale(1.1) rotate(-2deg);
     }
+    .nav-links a.active-tab {
+      background: #ffe14d;
+      color: #784ba0;
+      border-color: #ffe14d;
+    }
     .hero {
       text-align: center;
       padding: 40px 20px 30px;
@@ -1075,7 +1080,7 @@
     Mekal Invest - Real data, real ETFs, real learning! But NOT real financial advice. Always talk to a grown-up.
   </footer>
 
-  <div id="version">v6.4</div>
+  <div id="version">v6.5</div>
 
   <script>
     // ===== FUN FACTS =====
@@ -1686,9 +1691,26 @@
     document.querySelectorAll('a[href^="#"]').forEach(function(a) {
       a.addEventListener('click', function(e) {
         e.preventDefault();
-        document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+        var target = document.querySelector(a.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
       });
     });
+
+    // ===== SCROLL SPY (highlight active tab) =====
+    var sectionIds = ['quiz','learn','stocks','savings','glossary','tips'];
+    function updateActiveTab() {
+      var scrollPos = window.scrollY + 150;
+      var current = sectionIds[0];
+      sectionIds.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el && el.offsetTop <= scrollPos) current = id;
+      });
+      document.querySelectorAll('.nav-links a').forEach(function(a) {
+        a.classList.toggle('active-tab', a.getAttribute('href') === '#' + current);
+      });
+    }
+    window.addEventListener('scroll', updateActiveTab);
+    updateActiveTab();
   </script>
 </body>
 </html>
