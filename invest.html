@@ -1069,7 +1069,7 @@
     Mekal Invest - Real data, real ETFs, real learning! But NOT real financial advice. Always talk to a grown-up.
   </footer>
 
-  <div id="version">v5.7</div>
+  <div id="version">v5.8</div>
 
   <script>
     // ===== FUN FACTS =====
@@ -1317,24 +1317,24 @@
       var CRYPTO  = {name:'Crypto',           icon:'&#x1FA99;', color:'#e91e63'};
       var BIZ     = {name:'Start a Business', icon:'&#x1F4A1;', color:'#ff3cac'};
 
-      // Each rank gets exactly 3 categories that match its risk profile
-      // Based on real industry risk-tolerance allocation models
+      // Each rank gets exactly 3 categories. All percentages are
+      // simple multiples of 10 (or 25), min 10%, max 50%
       if (rank === 1) {
-        return [Object.assign({pct:50}, STOCKS), Object.assign({pct:30}, CRYPTO), Object.assign({pct:20}, BIZ)];
+        return [Object.assign({pct:50}, CRYPTO), Object.assign({pct:30}, BIZ), Object.assign({pct:20}, STOCKS)];
       } else if (rank <= 5) {
-        return [Object.assign({pct:55}, STOCKS), Object.assign({pct:25}, CRYPTO), Object.assign({pct:20}, BIZ)];
+        return [Object.assign({pct:40}, CRYPTO), Object.assign({pct:30}, STOCKS), Object.assign({pct:30}, BIZ)];
       } else if (rank <= 10) {
-        return [Object.assign({pct:60}, STOCKS), Object.assign({pct:25}, CRYPTO), Object.assign({pct:15}, BIZ)];
+        return [Object.assign({pct:50}, STOCKS), Object.assign({pct:30}, CRYPTO), Object.assign({pct:20}, BIZ)];
       } else if (rank <= 14) {
-        return [Object.assign({pct:60}, STOCKS), Object.assign({pct:25}, REAL), Object.assign({pct:15}, CRYPTO)];
+        return [Object.assign({pct:50}, STOCKS), Object.assign({pct:25}, CRYPTO), Object.assign({pct:25}, REAL)];
       } else if (rank <= 19) {
         return [Object.assign({pct:50}, STOCKS), Object.assign({pct:30}, REAL), Object.assign({pct:20}, SAVINGS)];
       } else if (rank <= 23) {
-        return [Object.assign({pct:40}, REAL), Object.assign({pct:35}, SAVINGS), Object.assign({pct:25}, STOCKS)];
+        return [Object.assign({pct:40}, REAL), Object.assign({pct:30}, SAVINGS), Object.assign({pct:30}, STOCKS)];
       } else if (rank <= 27) {
-        return [Object.assign({pct:55}, SAVINGS), Object.assign({pct:30}, REAL), Object.assign({pct:15}, STOCKS)];
+        return [Object.assign({pct:50}, SAVINGS), Object.assign({pct:30}, REAL), Object.assign({pct:20}, STOCKS)];
       } else {
-        return [Object.assign({pct:50}, SAVINGS), Object.assign({pct:35}, PIGGY), Object.assign({pct:15}, REAL)];
+        return [Object.assign({pct:50}, SAVINGS), Object.assign({pct:30}, PIGGY), Object.assign({pct:20}, REAL)];
       }
     }
 
