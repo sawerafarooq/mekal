@@ -1069,7 +1069,7 @@
     Mekal Invest - Real data, real ETFs, real learning! But NOT real financial advice. Always talk to a grown-up.
   </footer>
 
-  <div id="version">v5.1</div>
+  <div id="version">v5.2</div>
 
   <script>
     // ===== FUN FACTS =====
@@ -1384,7 +1384,10 @@
       lastProfile = profile;
       var bigType = r.rank <= 19 ? 'INVESTOR' : 'SAVER';
       var bigColor = r.rank <= 19 ? '#e91e63' : '#44d492';
-      title.innerHTML = emoji + ' You are an...<br><span style="font-family:Fredoka One,cursive;font-size:2.8rem;color:' + bigColor + ';text-shadow:3px 3px 0 rgba(0,0,0,0.1);display:block;margin-top:8px;">' + bigType + '</span>';
+      var bigExplain = r.rank <= 19
+        ? "You like to put your money to work! You take risks and let your money grow over time by buying things like stocks. You believe more risk means more reward in the long run."
+        : "You like to keep your money safe! You don't want to risk losing it. You'd rather grow it slowly and steadily without big surprises - safety first!";
+      title.innerHTML = emoji + ' You are an...<br><span style="font-family:Fredoka One,cursive;font-size:2.8rem;color:' + bigColor + ';text-shadow:3px 3px 0 rgba(0,0,0,0.1);display:block;margin-top:8px;">' + bigType + '</span><p style="font-size:0.9rem;font-weight:600;color:#777;margin-top:8px;line-height:1.5;font-family:Baloo 2,cursive;">' + bigExplain + '</p>';
       badge.innerHTML = '<span class="risk-badge ' + badgeClass + '">#' + r.rank + ' ' + profile + '</span>';
       desc.textContent = description;
       alloc.innerHTML = '<p style="font-family:Fredoka One,cursive;color:#a259ff;margin-bottom:5px;font-size:1.05rem;">Here\'s how you could split your money:</p><p style="color:#aaa;font-size:0.78rem;margin-bottom:10px;">Based on real Vanguard &amp; industry model portfolios using ETFs</p>' + bars;
@@ -1428,7 +1431,9 @@
         if (rn >= 24) { lbColor = '#4caf50'; lbBg = '#e8f5e9'; }
         else if (rn <= 14) { lbColor = '#e91e63'; lbBg = '#fce4ec'; }
         else if (rn === 1) { lbColor = '#a259ff'; lbBg = '#f0e6ff'; }
-        html += '<div class="lb-entry"><span class="lb-rank">#' + (i + 1) + '</span><span class="lb-name">' + e.name + '</span><span class="lb-type" style="background:' + lbBg + ';color:' + lbColor + '">#' + rn + ' ' + e.type + '</span></div>';
+        var lbBigType = rn <= 19 ? 'INVESTOR' : 'SAVER';
+        var lbBigColor = rn <= 19 ? '#e91e63' : '#44d492';
+        html += '<div class="lb-entry"><span class="lb-rank">#' + (i + 1) + '</span><span class="lb-name">' + e.name + ' <strong style="font-family:Fredoka One,cursive;color:' + lbBigColor + ';font-size:0.85rem;">(' + lbBigType + ')</strong></span><span class="lb-type" style="background:' + lbBg + ';color:' + lbColor + '">#' + rn + ' ' + e.type + '</span></div>';
       });
       document.getElementById('lbEntries').innerHTML = html || '<p style="text-align:center;color:#bbb;padding:10px;">No entries yet! Be the first!</p>';
     }
