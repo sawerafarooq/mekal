@@ -412,7 +412,8 @@
       border-radius: 50px; font-family: 'Baloo 2', cursive; font-size: 0.95rem; font-weight: 600;
     }
     .glossary-search input:focus { outline: none; border-color: #ffe14d; }
-    .glossary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+    .glossary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    @media (max-width: 700px) { .glossary-grid { grid-template-columns: 1fr; } }
     .gloss-card {
       background: #fff; border-radius: 18px; padding: 18px;
       border-left: 5px solid; box-shadow: 5px 5px 0 rgba(0,0,0,0.06);
@@ -758,7 +759,7 @@
         <span class="tag tag-safe">Super Safe</span>
       </div>
       <div class="card">
-        <span class="card-icon">&#x1FA99;</span>
+        <span class="card-icon">&#x1F947;</span>
         <h3>Gold</h3>
         <p>You don't need to buy a whole gold bar! With fractional buying, you can buy just a tiny piece of gold for as little as $1. Gold has been valuable for thousands of years!</p>
         <span class="tag tag-moderate">Medium Risk</span>
@@ -770,7 +771,7 @@
         <span class="tag tag-moderate">Medium Risk</span>
       </div>
       <div class="card">
-        <span class="card-icon">&#x1F48E;</span>
+        <span class="card-icon">&#x1FA99;</span>
         <h3>Crypto</h3>
         <p>Digital money like Bitcoin. Goes way up or way down fast. Very exciting but risky!</p>
         <span class="tag tag-risky">Very Risky</span>
@@ -1041,6 +1042,12 @@
       <input type="text" id="glossarySearch" placeholder="&#x1F50D; Search a word..." oninput="filterGlossary(this.value)">
     </div>
     <div class="glossary-grid" id="glossaryGrid"></div>
+    <div class="page-dots" id="glossDots"></div>
+    <div class="page-nav" id="glossNav">
+      <button class="page-btn" onclick="prevGlossPage()">&#x25C0; Back</button>
+      <span class="page-num" id="glossPageNum">Page 1</span>
+      <button class="page-btn" onclick="nextGlossPage()">Next &#x25B6;</button>
+    </div>
   </div>
 
   <!-- Tips -->
@@ -1069,7 +1076,7 @@
     Mekal Invest - Real data, real ETFs, real learning! But NOT real financial advice. Always talk to a grown-up.
   </footer>
 
-  <div id="version">v5.9</div>
+  <div id="version">v6.0</div>
 
   <script>
     // ===== FUN FACTS =====
@@ -1312,9 +1319,9 @@
       // 6 investment options
       var PIGGY   = {name:'Piggy Bank',       icon:'&#x1F416;', color:'#90a4ae'};
       var SAVINGS = {name:'Savings Account',  icon:'&#x1F3E6;', color:'#4caf50'};
-      var REAL    = {name:'Gold',             icon:'&#x1FA99;', color:'#ffd700'};
+      var REAL    = {name:'Gold',             icon:'&#x1F947;', color:'#ffd700'};
       var STOCKS  = {name:'Company Stocks',   icon:'&#x1F4C8;', color:'#a259ff'};
-      var CRYPTO  = {name:'Crypto',           icon:'&#x1F48E;', color:'#e91e63'};
+      var CRYPTO  = {name:'Crypto',           icon:'&#x1FA99;', color:'#e91e63'};
       var BIZ     = {name:'Start a Business', icon:'&#x1F4A1;', color:'#ff3cac'};
 
       // Each rank gets exactly 3 categories. All percentages are
@@ -1614,36 +1621,66 @@
 
     // ===== GLOSSARY =====
     var glossary = [
-      {word:'Stock',def:'A tiny piece of a company you can buy. If the company makes money, your piece becomes worth more!',ex:'Buying 1 share of Apple means you own a teeny tiny part of Apple.'},
-      {word:'ETF',def:'A basket of many stocks bundled together. Instead of picking one, you get a little bit of everything!',ex:'VTI is an ETF that holds pieces of over 4,000 companies at once.'},
-      {word:'Bond',def:'Lending your money to the government or a company. They pay you back with a little extra (interest)!',ex:'Like lending your friend $10 and they give you $11 back later.'},
-      {word:'Portfolio',def:'All the investments you own put together. Your collection of stocks, bonds, and other stuff.',ex:'Your portfolio might be 60% stocks and 40% bonds.'},
-      {word:'Dividend',def:'Free money a company gives you just for owning their stock! Like a thank-you gift.',ex:'If you own Coca-Cola stock, they send you cash every 3 months.'},
-      {word:'Bull Market',def:'When stock prices keep going UP UP UP! Everyone is happy and buying.',ex:'A bull charges upward with its horns - that is how prices move!'},
-      {word:'Bear Market',def:'When stock prices keep going DOWN. People get worried and sell.',ex:'A bear swipes downward with its paws - that is how prices move!'},
-      {word:'Inflation',def:'When things get more expensive over time. Your $1 buys less stuff each year.',ex:'A candy bar cost 50 cents years ago, now it costs $2. That is inflation!'},
-      {word:'Interest',def:'Money you earn for keeping your cash in a bank, or money you pay to borrow money.',ex:'Put $100 in a savings account and the bank gives you $3 extra each year.'},
-      {word:'Diversify',def:'Spreading your money across different things so if one fails, you still have the others.',ex:'Instead of buying just Nike, buy Nike AND Apple AND Google.'},
-      {word:'Index Fund',def:'A fund that copies a list of the biggest companies. Cheap and easy way to invest!',ex:'The S&P 500 index fund copies the 500 biggest US companies.'},
-      {word:'Risk',def:'The chance that you might lose money. Higher risk can mean higher reward OR bigger losses.',ex:'A savings account is low risk. Crypto is high risk.'},
-      {word:'NASDAQ',def:'A stock market in New York where lots of tech companies trade. Like a mall for buying stocks!',ex:'Microsoft, Apple, and Google all trade on NASDAQ.'},
-      {word:'NYSE',def:'The New York Stock Exchange - the biggest stock market in the world! Started in 1792.',ex:'Nike, Coca-Cola, and Disney all trade on the NYSE.'},
-      {word:'Market Cap',def:'How much an entire company is worth if you added up ALL its shares.',ex:'Apple market cap is $3 trillion - that is 3,000,000,000,000 dollars!'},
-      {word:'Broker',def:'A person or app that buys and sells stocks for you. Like a helper who does the trading.',ex:'Apps like Robinhood and Fidelity are brokers that let you buy stocks.'},
-      {word:'Recession',def:'When the economy shrinks and people have less money. Jobs can be harder to find.',ex:'Like when a lot of stores close and people stop shopping as much.'},
-      {word:'ROI',def:'Return On Investment. How much money you made compared to what you put in.',ex:'Invest $100, get back $150. Your ROI is 50%. Nice!'}
+      {word:'Save',def:'Keep your money safe instead of spending it.',ex:'I save my pocket money in a piggy bank!'},
+      {word:'Invest',def:'Put money into something so it grows bigger over time.',ex:'I invest in Apple to grow my money.'},
+      {word:'Stock',def:'A tiny piece of a company you can buy.',ex:'Buying Apple stock means you own a tiny part of Apple.'},
+      {word:'Bank',def:'A safe place that holds your money for you.',ex:'I put my $20 in the bank.'},
+      {word:'Cash',def:'Real paper money and coins you can hold.',ex:'I have $5 cash in my wallet.'},
+      {word:'Profit',def:'Extra money you earn after you spend.',ex:'I bought lemons for $5 and sold lemonade for $15. My profit is $10!'},
+      {word:'Loss',def:'When you have less money than you started with.',ex:'I bought a toy for $10 but sold it for $5. I had a $5 loss.'},
+      {word:'Risk',def:'The chance that you might lose your money.',ex:'A piggy bank has no risk. Crypto has lots of risk.'},
+      {word:'Reward',def:'The good thing you get for taking a risk - like extra money!',ex:'I took a risk and earned $50 - that\'s my reward!'},
+      {word:'Goal',def:'Something you really want and save up for.',ex:'My goal is to save $100 for a new bike.'},
+      {word:'Budget',def:'A plan for how to spend your money.',ex:'My budget: $5 for snacks, $10 to save.'},
+      {word:'Crypto',def:'Digital money on the internet, like Bitcoin.',ex:'My friend bought $1 of crypto on his phone.'},
+      {word:'Gold',def:'A shiny yellow metal that keeps its value.',ex:'My grandma has gold coins from when she was little.'},
+      {word:'Rich',def:'Having lots of money.',ex:'Saving and investing helps you become rich slowly.'},
+      {word:'Allowance',def:'Money your parents give you for chores or just because!',ex:'My allowance is $5 a week.'}
     ];
+    var glossPage = 0;
+    var glossPerPage = 3;
+    var glossFilter = '';
 
-    function renderGlossary(filter) {
-      var f = (filter || '').toLowerCase();
+    function getFilteredGloss() {
+      var f = glossFilter.toLowerCase();
+      if (!f) return glossary;
+      return glossary.filter(function(g) {
+        return g.word.toLowerCase().indexOf(f) !== -1 || g.def.toLowerCase().indexOf(f) !== -1;
+      });
+    }
+
+    function renderGlossary() {
+      var items = getFilteredGloss();
+      var totalPages = Math.max(1, Math.ceil(items.length / glossPerPage));
+      if (glossPage >= totalPages) glossPage = 0;
+      var start = glossPage * glossPerPage;
+      var pageItems = items.slice(start, start + glossPerPage);
       var html = '';
-      glossary.forEach(function(g) {
-        if (f && g.word.toLowerCase().indexOf(f) === -1 && g.def.toLowerCase().indexOf(f) === -1) return;
+      pageItems.forEach(function(g) {
         html += '<div class="gloss-card"><div class="gloss-word">' + g.word + '</div><div class="gloss-def">' + g.def + '</div><div class="gloss-example">"' + g.ex + '"</div></div>';
       });
       document.getElementById('glossaryGrid').innerHTML = html || '<p style="text-align:center;color:#fff;padding:20px;">No words found! Try a different search.</p>';
+
+      // Dots
+      var dotsHTML = '';
+      for (var i = 0; i < totalPages; i++) {
+        dotsHTML += '<button class="dot' + (i === glossPage ? ' active' : '') + '" onclick="goToGlossPage(' + i + ')"></button>';
+      }
+      document.getElementById('glossDots').innerHTML = dotsHTML;
+      document.getElementById('glossPageNum').textContent = 'Page ' + (glossPage + 1) + ' of ' + totalPages;
+      document.getElementById('glossNav').style.display = totalPages > 1 ? '' : 'none';
+      document.getElementById('glossDots').style.display = totalPages > 1 ? '' : 'none';
     }
-    function filterGlossary(val) { renderGlossary(val); }
+    function filterGlossary(val) { glossFilter = val; glossPage = 0; renderGlossary(); }
+    function goToGlossPage(n) { glossPage = n; renderGlossary(); }
+    function nextGlossPage() {
+      var totalPages = Math.ceil(getFilteredGloss().length / glossPerPage);
+      glossPage = (glossPage + 1) % totalPages; renderGlossary();
+    }
+    function prevGlossPage() {
+      var totalPages = Math.ceil(getFilteredGloss().length / glossPerPage);
+      glossPage = (glossPage - 1 + totalPages) % totalPages; renderGlossary();
+    }
     renderGlossary();
 
     // ===== SMOOTH SCROLL =====
