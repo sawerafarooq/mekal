@@ -993,16 +993,7 @@
 
     <div class="quiz-card" style="border-color: #ffe14d; background: #fffde6;">
       <label><span class="q-emoji">&#x1F6CD;</span> Step 1: What do you want to buy?</label>
-      <div class="options" id="goalOptions">
-        <button onclick="pickGoal(this, 'Nintendo Switch', 299)" class="goal-btn">&#x1F3AE; Nintendo Switch - $299</button>
-        <button onclick="pickGoal(this, 'iPhone', 799)" class="goal-btn">&#x1F4F1; iPhone - $799</button>
-        <button onclick="pickGoal(this, 'PS5', 499)" class="goal-btn">&#x1F579; PS5 - $499</button>
-        <button onclick="pickGoal(this, 'Bicycle', 250)" class="goal-btn">&#x1F6B2; Bicycle - $250</button>
-        <button onclick="pickGoal(this, 'iPad', 449)" class="goal-btn">&#x1F4BB; iPad - $449</button>
-        <button onclick="pickGoal(this, 'LEGO Set', 150)" class="goal-btn">&#x1F9F1; Big LEGO Set - $150</button>
-        <button onclick="pickGoal(this, 'Laptop', 999)" class="goal-btn">&#x1F4BB; Laptop - $999</button>
-        <button onclick="pickGoal(this, 'AirPods', 179)" class="goal-btn">&#x1F3A7; AirPods - $179</button>
-      </div>
+      <div class="options" id="goalOptions"></div>
       <div style="margin-top:12px;">
         <div style="display:flex;gap:8px;margin-top:5px;flex-wrap:wrap;">
           <input type="text" id="customGoalName" placeholder="Or type what do you want" style="flex:2;min-width:160px;padding:10px 15px;border:3px solid #ddd;border-radius:50px;font-family:'Baloo 2',cursive;font-weight:600;font-size:0.9rem;">
@@ -1096,7 +1087,7 @@
     Mekal Invest - Real data, real ETFs, real learning! But NOT real financial advice. Always talk to a grown-up.
   </footer>
 
-  <div id="version">v6.7</div>
+  <div id="version">v6.8</div>
 
   <script>
     // ===== FUN FACTS =====
@@ -1220,6 +1211,10 @@
       currentCurrency = {code: cur.code, symbol: cur.symbol};
       var btn = document.getElementById('currencyBtn');
       if (btn) btn.innerHTML = '&#x1F4B1; ' + cur.code;
+      // Re-render goal buttons with new currency prices
+      if (typeof renderGoals === 'function') renderGoals();
+      // Update allowance display
+      if (typeof updateAllowance === 'function' && document.getElementById('allowanceSlider')) updateAllowance();
     }
 
     function showCurrencyModal() {
@@ -1682,6 +1677,46 @@
     var goalPrice = 0;
     var saveRate = 50;
 
+    // Real retail prices per currency for common goals
+    // Values are in the actual currency, rounded to typical retail pricing
+    var GOALS_DATA = [
+      {emoji:'&#x1F3AE;', name:'Nintendo Switch', prices:{USD:299, EUR:329, GBP:259, INR:29990, PKR:99000, JPY:32978, CNY:2099, AUD:469, CAD:399, AED:1099, SAR:1199, TRY:11999, BRL:2799, ZAR:6999, MXN:7499, SGD:549, HKD:2280, CHF:289, NZD:499}},
+      {emoji:'&#x1F4F1;', name:'iPhone',          prices:{USD:799, EUR:959, GBP:799, INR:79900, PKR:299999, JPY:124800, CNY:5999, AUD:1399, CAD:1079, AED:3399, SAR:3399, TRY:49999, BRL:7499, ZAR:19999, MXN:19999, SGD:1299, HKD:6299, CHF:799, NZD:1499}},
+      {emoji:'&#x1F579;', name:'PS5',             prices:{USD:499, EUR:549, GBP:479, INR:54990, PKR:199999, JPY:66980, CNY:4299, AUD:799, CAD:649, AED:1899, SAR:2099, TRY:22999, BRL:4199, ZAR:12999, MXN:12999, SGD:799, HKD:3980, CHF:499, NZD:869}},
+      {emoji:'&#x1F6B2;', name:'Bicycle',         prices:{USD:250, EUR:230, GBP:200, INR:12000, PKR:35000, JPY:28000, CNY:1500, AUD:350, CAD:299, AED:899, SAR:899, TRY:8999, BRL:1499, ZAR:5999, MXN:4999, SGD:349, HKD:1999, CHF:239, NZD:429}},
+      {emoji:'&#x1F4BB;', name:'iPad',            prices:{USD:449, EUR:409, GBP:349, INR:34900, PKR:149000, JPY:58800, CNY:2999, AUD:699, CAD:599, AED:1699, SAR:1699, TRY:19999, BRL:4499, ZAR:9999, MXN:9999, SGD:599, HKD:3299, CHF:399, NZD:779}},
+      {emoji:'&#x1F9F1;', name:'Big LEGO Set',    prices:{USD:150, EUR:130, GBP:120, INR:9000, PKR:29999, JPY:18000, CNY:1199, AUD:229, CAD:199, AED:549, SAR:549, TRY:5499, BRL:899, ZAR:3499, MXN:2999, SGD:229, HKD:1199, CHF:149, NZD:249}},
+      {emoji:'&#x1F4BB;', name:'Laptop',          prices:{USD:999, EUR:999, GBP:899, INR:65000, PKR:249000, JPY:130000, CNY:6999, AUD:1599, CAD:1299, AED:3599, SAR:3799, TRY:39999, BRL:8499, ZAR:24999, MXN:19999, SGD:1399, HKD:7799, CHF:899, NZD:1699}},
+      {emoji:'&#x1F3A7;', name:'AirPods',         prices:{USD:179, EUR:179, GBP:169, INR:18900, PKR:55000, JPY:23800, CNY:1199, AUD:269, CAD:239, AED:649, SAR:679, TRY:8999, BRL:1799, ZAR:3999, MXN:4499, SGD:249, HKD:1399, CHF:179, NZD:309}}
+    ];
+    // Rough multipliers from USD for currencies not in the price table (fallback)
+    var FX_MULTIPLIER = {USD:1, EUR:0.92, GBP:0.79, INR:83, PKR:280, JPY:150, CNY:7.2, AUD:1.55, CAD:1.35, AED:3.67, SAR:3.75, TRY:40, BRL:5, ZAR:19, MXN:20, SGD:1.35, HKD:7.8, CHF:0.88, NZD:1.68};
+
+    function getGoalPrice(goal, code) {
+      if (goal.prices && goal.prices[code] !== undefined) return goal.prices[code];
+      var usd = goal.prices ? goal.prices.USD : 100;
+      var mult = FX_MULTIPLIER[code] || 1;
+      var p = usd * mult;
+      // Round to nice numbers
+      if (p > 10000) return Math.round(p / 1000) * 1000;
+      if (p > 1000) return Math.round(p / 100) * 100;
+      if (p > 100) return Math.round(p / 10) * 10;
+      return Math.round(p);
+    }
+
+    function renderGoals() {
+      var code = currentCurrency.code;
+      var sym = currentCurrency.symbol;
+      var html = '';
+      GOALS_DATA.forEach(function(g) {
+        var p = getGoalPrice(g, code);
+        html += '<button onclick="pickGoal(this, \'' + g.name + '\', ' + p + ')" class="goal-btn">' + g.emoji + ' ' + g.name + ' - ' + sym + p.toLocaleString() + '</button>';
+      });
+      document.getElementById('goalOptions').innerHTML = html;
+    }
+    // Render on load
+    setTimeout(renderGoals, 50);
+
     function pickGoal(btn, name, price) {
       document.querySelectorAll('#goalOptions button').forEach(function(b) { b.classList.remove('selected'); });
       btn.classList.add('selected');
@@ -1706,14 +1741,25 @@
       saveRate = rate;
     }
 
+    function getAllowanceValue() {
+      var raw = parseInt(document.getElementById('allowanceSlider').value);
+      var mult = FX_MULTIPLIER[currentCurrency.code] || 1;
+      var val = raw * mult;
+      // Round to nice numbers
+      if (val >= 1000) return Math.round(val / 100) * 100;
+      if (val >= 100) return Math.round(val / 10) * 10;
+      return Math.round(val);
+    }
+    function fmtMoney(n) {
+      return currentCurrency.symbol + Math.round(n).toLocaleString();
+    }
     function updateAllowance() {
-      var val = document.getElementById('allowanceSlider').value;
-      document.getElementById('allowanceDisplay').textContent = '$' + val;
+      document.getElementById('allowanceDisplay').textContent = fmtMoney(getAllowanceValue());
     }
 
     function calculateSavings() {
       if (!goalName || !goalPrice) { alert('Pick something you want to buy first!'); return; }
-      var allowance = parseInt(document.getElementById('allowanceSlider').value);
+      var allowance = getAllowanceValue();
       var weeklySave = allowance * (saveRate / 100);
       if (weeklySave <= 0) { alert('You need to save at least something each week!'); return; }
       var totalWeeks = Math.ceil(goalPrice / weeklySave);
@@ -1739,8 +1785,8 @@
         document.getElementById('resultEmoji').innerHTML = '&#x1F680;';
       }
 
-      document.getElementById('savingsTitle').textContent = goalName + ' for $' + goalPrice.toFixed(2);
-      document.getElementById('savingsText').innerHTML = 'Saving <strong>$' + weeklySave.toFixed(2) + '/week</strong>, it will take you <strong>' + timeText + '</strong>';
+      document.getElementById('savingsTitle').textContent = goalName + ' for ' + fmtMoney(goalPrice);
+      document.getElementById('savingsText').innerHTML = 'Saving <strong>' + fmtMoney(weeklySave) + '/week</strong>, it will take you <strong>' + timeText + '</strong>';
 
       var progress = Math.min(100, (weeklySave / goalPrice) * 100 * 4);
       document.getElementById('savingsBar').style.width = '0%';
@@ -1749,15 +1795,15 @@
         document.getElementById('savingsBar').textContent = totalWeeks + ' weeks';
       }, 100);
 
-      document.getElementById('savingsSubtext').textContent = 'You will save $' + weeklySave.toFixed(2) + ' per week x ' + totalWeeks + ' weeks = $' + (weeklySave * totalWeeks).toFixed(2);
+      document.getElementById('savingsSubtext').textContent = 'You will save ' + fmtMoney(weeklySave) + ' per week x ' + totalWeeks + ' weeks = ' + fmtMoney(weeklySave * totalWeeks);
 
       // Investment comparison (10% annual return)
       var investedTotal = 0;
       for (var w = 0; w < totalWeeks; w++) {
         investedTotal = (investedTotal + weeklySave) * (1 + 0.10/52);
       }
-      var extraMoney = (investedTotal - (weeklySave * totalWeeks)).toFixed(2);
-      document.getElementById('investText').innerHTML = 'If you put that $' + weeklySave.toFixed(2) + '/week into an index fund like <strong>VTI</strong> (which grows about 10% per year on average), after ' + totalWeeks + ' weeks you would have <strong>$' + investedTotal.toFixed(2) + '</strong> instead of $' + (weeklySave * totalWeeks).toFixed(2) + '. That is <strong style="color:#44d492;">$' + extraMoney + ' extra</strong> just from investing! The longer you save, the more extra money you earn.';
+      var extraMoney = investedTotal - (weeklySave * totalWeeks);
+      document.getElementById('investText').innerHTML = 'If you put that ' + fmtMoney(weeklySave) + '/week into stocks (which grow about 10% per year on average), after ' + totalWeeks + ' weeks you would have <strong>' + fmtMoney(investedTotal) + '</strong> instead of ' + fmtMoney(weeklySave * totalWeeks) + '. That is <strong style="color:#44d492;">' + fmtMoney(extraMoney) + ' extra</strong> just from investing! The longer you save, the more extra money you earn.';
 
       resultDiv.style.display = 'block';
       resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
