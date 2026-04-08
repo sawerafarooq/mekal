@@ -19,7 +19,7 @@ import urllib.request
 import urllib.parse
 import sys
 
-HTML_FILE = "invest.html"
+HTML_FILE = "public/invest.html"
 
 # All 18 tickers currently shown in the Strong Buy section
 TICKERS = [
