@@ -572,6 +572,7 @@
       <a href="#glossary">Glossary</a>
       <a href="#tips">Tips</a>
       <a href="#" onclick="showAuthModal();return false;" id="authBtn" style="background:rgba(255,255,255,0.25);color:#fff;">&#x1F464; Log In</a>
+      <a href="#" onclick="showCurrencyModal();return false;" id="currencyBtn" style="background:rgba(255,255,255,0.25);color:#fff;">&#x1F4B1; USD</a>
       <a href="#" onclick="toggleDarkMode();return false;" id="themeBtn" style="background:rgba(255,255,255,0.25);color:#fff;">&#x1F31E;</a>
     </div>
   </nav>
@@ -602,6 +603,21 @@
         </div>
         <p style="text-align:center;margin-top:12px;color:#aaa;font-size:0.85rem;">Already have an account? <a href="#" onclick="showLogin();return false;" style="color:#a259ff;font-weight:700;">Log In!</a></p>
       </div>
+    </div>
+  </div>
+
+  <!-- Currency Modal -->
+  <div id="currencyModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:201;justify-content:center;align-items:center;">
+    <div style="background:#fff;border-radius:25px;padding:30px;max-width:380px;width:90%;box-shadow:0 10px 40px rgba(0,0,0,0.3);position:relative;max-height:90vh;overflow-y:auto;">
+      <button onclick="hideCurrencyModal()" style="position:absolute;top:12px;right:15px;background:none;border:none;font-size:1.5rem;cursor:pointer;color:#aaa;">&#x2715;</button>
+      <h3 style="font-family:'Fredoka One',cursive;color:#a259ff;text-align:center;font-size:1.4rem;">&#x1F30D; Pick Your Money!</h3>
+      <p id="currencyAutoText" style="text-align:center;color:#888;font-size:0.9rem;margin-top:8px;">Finding your country...</p>
+      <div style="margin-top:20px;">
+        <label style="font-size:0.9rem;color:#666;font-weight:700;">Your currency:</label>
+        <select id="currencySelect" style="width:100%;padding:12px 15px;border:3px solid #ddd;border-radius:15px;font-family:'Baloo 2',cursive;font-size:1rem;font-weight:700;margin-top:5px;background:#fff;"></select>
+      </div>
+      <button onclick="saveCurrency()" style="width:100%;padding:14px;margin-top:15px;background:linear-gradient(135deg,#a259ff,#ff6b9d);color:#fff;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:1.1rem;cursor:pointer;">&#x2705; Use This!</button>
+      <p style="text-align:center;margin-top:10px;color:#bbb;font-size:0.75rem;">You can change this later from the top menu</p>
     </div>
   </div>
 
@@ -1080,7 +1096,7 @@
     Mekal Invest - Real data, real ETFs, real learning! But NOT real financial advice. Always talk to a grown-up.
   </footer>
 
-  <div id="version">v6.6</div>
+  <div id="version">v6.7</div>
 
   <script>
     // ===== FUN FACTS =====
@@ -1126,6 +1142,130 @@
       tickerHTML += '<span><span class="sym">' + s.sym + '</span> $' + s.price.toFixed(2) + ' <span class="' + cls + '">' + arrow + ' ' + Math.abs(s.chg).toFixed(1) + '%</span></span>';
     });
     document.getElementById('tickerTape').innerHTML = tickerHTML + tickerHTML;
+
+    // ===== CURRENCY SYSTEM =====
+    var CURRENCIES = [
+      {code:'USD', symbol:'$',    name:'US Dollar',          countries:['US']},
+      {code:'EUR', symbol:'\u20AC', name:'Euro',               countries:['DE','FR','IT','ES','NL','BE','AT','IE','PT','FI','GR','LU','SK','SI','LT','LV','EE','MT','CY','HR']},
+      {code:'GBP', symbol:'\u00A3', name:'British Pound',      countries:['GB']},
+      {code:'INR', symbol:'\u20B9', name:'Indian Rupee',       countries:['IN']},
+      {code:'PKR', symbol:'\u20A8', name:'Pakistani Rupee',    countries:['PK']},
+      {code:'JPY', symbol:'\u00A5', name:'Japanese Yen',       countries:['JP']},
+      {code:'CNY', symbol:'\u00A5', name:'Chinese Yuan',       countries:['CN']},
+      {code:'AUD', symbol:'A$',   name:'Australian Dollar',  countries:['AU']},
+      {code:'CAD', symbol:'C$',   name:'Canadian Dollar',    countries:['CA']},
+      {code:'AED', symbol:'AED ', name:'UAE Dirham',         countries:['AE']},
+      {code:'SAR', symbol:'SAR ', name:'Saudi Riyal',        countries:['SA']},
+      {code:'TRY', symbol:'\u20BA', name:'Turkish Lira',       countries:['TR']},
+      {code:'BRL', symbol:'R$',   name:'Brazilian Real',     countries:['BR']},
+      {code:'ZAR', symbol:'R',    name:'South African Rand', countries:['ZA']},
+      {code:'MXN', symbol:'Mex$', name:'Mexican Peso',       countries:['MX']},
+      {code:'SGD', symbol:'S$',   name:'Singapore Dollar',   countries:['SG']},
+      {code:'HKD', symbol:'HK$',  name:'Hong Kong Dollar',   countries:['HK']},
+      {code:'CHF', symbol:'CHF ', name:'Swiss Franc',        countries:['CH']},
+      {code:'NZD', symbol:'NZ$',  name:'New Zealand Dollar', countries:['NZ']}
+    ];
+    var currentCurrency = {code:'USD', symbol:'$'};
+
+    // Build select dropdown
+    (function() {
+      var sel = document.getElementById('currencySelect');
+      if (!sel) return;
+      var html = '';
+      CURRENCIES.forEach(function(c) {
+        html += '<option value="' + c.code + '">' + c.symbol + ' - ' + c.name + ' (' + c.code + ')</option>';
+      });
+      sel.innerHTML = html;
+    })();
+
+    function findCurrencyByCountry(code) {
+      for (var i = 0; i < CURRENCIES.length; i++) {
+        if (CURRENCIES[i].countries.indexOf(code) !== -1) return CURRENCIES[i];
+      }
+      return CURRENCIES[0]; // USD default
+    }
+    function findCurrencyByCode(code) {
+      for (var i = 0; i < CURRENCIES.length; i++) {
+        if (CURRENCIES[i].code === code) return CURRENCIES[i];
+      }
+      return CURRENCIES[0];
+    }
+
+    function swapCurrency(newSym) {
+      var oldSym = currentCurrency.symbol;
+      if (oldSym === newSym) return;
+      var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+        acceptNode: function(n) {
+          var p = n.parentElement;
+          if (!p) return NodeFilter.FILTER_REJECT;
+          var tag = p.tagName;
+          if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'OPTION') return NodeFilter.FILTER_REJECT;
+          if (p.id === 'currencyBtn' || p.closest && p.closest('#currencyModal')) return NodeFilter.FILTER_REJECT;
+          return n.nodeValue.indexOf(oldSym) !== -1 ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+        }
+      });
+      var nodes = [];
+      var n;
+      while (n = walker.nextNode()) nodes.push(n);
+      nodes.forEach(function(node) {
+        node.nodeValue = node.nodeValue.split(oldSym).join(newSym);
+      });
+      currentCurrency.symbol = newSym;
+    }
+
+    function applyCurrency(cur) {
+      var oldCur = currentCurrency;
+      currentCurrency = {code: cur.code, symbol: oldCur.symbol}; // keep old symbol for swap
+      swapCurrency(cur.symbol);
+      currentCurrency = {code: cur.code, symbol: cur.symbol};
+      var btn = document.getElementById('currencyBtn');
+      if (btn) btn.innerHTML = '&#x1F4B1; ' + cur.code;
+    }
+
+    function showCurrencyModal() {
+      document.getElementById('currencyModal').style.display = 'flex';
+      var sel = document.getElementById('currencySelect');
+      if (sel) sel.value = currentCurrency.code;
+      document.getElementById('currencyAutoText').textContent = 'Your currency: ' + currentCurrency.code;
+    }
+    function hideCurrencyModal() { document.getElementById('currencyModal').style.display = 'none'; }
+
+    function saveCurrency() {
+      var code = document.getElementById('currencySelect').value;
+      var cur = findCurrencyByCode(code);
+      localStorage.setItem('mekalCurrency', JSON.stringify({code: cur.code, symbol: cur.symbol}));
+      applyCurrency(cur);
+      hideCurrencyModal();
+    }
+
+    function initCurrency() {
+      var saved = localStorage.getItem('mekalCurrency');
+      if (saved) {
+        try {
+          var s = JSON.parse(saved);
+          var cur = findCurrencyByCode(s.code);
+          applyCurrency(cur);
+          return;
+        } catch (e) {}
+      }
+      // Not saved - show modal with auto-detect
+      document.getElementById('currencyModal').style.display = 'flex';
+      document.getElementById('currencyAutoText').textContent = 'Finding your country...';
+      fetch('https://ipapi.co/json/')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          var cc = (data && data.country_code) ? data.country_code : 'US';
+          var cur = findCurrencyByCountry(cc);
+          document.getElementById('currencySelect').value = cur.code;
+          document.getElementById('currencyAutoText').textContent = 'We found you! Country: ' + cc + ' \u2014 ' + cur.name;
+        })
+        .catch(function() {
+          document.getElementById('currencySelect').value = 'USD';
+          document.getElementById('currencyAutoText').textContent = 'Pick your currency:';
+        });
+    }
+    // Run after a tick so the whole DOM is ready for TreeWalker
+    setTimeout(initCurrency, 100);
 
     // ===== DARK MODE =====
     function toggleDarkMode() {
