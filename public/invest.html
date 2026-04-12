@@ -1004,13 +1004,13 @@
     </div>
 
     <div class="quiz-card" style="border-color: #44d492; background: #f0fff5;">
-      <label><span class="q-emoji">&#x1F4B5;</span> Step 2: How much money do you get each week?</label>
+      <label><span class="q-emoji">&#x1F4B5;</span> Step 2: How much do you make a month?</label>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
         <span style="font-weight:700;color:#555;">$</span>
-        <input type="range" id="allowanceSlider" min="1" max="50" value="10" oninput="updateAllowance()" style="flex:1;min-width:150px;accent-color:#44d492;">
-        <span id="allowanceDisplay" style="font-family:'Fredoka One',cursive;font-size:1.3rem;color:#44d492;min-width:60px;">$10</span>
+        <input type="range" id="allowanceSlider" min="5" max="200" value="40" oninput="updateAllowance()" style="flex:1;min-width:150px;accent-color:#44d492;">
+        <span id="allowanceDisplay" style="font-family:'Fredoka One',cursive;font-size:1.3rem;color:#44d492;min-width:60px;">$40</span>
       </div>
-      <p style="color:#aaa;font-size:0.8rem;margin-top:8px;">This could be allowance, chores money, birthday money per week, etc.</p>
+      <p style="color:#aaa;font-size:0.8rem;margin-top:8px;">This could be allowance, pocket money, chores, birthday money, etc.</p>
     </div>
 
     <div class="quiz-card" style="border-color: #a259ff; background: #f5f0ff;">
@@ -1087,7 +1087,7 @@
     Mekal Invest - Real data, real ETFs, real learning! But NOT real financial advice. Always talk to a grown-up.
   </footer>
 
-  <div id="version">v6.9</div>
+  <div id="version">v7.2</div>
 
   <script>
     // ===== FUN FACTS =====
@@ -1759,51 +1759,48 @@
 
     function calculateSavings() {
       if (!goalName || !goalPrice) { alert('Pick something you want to buy first!'); return; }
-      var allowance = getAllowanceValue();
-      var weeklySave = allowance * (saveRate / 100);
-      if (weeklySave <= 0) { alert('You need to save at least something each week!'); return; }
-      var totalWeeks = Math.ceil(goalPrice / weeklySave);
-      var months = (totalWeeks / 4.33).toFixed(1);
-      var years = (totalWeeks / 52).toFixed(1);
+      var monthlyIncome = getAllowanceValue();
+      var monthlySave = monthlyIncome * (saveRate / 100);
+      if (monthlySave <= 0) { alert('You need to save at least something each month!'); return; }
+      var totalMonths = Math.ceil(goalPrice / monthlySave);
+      var years = (totalMonths / 12).toFixed(1);
 
       var resultDiv = document.getElementById('savingsResult');
-      var emojis = ['&#x1F389;','&#x1F60E;','&#x1F4AA;','&#x1F680;','&#x2B50;'];
-      var emoji = emojis[Math.floor(Math.random() * emojis.length)];
 
       var timeText = '';
-      if (totalWeeks <= 4) {
-        timeText = 'Just ' + totalWeeks + ' week' + (totalWeeks > 1 ? 's' : '') + '! That is less than a month!';
+      if (totalMonths <= 1) {
+        timeText = 'Just 1 month! Super fast!';
         document.getElementById('resultEmoji').innerHTML = '&#x1F929;';
-      } else if (totalWeeks <= 12) {
-        timeText = totalWeeks + ' weeks (about ' + months + ' months). Not bad at all!';
+      } else if (totalMonths <= 3) {
+        timeText = totalMonths + ' months. Not bad at all!';
         document.getElementById('resultEmoji').innerHTML = '&#x1F60E;';
-      } else if (totalWeeks <= 52) {
-        timeText = totalWeeks + ' weeks (about ' + months + ' months). You got this!';
+      } else if (totalMonths <= 12) {
+        timeText = totalMonths + ' months. You got this!';
         document.getElementById('resultEmoji').innerHTML = '&#x1F4AA;';
       } else {
-        timeText = totalWeeks + ' weeks (about ' + years + ' years). That is a big goal - but big goals are awesome!';
+        timeText = totalMonths + ' months (about ' + years + ' years). That is a big goal - but big goals are awesome!';
         document.getElementById('resultEmoji').innerHTML = '&#x1F680;';
       }
 
       document.getElementById('savingsTitle').textContent = goalName + ' for ' + fmtMoney(goalPrice);
-      document.getElementById('savingsText').innerHTML = 'Saving <strong>' + fmtMoney(weeklySave) + '/week</strong>, it will take you <strong>' + timeText + '</strong>';
+      document.getElementById('savingsText').innerHTML = 'Saving <strong>' + fmtMoney(monthlySave) + '/month</strong>, it will take you <strong>' + timeText + '</strong>';
 
-      var progress = Math.min(100, (weeklySave / goalPrice) * 100 * 4);
+      var progress = Math.min(100, (monthlySave / goalPrice) * 100 * 4);
       document.getElementById('savingsBar').style.width = '0%';
       setTimeout(function() {
         document.getElementById('savingsBar').style.width = Math.min(progress * 2, 100) + '%';
-        document.getElementById('savingsBar').textContent = totalWeeks + ' weeks';
+        document.getElementById('savingsBar').textContent = totalMonths + ' months';
       }, 100);
 
-      document.getElementById('savingsSubtext').textContent = 'You will save ' + fmtMoney(weeklySave) + ' per week x ' + totalWeeks + ' weeks = ' + fmtMoney(weeklySave * totalWeeks);
+      document.getElementById('savingsSubtext').textContent = 'You will save ' + fmtMoney(monthlySave) + ' per month x ' + totalMonths + ' months = ' + fmtMoney(monthlySave * totalMonths);
 
-      // Investment comparison (10% annual return)
+      // Investment comparison (10% annual return, compounded monthly)
       var investedTotal = 0;
-      for (var w = 0; w < totalWeeks; w++) {
-        investedTotal = (investedTotal + weeklySave) * (1 + 0.10/52);
+      for (var m = 0; m < totalMonths; m++) {
+        investedTotal = (investedTotal + monthlySave) * (1 + 0.10/12);
       }
-      var extraMoney = investedTotal - (weeklySave * totalWeeks);
-      document.getElementById('investText').innerHTML = 'If you put that ' + fmtMoney(weeklySave) + '/week into stocks (which grow about 10% per year on average), after ' + totalWeeks + ' weeks you would have <strong>' + fmtMoney(investedTotal) + '</strong> instead of ' + fmtMoney(weeklySave * totalWeeks) + '. That is <strong style="color:#44d492;">' + fmtMoney(extraMoney) + ' extra</strong> just from investing! The longer you save, the more extra money you earn.';
+      var extraMoney = investedTotal - (monthlySave * totalMonths);
+      document.getElementById('investText').innerHTML = 'If you put that ' + fmtMoney(monthlySave) + '/month into stocks (which grow about 10% per year on average), after ' + totalMonths + ' months you would have <strong>' + fmtMoney(investedTotal) + '</strong> instead of ' + fmtMoney(monthlySave * totalMonths) + '. That is <strong style="color:#44d492;">' + fmtMoney(extraMoney) + ' extra</strong> just from investing! The longer you save, the more extra money you earn.';
 
       resultDiv.style.display = 'block';
       resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
