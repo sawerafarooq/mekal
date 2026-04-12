@@ -1007,7 +1007,7 @@
       <label><span class="q-emoji">&#x1F4B5;</span> Step 2: How much do you make a month?</label>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
         <span style="font-weight:700;color:#555;">$</span>
-        <input type="range" id="allowanceSlider" min="5" max="200" value="40" oninput="updateAllowance()" style="flex:1;min-width:150px;accent-color:#44d492;">
+        <input type="range" id="allowanceSlider" min="0" max="200" value="40" oninput="updateAllowance()" style="flex:1;min-width:150px;accent-color:#44d492;">
         <span id="allowanceDisplay" style="font-family:'Fredoka One',cursive;font-size:1.3rem;color:#44d492;min-width:60px;">$40</span>
       </div>
       <p style="color:#aaa;font-size:0.8rem;margin-top:8px;">This could be allowance, pocket money, chores, birthday money, etc.</p>
@@ -1087,7 +1087,7 @@
     Mekal Invest - Real data, real ETFs, real learning! But NOT real financial advice. Always talk to a grown-up.
   </footer>
 
-  <div id="version">v7.2</div>
+  <div id="version">v7.3</div>
 
   <script>
     // ===== FUN FACTS =====
@@ -1761,7 +1761,7 @@
       if (!goalName || !goalPrice) { alert('Pick something you want to buy first!'); return; }
       var monthlyIncome = getAllowanceValue();
       var monthlySave = monthlyIncome * (saveRate / 100);
-      if (monthlySave <= 0) { alert('You need to save at least something each month!'); return; }
+      if (monthlyIncome <= 0 || monthlySave <= 0) { alert('Move the slider up! You need to make some money first!'); return; }
       var totalMonths = Math.ceil(goalPrice / monthlySave);
       var years = (totalMonths / 12).toFixed(1);
 
